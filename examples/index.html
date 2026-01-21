@@ -3,53 +3,88 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Glint — Demo</title>
+    <title>Glint — Home</title>
     <link rel="stylesheet" href="../dist/glint.css" />
     <style>
       .page {
         max-width: 1100px;
         margin: 0 auto;
-        padding: 32px 20px 80px;
+        padding: 28px 20px 80px;
         display: grid;
         gap: 24px;
       }
-      .topbar {
+      .nav {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
       }
-      .title {
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .logo {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        box-shadow: var(--gl-shadow-sm);
+        border: 1px solid var(--gl-border);
+        background: var(--gl-panel);
+        object-fit: cover;
+      }
+      .brandText {
         display: grid;
-        gap: 4px;
+        gap: 2px;
       }
-      .title h1 {
-        margin: 0;
-        font-size: 22px;
-        line-height: 28px;
+      .brandText b {
+        font-size: 14px;
+        line-height: 18px;
       }
-      .title p {
-        margin: 0;
+      .brandText span {
         color: var(--gl-muted);
-        font-size: var(--gl-text-md);
-        line-height: var(--gl-line-md);
-      }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        gap: 16px;
-      }
-      .col-6 {
-        grid-column: span 6;
-      }
-      .col-12 {
-        grid-column: span 12;
+        font-size: 12px;
+        line-height: 16px;
       }
       .row {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
         align-items: center;
+      }
+      .hero {
+        border: 1px solid var(--gl-border);
+        border-radius: var(--gl-radius-lg);
+        background: var(--gl-surface-1);
+        box-shadow: var(--gl-shadow-md);
+        padding: 22px;
+        display: grid;
+        gap: 14px;
+      }
+      .hero h1 {
+        margin: 0;
+        font-size: 28px;
+        line-height: 34px;
+        letter-spacing: -0.02em;
+      }
+      .hero p {
+        margin: 0;
+        color: var(--gl-muted);
+        font-size: 14px;
+        line-height: 20px;
+        max-width: 70ch;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 16px;
+      }
+      .col-7 {
+        grid-column: span 7;
+      }
+      .col-5 {
+        grid-column: span 5;
       }
       .stack {
         display: grid;
@@ -60,8 +95,25 @@
         font-size: var(--gl-text-md);
         line-height: var(--gl-line-md);
       }
+      .kpi {
+        display: grid;
+        gap: 6px;
+      }
+      .kpi b {
+        font-size: 20px;
+        line-height: 26px;
+      }
+      .kpi span {
+        color: var(--gl-muted);
+        font-size: 12px;
+        line-height: 16px;
+      }
+      .link {
+        text-decoration: none;
+      }
       @media (max-width: 900px) {
-        .col-6 {
+        .col-7,
+        .col-5 {
           grid-column: span 12;
         }
       }
@@ -70,157 +122,80 @@
   <body>
     <script src="../dist/glint.js"></script>
 
-    <gl-toaster id="toaster"></gl-toaster>
-
-    <gl-sidebar id="sidebar">
-      <span slot="title">Navigation</span>
-      <div class="stack">
-        <a href="#" class="muted">Dashboard</a>
-        <a href="#" class="muted">Projects</a>
-        <a href="#" class="muted">Settings</a>
-      </div>
-    </gl-sidebar>
-
-    <gl-modal id="modal" label="Demo modal">
-      <div slot="header">
-        <div style="font-weight: 600; font-size: 16px; line-height: 24px">Modal title</div>
-        <div class="muted">Esc closes. Focus is trapped.</div>
-      </div>
-      <div class="stack">
-        <gl-input placeholder="Type something">
-          <span slot="label">Input</span>
-          <span slot="description">This is inside the modal.</span>
-        </gl-input>
-      </div>
-      <div slot="footer">
-        <gl-button id="closeModal" variant="secondary">Close</gl-button>
-        <gl-button id="saveModal">Save</gl-button>
-      </div>
-    </gl-modal>
-
     <div class="page">
-      <div class="topbar">
-        <div class="title">
-          <h1>Glint</h1>
-          <p>Web Components UI library demo</p>
-        </div>
+      <div class="nav">
+        <a class="brand" href="./index.html">
+          <img
+            class="logo"
+            src="https://i.ibb.co/Fbv2JygS/Chat-GPT-Image-Jan-21-2026-10-06-54-AM.png"
+            alt="Glint"
+          />
+          <div class="brandText">
+            <b>Glint</b>
+            <span>Web Components UI library</span>
+          </div>
+        </a>
         <div class="row">
-          <gl-button id="openSidebar" variant="secondary">Open sidebar</gl-button>
+          <a class="link" href="./components.html"
+            ><gl-button variant="secondary" motion="snappy">View components</gl-button></a
+          >
           <gl-button id="toggleTheme" variant="ghost">Toggle theme</gl-button>
         </div>
       </div>
 
-      <div class="grid">
-        <gl-card class="col-6">
-          <div slot="header">
-            <div style="font-weight: 600">Buttons</div>
-            <div class="muted">Variants, sizes, events</div>
-          </div>
-          <div class="row">
-            <gl-button id="btnPrimary">Primary</gl-button>
-            <gl-button variant="secondary">Secondary</gl-button>
-            <gl-button variant="ghost">Ghost</gl-button>
-            <gl-button variant="destructive">Destructive</gl-button>
-            <gl-button size="sm">Small</gl-button>
-            <gl-button size="lg">Large</gl-button>
-          </div>
-          <div slot="footer" class="row">
-            <gl-tooltip>
-              <gl-button variant="secondary">Tooltip</gl-button>
-              <span slot="content">Hover or focus me</span>
-            </gl-tooltip>
-          </div>
-        </gl-card>
+      <section class="hero">
+        <h1>Minimal UI components with real polish.</h1>
+        <p>
+          Glint ships as a single JS file + a single CSS file, but still gives you modern UX:
+          accessibility, keyboard support, dark mode tokens, and a configurable motion system.
+        </p>
+        <div class="row">
+          <a class="link" href="./components.html"
+            ><gl-button motion="snappy">Open the component gallery</gl-button></a
+          >
+          <gl-tooltip>
+            <gl-button variant="secondary">Motion options</gl-button>
+            <span slot="content"
+              >Try motion="subtle|snappy|none" on buttons/modals/toasts/sidebars</span
+            >
+          </gl-tooltip>
+        </div>
+      </section>
 
-        <gl-card class="col-6">
+      <div class="grid">
+        <gl-card class="col-7">
           <div slot="header">
-            <div style="font-weight: 600">Form controls</div>
-            <div class="muted">Input, select, checkbox, radio</div>
+            <div style="font-weight: 600">Homepage layout</div>
+            <div class="muted">This page uses only Glint components + Glint design tokens.</div>
           </div>
           <div class="stack">
-            <gl-input id="email" placeholder="you@company.com">
-              <span slot="label">Email</span>
-              <span slot="description">Events: gl-change + gl-commit</span>
-            </gl-input>
-            <gl-select
-              id="team"
-              value="design"
-              options='[{"value":"design","label":"Design"},{"value":"engineering","label":"Engineering"},{"value":"ops","label":"Ops"}]'
-            >
-              <span slot="label">Team</span>
-            </gl-select>
+            <div class="muted">
+              Use <code>data-glint-theme</code> for light/dark/system and CSS variables for
+              customization.
+            </div>
             <div class="row">
-              <gl-checkbox id="remember" checked>Remember me</gl-checkbox>
-              <gl-radio name="plan" value="starter" checked>Starter</gl-radio>
-              <gl-radio name="plan" value="pro">Pro</gl-radio>
+              <gl-button motion="snappy">Primary CTA</gl-button>
+              <gl-button variant="secondary">Secondary</gl-button>
+              <gl-button variant="ghost">Ghost</gl-button>
             </div>
           </div>
+          <div slot="footer" class="row">
+            <a class="link" href="./components.html"
+              ><gl-button variant="secondary">Components</gl-button></a
+            >
+            <a class="link" href="../README.md"><gl-button variant="ghost">Docs</gl-button></a>
+          </div>
         </gl-card>
 
-        <gl-card class="col-6">
+        <gl-card class="col-5">
           <div slot="header">
-            <div style="font-weight: 600">Accordion</div>
-            <div class="muted">Single / multiple</div>
+            <div style="font-weight: 600">Quick stats</div>
+            <div class="muted">Just enough to feel like a product UI.</div>
           </div>
           <div class="stack">
-            <gl-accordion>
-              <gl-accordion-item open>
-                <span slot="title">What is Glint?</span>
-                Minimal, modern components built on Custom Elements.
-              </gl-accordion-item>
-              <gl-accordion-item>
-                <span slot="title">Does it support keyboard?</span>
-                Yes—space/enter toggles and ARIA is built-in.
-              </gl-accordion-item>
-            </gl-accordion>
-            <gl-accordion multiple>
-              <gl-accordion-item open>
-                <span slot="title">Multiple</span>
-                This accordion allows multiple open panels.
-              </gl-accordion-item>
-              <gl-accordion-item open>
-                <span slot="title">Also open</span>
-                Works independently.
-              </gl-accordion-item>
-            </gl-accordion>
-          </div>
-        </gl-card>
-
-        <gl-card class="col-6">
-          <div slot="header">
-            <div style="font-weight: 600">Tabs</div>
-            <div class="muted">Arrow keys, home/end, selection</div>
-          </div>
-          <gl-tabs id="tabs" value="account">
-            <gl-tab slot="tabs" value="account">Account</gl-tab>
-            <gl-tab slot="tabs" value="security">Security</gl-tab>
-            <gl-tab slot="tabs" value="billing">Billing</gl-tab>
-
-            <gl-tab-panel slot="panels" value="account">
-              <div class="muted">Account panel content</div>
-            </gl-tab-panel>
-            <gl-tab-panel slot="panels" value="security">
-              <div class="muted">Security panel content</div>
-            </gl-tab-panel>
-            <gl-tab-panel slot="panels" value="billing">
-              <div class="muted">Billing panel content</div>
-            </gl-tab-panel>
-          </gl-tabs>
-          <div slot="footer" class="row">
-            <gl-button id="openModal" variant="secondary">Open modal</gl-button>
-            <gl-button id="showToast">Show toast</gl-button>
-          </div>
-        </gl-card>
-
-        <gl-card class="col-12">
-          <div slot="header">
-            <div style="font-weight: 600">Events</div>
-            <div class="muted">Open DevTools console to see events</div>
-          </div>
-          <div class="muted">
-            Buttons: <code>gl-press</code> · Inputs: <code>gl-change</code>/<code>gl-commit</code> ·
-            Tabs: <code>gl-change</code> · Accordion item: <code>gl-toggle</code> ·
-            Modal/sidebar/toast: <code>gl-open</code>/<code>gl-close</code>/<code>gl-dismiss</code>
+            <div class="kpi"><b>12</b><span>Components shipped</span></div>
+            <div class="kpi"><b>1 CSS</b><span>Token-driven theme + dark mode</span></div>
+            <div class="kpi"><b>1 JS</b><span>Browser bundle output</span></div>
           </div>
         </gl-card>
       </div>
@@ -228,37 +203,10 @@
 
     <script>
       const html = document.documentElement;
-      const toaster = document.getElementById("toaster");
-      const modal = document.getElementById("modal");
-      const sidebar = document.getElementById("sidebar");
-
       document.getElementById("toggleTheme").addEventListener("gl-press", () => {
         const cur = html.getAttribute("data-glint-theme") || "system";
         html.setAttribute("data-glint-theme", cur === "dark" ? "light" : "dark");
       });
-
-      document.getElementById("openModal").addEventListener("gl-press", () => modal.show());
-      document.getElementById("closeModal").addEventListener("gl-press", () => modal.close("api"));
-      document.getElementById("saveModal").addEventListener("gl-press", () => {
-        toaster.show({ title: "Saved", description: "Changes have been saved.", duration: 3500 });
-        modal.close("api");
-      });
-
-      document.getElementById("openSidebar").addEventListener("gl-press", () => sidebar.show());
-      document.getElementById("showToast").addEventListener("gl-press", () =>
-        toaster.show({
-          title: "Hello",
-          description: "This toast auto-dismisses. Hover to pause.",
-          duration: 4000
-        })
-      );
-
-      document.addEventListener("gl-press", (e) => console.log("gl-press", e.target));
-      document.addEventListener("gl-change", (e) => console.log("gl-change", e.detail, e.target));
-      document.addEventListener("gl-commit", (e) => console.log("gl-commit", e.detail, e.target));
-      document.addEventListener("gl-toggle", (e) => console.log("gl-toggle", e.detail, e.target));
-      document.addEventListener("gl-close", (e) => console.log("gl-close", e.detail, e.target));
-      document.addEventListener("gl-dismiss", (e) => console.log("gl-dismiss", e.detail, e.target));
     </script>
   </body>
 </html>

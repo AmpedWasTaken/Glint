@@ -82,6 +82,25 @@ Override tokens anywhere:
 }
 ```
 
+## Motion
+
+Most interactive components support `motion`:
+
+- `motion="subtle"` (default feel)
+- `motion="snappy"` (more expressive)
+- `motion="none"` (no animation)
+
+Examples:
+
+```html
+<gl-button motion="snappy">Snappy</gl-button>
+<gl-modal motion="subtle" open>...</gl-modal>
+<gl-toast motion="none">...</gl-toast>
+<gl-sidebar motion="snappy">...</gl-sidebar>
+```
+
+Glint also respects `prefers-reduced-motion`.
+
 ## Components
 
 ### Button
@@ -223,6 +242,13 @@ Events:
 npm i
 npm run dev
 ```
+
+## Examples
+
+After `npm run build`, open:
+
+- `examples/index.html` (homepage)
+- `examples/components.html` (component gallery)
 
 Build:
 
