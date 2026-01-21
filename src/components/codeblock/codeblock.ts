@@ -10,6 +10,68 @@ export class GlCodeblock extends HTMLElement {
 
   constructor() {
     super();
+    const observer = new MutationObserver(() => {
+      if (!this.#codeContent && this.isConnected) {
+        this.#extractContent();
+      }
+    });
+    observer.observe(this, { childList: true, subtree: true });
+  }
+
+  #extractContent(): void {
+    if (this.#codeContent) return;
+    
+    const result: string[] = [];
+    
+    const processNode = (node: Node): void => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent?.trim();
+        if (text) {
+          result.push(text);
+        }
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        const el = node as HTMLElement;
+        if (el.tagName.startsWith("GL-")) {
+          const tagName = el.tagName.toLowerCase();
+          const attrs: string[] = [];
+          for (const attr of el.attributes) {
+            if (attr.name !== "is" && !attr.name.startsWith("data-")) {
+              attrs.push(`${attr.name}="${attr.value}"`);
+            }
+          }
+          const attrStr = attrs.length ? " " + attrs.join(" ") : "";
+          const children: string[] = [];
+          
+          for (const child of Array.from(el.childNodes)) {
+            if (child.nodeType === Node.TEXT_NODE) {
+              const text = child.textContent?.trim();
+              if (text) children.push(text);
+            } else if (child.nodeType === Node.ELEMENT_NODE && (child as HTMLElement).tagName.startsWith("GL-")) {
+              const childEl = child as HTMLElement;
+              const childTag = childEl.tagName.toLowerCase();
+              const childAttrs: string[] = [];
+              for (const attr of childEl.attributes) {
+                if (attr.name !== "is" && !attr.name.startsWith("data-")) {
+                  childAttrs.push(`${attr.name}="${attr.value}"`);
+                }
+              }
+              const childAttrStr = childAttrs.length ? " " + childAttrs.join(" ") : "";
+              const childText = childEl.textContent?.trim() || "";
+              children.push(`<${childTag}${childAttrStr}>${childText}</${childTag}>`);
+            }
+          }
+          
+          const content = children.join("\n");
+          result.push(`<${tagName}${attrStr}>${content}</${tagName}>`);
+        }
+      }
+    };
+    
+    for (const child of Array.from(this.childNodes)) {
+      processNode(child);
+    }
+    
+    this.#codeContent = result.join("\n").trim() || this.textContent?.trim() || "";
   }
 
   connectedCallback(): void {
@@ -19,13 +81,11 @@ export class GlCodeblock extends HTMLElement {
     const showCopy = this.hasAttribute("copy");
     
     if (!this.#codeContent) {
-      let raw = this.innerHTML.trim() || this.textContent?.trim() || "";
-      raw = raw.replace(/<template[^>]*shadowrootmode[^>]*>[\s\S]*?<\/template>/gi, "");
-      raw = raw.replace(/<template[^>]*>[\s\S]*?<\/template>/gi, "");
-      raw = raw.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "");
-      raw = raw.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
-      raw = raw.replace(/\s+/g, " ").trim();
-      this.#codeContent = raw;
+      this.#extractContent();
+    }
+    
+    if (!this.#codeContent) {
+      this.#codeContent = this.textContent?.trim() || "";
     }
 
     const template = document.createElement("template");
