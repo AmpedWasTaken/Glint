@@ -100,6 +100,27 @@ Examples:
 
 Glint also respects `prefers-reduced-motion`.
 
+### Enhanced Animations
+
+Components now feature advanced animations:
+
+- **Entry/Exit**: Modal, Toast, Sidebar, Dropdown, Popover have smooth fade-in/out with overlay transitions
+- **Ripple Effect**: Buttons show a ripple animation on click (disabled with `motion="none"`)
+- **Scale-in**: Badges and Alerts scale in when mounted
+- **Slide-in**: Cards and Alerts slide up with fade-in on mount
+- **Smooth Transitions**: Accordion panels expand/collapse with smooth height transitions
+- **Sliding Indicator**: Tabs feature an animated sliding underline indicator
+- **Stagger Animations**: Use `.gl-stagger` class on containers to animate children sequentially
+
+Animation utilities:
+
+```css
+.gl-fade-in      /* Fade in animation */
+.gl-slide-in-up  /* Slide up with fade */
+.gl-scale-in     /* Scale in animation */
+.gl-stagger      /* Stagger children animations */
+```
+
 ## Effects + Surfaces
 
 Some components support extra “feel” controls:
