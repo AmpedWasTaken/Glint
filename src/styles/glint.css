@@ -22,9 +22,14 @@
   --gl-hover: rgba(2, 6, 23, 0.06);
   --gl-active: rgba(2, 6, 23, 0.1);
 
-  --gl-glass-bg: color-mix(in srgb, var(--gl-panel) 70%, transparent);
-  --gl-glass-border: color-mix(in srgb, var(--gl-border) 75%, transparent);
+  --gl-glass-bg: rgba(255, 255, 255, 0.64);
+  --gl-glass-border: rgba(2, 6, 23, 0.18);
   --gl-glass-blur: 18px;
+  --gl-glass-saturation: 1.2;
+
+  --gl-app-grad-1: rgba(37, 99, 235, 0.18);
+  --gl-app-grad-2: rgba(167, 139, 250, 0.16);
+  --gl-app-grad-3: rgba(251, 113, 133, 0.12);
 
   --gl-radius-sm: 10px;
   --gl-radius: 12px;
@@ -93,9 +98,14 @@
   --gl-hover: rgba(226, 232, 240, 0.08);
   --gl-active: rgba(226, 232, 240, 0.12);
 
-  --gl-glass-bg: color-mix(in srgb, var(--gl-panel) 55%, transparent);
-  --gl-glass-border: color-mix(in srgb, var(--gl-border) 85%, transparent);
+  --gl-glass-bg: rgba(15, 23, 42, 0.56);
+  --gl-glass-border: rgba(226, 232, 240, 0.14);
   --gl-glass-blur: 22px;
+  --gl-glass-saturation: 1.25;
+
+  --gl-app-grad-1: rgba(125, 211, 252, 0.14);
+  --gl-app-grad-2: rgba(167, 139, 250, 0.12);
+  --gl-app-grad-3: rgba(251, 113, 133, 0.1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -146,6 +156,13 @@ body {
   margin: 0;
   line-height: var(--gl-line-lg);
   font-size: var(--gl-text-lg);
+}
+
+.glint-bg {
+  background:
+    radial-gradient(900px 600px at 10% 0%, var(--gl-app-grad-1), transparent 55%),
+    radial-gradient(900px 600px at 90% 10%, var(--gl-app-grad-2), transparent 55%),
+    radial-gradient(900px 600px at 60% 90%, var(--gl-app-grad-3), transparent 55%), var(--gl-bg);
 }
 
 a {

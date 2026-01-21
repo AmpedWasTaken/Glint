@@ -125,7 +125,7 @@
       }
     </style>
   </head>
-  <body>
+  <body class="glint-bg">
     <script src="../dist/glint.js"></script>
 
     <gl-toaster id="toaster"></gl-toaster>
@@ -313,15 +313,13 @@
         toaster.show({ title: "Done", description: "Action confirmed.", duration: 3200 });
         modal.close("api");
       });
-      document
-        .getElementById("demoToast")
-        .addEventListener("gl-press", () =>
-          toaster.show({
-            title: "Hello",
-            description: "Hover to pause. Click close to dismiss.",
-            duration: 4000
-          })
-        );
+      document.getElementById("demoToast").addEventListener("gl-press", () =>
+        toaster.show({
+          title: "Hello",
+          description: "Hover to pause. Click close to dismiss.",
+          duration: 4000
+        })
+      );
 
       const copy = async (text) => {
         try {

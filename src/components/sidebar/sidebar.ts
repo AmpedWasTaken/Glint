@@ -52,8 +52,12 @@ template.innerHTML = `
     :host([surface="glass"]) .drawer{
       background:var(--gl-glass-bg);
       border-color:var(--gl-glass-border);
-      backdrop-filter:blur(var(--gl-glass-blur));
-      -webkit-backdrop-filter:blur(var(--gl-glass-blur));
+    }
+    @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+      :host([surface="glass"]) .drawer{
+        backdrop-filter:blur(var(--gl-glass-blur)) saturate(var(--gl-glass-saturation));
+        -webkit-backdrop-filter:blur(var(--gl-glass-blur)) saturate(var(--gl-glass-saturation));
+      }
     }
     .header{
       display:flex;
