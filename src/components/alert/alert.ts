@@ -19,9 +19,11 @@ template.innerHTML = `
     :host(:not([motion="none"])) .alert{
       opacity:0;
       transform:translateX(-12px) scale(0.98);
-      animation:gl-slide-in-up var(--gl-slide-in-dur) var(--gl-ease-out) forwards,
-        gl-scale-in var(--gl-scale-in-dur) var(--gl-ease-spring) forwards;
-      animation-delay:0s;
+      animation:gl-alert-enter var(--gl-slide-in-dur) var(--gl-ease-out) forwards;
+    }
+    @keyframes gl-alert-enter{
+      0%{transform:translateX(-12px) scale(0.98);opacity:0}
+      100%{transform:translateX(0) scale(1);opacity:1}
     }
     :host([motion="subtle"]:hover) .alert{box-shadow:var(--gl-shadow-md);transform:translateY(-1px)}
     :host([motion="snappy"]:hover) .alert{box-shadow:var(--gl-shadow-md);transform:translateY(-2px) scale(1.01)}

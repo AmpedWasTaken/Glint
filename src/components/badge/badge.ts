@@ -20,8 +20,11 @@ template.innerHTML = `
     :host(:not([motion="none"])) .badge{
       opacity:0;
       transform:scale(0.8);
-      animation:gl-scale-in var(--gl-scale-in-dur) var(--gl-ease-spring) forwards;
-      animation-delay:0s;
+      animation:gl-badge-scale-in var(--gl-scale-in-dur) var(--gl-ease-spring) forwards;
+    }
+    @keyframes gl-badge-scale-in{
+      0%{transform:scale(0.8);opacity:0}
+      100%{transform:scale(1);opacity:1}
     }
     :host([motion="subtle"]:hover) .badge{transform:translateY(-1px);box-shadow:var(--gl-shadow-md)}
     :host([motion="snappy"]:hover) .badge{transform:translateY(-2px) scale(1.05);box-shadow:var(--gl-shadow-md)}

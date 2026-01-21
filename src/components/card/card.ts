@@ -15,8 +15,16 @@ template.innerHTML = `
     :host(:not([motion="none"])) .card{
       opacity:0;
       transform:translateY(8px);
-      animation:gl-fade-in var(--gl-fade-in-dur) var(--gl-ease-out) forwards,
-        gl-slide-in-up var(--gl-slide-in-dur) var(--gl-ease-out) forwards;
+      animation:gl-card-fade-in var(--gl-fade-in-dur) var(--gl-ease-out) forwards,
+        gl-card-slide-in var(--gl-slide-in-dur) var(--gl-ease-out) forwards;
+    }
+    @keyframes gl-card-fade-in{
+      0%{opacity:0}
+      100%{opacity:1}
+    }
+    @keyframes gl-card-slide-in{
+      0%{transform:translateY(8px);opacity:0}
+      100%{transform:translateY(0);opacity:1}
     }
     :host([motion="subtle"]:hover) .card{box-shadow:var(--gl-shadow-md);transform:translateY(-2px)}
     :host([motion="snappy"]:hover) .card{box-shadow:var(--gl-shadow-lg);transform:translateY(-4px) scale(1.01)}
