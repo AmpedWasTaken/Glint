@@ -71,7 +71,9 @@ export class GlCard extends HTMLElement {
 
   connectedCallback() {
     if (!this.shadowRoot) this.attachShadow({ mode: "open" });
-    this.shadowRoot!.appendChild(template.content.cloneNode(true));
+    if (this.shadowRoot!.childNodes.length === 0) {
+      this.shadowRoot!.appendChild(template.content.cloneNode(true));
+    }
     this.#card = this.shadowRoot!.querySelector(".card") as HTMLElement;
     this.#wireTilt();
   }
