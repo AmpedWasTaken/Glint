@@ -1,5 +1,13 @@
 import "./styles/glint.css";
 
+export type {
+  GlChangeDetail,
+  GlCloseDetail,
+  GlCommitDetail,
+  GlPressDetail,
+  GlSelectDetail
+} from "./types.js";
+
 import { defineAccordion } from "./components/accordion/define.js";
 import { defineAlert } from "./components/alert/define.js";
 import { defineAvatar } from "./components/avatar/define.js";
