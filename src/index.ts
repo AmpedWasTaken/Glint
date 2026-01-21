@@ -10,6 +10,7 @@ import { defineTooltip } from "./components/tooltip/define.js";
 import { defineAccordion } from "./components/accordion/define.js";
 import { defineTabs } from "./components/tabs/define.js";
 import { defineModal } from "./components/modal/define.js";
+import { defineToast } from "./components/toast/define.js";
 
 export { defineButton, GlButton } from "./components/button/define.js";
 export { defineCard, GlCard } from "./components/card/define.js";
@@ -21,6 +22,7 @@ export { defineTooltip, GlTooltip } from "./components/tooltip/define.js";
 export { defineAccordion, GlAccordion, GlAccordionItem } from "./components/accordion/define.js";
 export { defineTabs, GlTabs, GlTab, GlTabPanel } from "./components/tabs/define.js";
 export { defineModal, GlModal } from "./components/modal/define.js";
+export { defineToast, GlToast, GlToaster } from "./components/toast/define.js";
 
 export function defineGlint(): void {
   defineButton();
@@ -33,6 +35,7 @@ export function defineGlint(): void {
   defineAccordion();
   defineTabs();
   defineModal();
+  defineToast();
 }
 
 declare global {
