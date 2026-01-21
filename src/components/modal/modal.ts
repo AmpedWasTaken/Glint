@@ -15,15 +15,17 @@ template.innerHTML = `
       inset:0;
       background:var(--gl-overlay);
       z-index:var(--gl-z-modal);
-      display:none;
+      display:flex;
       align-items:center;
       justify-content:center;
       padding:var(--gl-space-5);
       opacity:0;
+      pointer-events:none;
       transition:opacity var(--gl-motion-dur) var(--gl-motion-ease);
     }
     :host([open]) .overlay{
-      display:flex;
+      opacity:1;
+      pointer-events:auto;
       animation:gl-fade-in var(--gl-motion-dur) var(--gl-motion-ease) forwards;
     }
     :host(:not([open])) .overlay{
@@ -41,7 +43,14 @@ template.innerHTML = `
       opacity:0;
       transition:opacity var(--gl-motion-dur) var(--gl-motion-ease), transform var(--gl-motion-dur) var(--gl-motion-ease);
       outline:none;
+      max-height:calc(100vh - 48px);
+      display:flex;
+      flex-direction:column;
     }
+    :host([size="sm"]) .dialog{width:min(400px, 100%)}
+    :host([size="md"]) .dialog{width:min(560px, 100%)}
+    :host([size="lg"]) .dialog{width:min(720px, 100%)}
+    :host([size="xl"]) .dialog{width:min(960px, 100%)}
     :host([open]) .dialog{
       opacity:1;
       transform:translateY(0) scale(1);
@@ -51,7 +60,13 @@ template.innerHTML = `
       animation:gl-scale-out var(--gl-scale-out-dur) var(--gl-ease-out) forwards;
     }
     .header{padding:var(--gl-space-4) var(--gl-space-4) 0}
-    .body{padding:var(--gl-space-4)}
+    .body{
+      padding:var(--gl-space-4);
+      overflow-y:auto;
+      overflow-x:hidden;
+      flex:1;
+      min-height:0;
+    }
     .footer{padding:0 var(--gl-space-4) var(--gl-space-4); display:flex; justify-content:flex-end; gap:var(--gl-space-2)}
     .header:empty,.footer:empty{display:none}
   </style>
@@ -67,7 +82,7 @@ template.innerHTML = `
 export class GlModal extends HTMLElement {
   static tagName = "gl-modal";
   static get observedAttributes() {
-    return ["open", "label", "describedby"];
+    return ["open", "label", "describedby", "size"];
   }
 
   #overlay!: HTMLDivElement;

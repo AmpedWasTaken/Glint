@@ -74,15 +74,35 @@ template.innerHTML = `
 
     :host([size="sm"]) button{padding:8px 12px;font-size:var(--gl-text-sm);line-height:var(--gl-line-sm)}
     :host([size="lg"]) button{padding:12px 16px;font-size:var(--gl-text-lg);line-height:var(--gl-line-lg)}
+    :host([variant="icon"]) button{padding:10px;aspect-ratio:1}
+    :host([variant="icon"][size="sm"]) button{padding:8px}
+    :host([variant="icon"][size="lg"]) button{padding:12px}
+    .spinner{
+      width:16px;
+      height:16px;
+      border:2px solid currentColor;
+      border-top-color:transparent;
+      border-radius:50%;
+      animation:gl-spin 600ms linear infinite;
+      opacity:0;
+      transition:opacity var(--gl-dur-1) var(--gl-ease);
+    }
+    :host([loading]) .spinner{opacity:1}
+    :host([loading]) button{cursor:wait}
+    :host([loading]) ::slotted(*) {opacity:0}
+    @keyframes gl-spin{to{transform:rotate(360deg)}}
     ::slotted(svg){width:16px;height:16px}
   </style>
-  <button part="button" type="button"><slot></slot></button>
+  <button part="button" type="button">
+    <span class="spinner" part="spinner" aria-hidden="true"></span>
+    <slot></slot>
+  </button>
 `;
 
 export class GlButton extends HTMLElement {
   static tagName = "gl-button";
   static get observedAttributes() {
-    return ["disabled", "type", "trigger", "toast-title", "toast-description"];
+    return ["disabled", "type", "trigger", "toast-title", "toast-description", "loading"];
   }
 
   #btn!: HTMLButtonElement;
@@ -102,7 +122,8 @@ export class GlButton extends HTMLElement {
     this.#sync();
 
     this.#btn.addEventListener("click", (e) => {
-      if (this.disabled) {
+      const loading = this.hasAttribute("loading");
+      if (this.disabled || loading) {
         e.preventDefault();
         e.stopImmediatePropagation();
         return;
@@ -119,10 +140,12 @@ export class GlButton extends HTMLElement {
 
   #sync() {
     if (!this.#btn) return;
-    this.#btn.disabled = this.disabled;
+    const loading = this.hasAttribute("loading");
+    this.#btn.disabled = this.disabled || loading;
     const type = this.getAttribute("type");
     this.#btn.type = type === "submit" || type === "reset" ? type : "button";
-    this.toggleAttribute("aria-disabled", this.disabled);
+    this.toggleAttribute("aria-disabled", this.disabled || loading);
+    this.toggleAttribute("aria-busy", loading);
   }
 
   #handleTrigger() {
