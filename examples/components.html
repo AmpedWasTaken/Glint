@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en" class="glint" data-glint-theme="system">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Glint — Components</title>
+    <link rel="stylesheet" href="../dist/glint.css" />
+    <style>
+      .page {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 18px 18px 80px;
+        display: grid;
+        gap: 14px;
+      }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding-top: 10px;
+        backdrop-filter: blur(10px);
+      }
+      .topbarInner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+      }
+      .title {
+        display: grid;
+        gap: 3px;
+      }
+      .title h1 {
+        margin: 0;
+        font-size: 20px;
+        line-height: 26px;
+      }
+      .title p {
+        margin: 0;
+        color: var(--gl-muted);
+        font-size: var(--gl-text-md);
+        line-height: var(--gl-line-md);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        align-items: start;
+      }
+      .full {
+        grid-column: 1 / -1;
+      }
+      .stack {
+        display: grid;
+        gap: 12px;
+      }
+      .muted {
+        color: var(--gl-muted);
+        font-size: var(--gl-text-md);
+        line-height: var(--gl-line-md);
+      }
+      .link {
+        text-decoration: none;
+      }
+      .toolbar {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .searchWrap {
+        display: grid;
+        gap: 6px;
+        min-width: min(420px, 100%);
+      }
+      .chips {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        cursor: pointer;
+        user-select: none;
+      }
+      .hidden {
+        display: none !important;
+      }
+      @media (max-width: 900px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .full {
+          grid-column: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script src="../dist/glint.js"></script>
+
+    <gl-toaster id="toaster"></gl-toaster>
+
+    <gl-sidebar id="sidebar" motion="snappy" side="right" surface="glass">
+      <span slot="title">Examples</span>
+      <div style="display: grid; gap: 10px">
+        <a class="link muted" href="./index.html">Home</a>
+        <a class="link muted" href="./components.html">Components</a>
+        <gl-divider></gl-divider>
+        <div class="muted">Theme</div>
+        <div class="row">
+          <gl-button id="themeLight" variant="secondary" size="sm">Light</gl-button>
+          <gl-button id="themeDark" variant="secondary" size="sm">Dark</gl-button>
+          <gl-button id="themeSystem" variant="secondary" size="sm">System</gl-button>
+        </div>
+      </div>
+    </gl-sidebar>
+
+    <gl-modal id="modal" label="Demo modal" motion="snappy" surface="glass">
+      <div slot="header">
+        <div style="font-weight: 600; font-size: 16px; line-height: 24px">Modal title</div>
+        <div class="muted">Esc closes. Focus is trapped.</div>
+      </div>
+      <div class="stack">
+        <gl-input placeholder="Type something">
+          <span slot="label">Input</span>
+          <span slot="description">This is inside the modal.</span>
+        </gl-input>
+      </div>
+      <div slot="footer" class="row" style="justify-content: flex-end">
+        <gl-button id="closeModal" variant="secondary">Close</gl-button>
+        <gl-button id="saveModal" motion="snappy">Save</gl-button>
+      </div>
+    </gl-modal>
+
+    <div class="page">
+      <div class="topbar">
+        <gl-card surface="glass" class="full">
+          <div class="topbarInner" style="padding: 10px 12px">
+            <div class="title">
+              <h1 class="gl-gradient-text" data-animate="true">Components</h1>
+              <p>Keyboard + a11y primitives, plus motion, tilt, and glass.</p>
+            </div>
+            <div class="row">
+              <a class="link" href="./index.html"><gl-button variant="ghost">Home</gl-button></a>
+              <gl-button id="openSidebar" variant="secondary" motion="snappy">Menu</gl-button>
+              <gl-button id="toggleTheme" variant="ghost">Toggle theme</gl-button>
+            </div>
+          </div>
+        </gl-card>
+      </div>
+
+      <gl-card class="full" motion="subtle" surface="glass">
+        <div slot="header">
+          <div style="font-weight: 600">Explore</div>
+          <div class="muted">Filter cards by name and category.</div>
+        </div>
+        <div class="toolbar">
+          <div class="searchWrap">
+            <gl-input id="search" placeholder="Search components…">
+              <span slot="label">Search</span>
+            </gl-input>
+          </div>
+          <div class="chips" aria-label="Categories">
+            <gl-badge class="chip" data-filter="all" variant="secondary">All</gl-badge>
+            <gl-badge class="chip" data-filter="inputs" variant="outline">Inputs</gl-badge>
+            <gl-badge class="chip" data-filter="overlays" variant="outline">Overlays</gl-badge>
+            <gl-badge class="chip" data-filter="navigation" variant="outline">Navigation</gl-badge>
+            <gl-badge class="chip" data-filter="feedback" variant="outline">Feedback</gl-badge>
+          </div>
+        </div>
+      </gl-card>
+
+      <div class="grid" id="grid">
+        <gl-card data-tags="button feedback" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Buttons</div>
+            <div class="muted">Variants, sizes, events, motion</div>
+          </div>
+          <div class="row">
+            <gl-button id="btnPrimary" motion="snappy">Primary</gl-button>
+            <gl-button variant="secondary">Secondary</gl-button>
+            <gl-button variant="ghost">Ghost</gl-button>
+            <gl-button variant="destructive">Destructive</gl-button>
+            <gl-button size="sm">Small</gl-button>
+            <gl-button size="lg">Large</gl-button>
+          </div>
+          <div slot="footer" class="row">
+            <gl-tooltip motion="snappy">
+              <gl-button variant="secondary">Tooltip</gl-button>
+              <span slot="content">Hover or focus me</span>
+            </gl-tooltip>
+            <gl-button id="toastFromButtons" variant="ghost">Toast</gl-button>
+          </div>
+        </gl-card>
+
+        <gl-card data-tags="input select checkbox radio inputs" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Form controls</div>
+            <div class="muted">Input, select, checkbox, radio</div>
+          </div>
+          <div class="stack">
+            <gl-input id="email" placeholder="you@company.com">
+              <span slot="label">Email</span>
+              <span slot="description">Events: gl-change + gl-commit</span>
+            </gl-input>
+            <gl-select
+              id="team"
+              value="design"
+              options='[{"value":"design","label":"Design"},{"value":"engineering","label":"Engineering"},{"value":"ops","label":"Ops"}]'
+            >
+              <span slot="label">Team</span>
+            </gl-select>
+            <div class="row">
+              <gl-checkbox id="remember" checked>Remember me</gl-checkbox>
+              <gl-radio name="plan" value="starter" checked>Starter</gl-radio>
+              <gl-radio name="plan" value="pro">Pro</gl-radio>
+            </div>
+          </div>
+        </gl-card>
+
+        <gl-card data-tags="accordion navigation" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Accordion</div>
+            <div class="muted">Single / multiple</div>
+          </div>
+          <div class="stack">
+            <gl-accordion>
+              <gl-accordion-item open>
+                <span slot="title">What is Glint?</span>
+                Minimal, modern components built on Custom Elements.
+              </gl-accordion-item>
+              <gl-accordion-item>
+                <span slot="title">Does it support keyboard?</span>
+                Yes—space/enter toggles and ARIA is built-in.
+              </gl-accordion-item>
+            </gl-accordion>
+            <gl-accordion multiple>
+              <gl-accordion-item open>
+                <span slot="title">Multiple</span>
+                This accordion allows multiple open panels.
+              </gl-accordion-item>
+              <gl-accordion-item open>
+                <span slot="title">Also open</span>
+                Works independently.
+              </gl-accordion-item>
+            </gl-accordion>
+          </div>
+        </gl-card>
+
+        <gl-card data-tags="tabs navigation" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Tabs</div>
+            <div class="muted">Arrow keys, home/end, selection</div>
+          </div>
+          <gl-tabs id="tabs" value="account">
+            <gl-tab slot="tabs" value="account">Account</gl-tab>
+            <gl-tab slot="tabs" value="security">Security</gl-tab>
+            <gl-tab slot="tabs" value="billing">Billing</gl-tab>
+
+            <gl-tab-panel slot="panels" value="account">
+              <div class="muted">Account panel content</div>
+            </gl-tab-panel>
+            <gl-tab-panel slot="panels" value="security">
+              <div class="muted">Security panel content</div>
+            </gl-tab-panel>
+            <gl-tab-panel slot="panels" value="billing">
+              <div class="muted">Billing panel content</div>
+            </gl-tab-panel>
+          </gl-tabs>
+          <div slot="footer" class="row">
+            <gl-button id="openModal" variant="secondary" motion="snappy">Open modal</gl-button>
+            <gl-button id="showToast" motion="snappy">Show toast</gl-button>
+          </div>
+        </gl-card>
+
+        <gl-card data-tags="badge feedback" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Badge</div>
+            <div class="muted">Variants, sizes, motion</div>
+          </div>
+          <div class="row">
+            <gl-badge>Default</gl-badge>
+            <gl-badge variant="secondary">Secondary</gl-badge>
+            <gl-badge variant="outline">Outline</gl-badge>
+            <gl-badge variant="destructive">Destructive</gl-badge>
+            <gl-badge size="sm">Small</gl-badge>
+            <gl-badge size="lg" motion="snappy">Large</gl-badge>
+          </div>
+        </gl-card>
+
+        <gl-card data-tags="progress spinner feedback" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Progress & Spinner</div>
+            <div class="muted">Loading indicators</div>
+          </div>
+          <div class="stack">
+            <div>
+              <div class="muted" style="margin-bottom: 8px">Progress bar</div>
+              <gl-progress id="progressDemo" value="45" motion="snappy"></gl-progress>
+            </div>
+            <div class="row">
+              <gl-spinner></gl-spinner>
+              <gl-spinner size="sm"></gl-spinner>
+              <gl-spinner size="lg"></gl-spinner>
+              <gl-spinner variant="destructive"></gl-spinner>
+            </div>
+          </div>
+        </gl-card>
+
+        <gl-card data-tags="divider feedback" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Divider</div>
+            <div class="muted">Horizontal and vertical</div>
+          </div>
+          <div class="stack">
+            <div>Content above</div>
+            <gl-divider></gl-divider>
+            <div>Content below</div>
+            <div style="display: flex; align-items: center; gap: 12px">
+              <span>Left</span>
+              <gl-divider orientation="vertical" style="height: 40px"></gl-divider>
+              <span>Right</span>
+            </div>
+          </div>
+        </gl-card>
+
+        <gl-card data-tags="alert feedback" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Alert</div>
+            <div class="muted">Variants with close</div>
+          </div>
+          <div class="stack">
+            <gl-alert variant="default" motion="subtle">
+              <span slot="title">Info</span>
+              Default alert with information.
+            </gl-alert>
+            <gl-alert variant="success" motion="subtle">
+              <span slot="title">Success</span>
+              Operation completed successfully.
+            </gl-alert>
+            <gl-alert variant="warning" motion="subtle">
+              <span slot="title">Warning</span>
+              Please review this action.
+            </gl-alert>
+            <gl-alert variant="destructive" motion="subtle">
+              <span slot="title">Error</span>
+              Something went wrong.
+            </gl-alert>
+          </div>
+        </gl-card>
+
+        <gl-card data-tags="card effects glass" class="full" surface="glass" motion="subtle">
+          <div slot="header">
+            <div
+              class="gl-gradient-text"
+              data-animate="true"
+              style="
+                font-weight: 600;
+                --gl-grad-1: #7dd3fc;
+                --gl-grad-2: #a78bfa;
+                --gl-grad-3: #fb7185;
+                --gl-grad-4: #34d399;
+                --gl-grad-speed: 5s;
+              "
+            >
+              Motion + Effects
+            </div>
+            <div class="muted">Try motion, tilt, and glass surfaces.</div>
+          </div>
+          <div class="row">
+            <gl-button motion="none">motion="none"</gl-button>
+            <gl-button motion="subtle">motion="subtle"</gl-button>
+            <gl-button motion="snappy">motion="snappy"</gl-button>
+            <gl-button motion="bounce">motion="bounce"</gl-button>
+          </div>
+          <div slot="footer" class="row">
+            <gl-card motion="subtle" effect="tilt" style="padding: 16px; min-width: 180px">
+              <div style="font-weight: 600">Tilt</div>
+              <div class="muted">Pointer-based 3D hover</div>
+            </gl-card>
+            <gl-card
+              motion="snappy"
+              effect="tilt"
+              surface="glass"
+              style="padding: 16px; min-width: 180px"
+            >
+              <div style="font-weight: 600">Tilt + Glass</div>
+              <div class="muted">surface="glass"</div>
+            </gl-card>
+          </div>
+        </gl-card>
+
+        <gl-card data-tags="events" class="full" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Events</div>
+            <div class="muted">Open DevTools console to see events</div>
+          </div>
+          <div class="muted">
+            Buttons: <code>gl-press</code> · Inputs: <code>gl-change</code>/<code>gl-commit</code> ·
+            Tabs: <code>gl-change</code> · Accordion item: <code>gl-toggle</code> ·
+            Modal/sidebar/toast: <code>gl-open</code>/<code>gl-close</code>/<code>gl-dismiss</code>
+            · Alert:
+            <code>gl-close</code>
+          </div>
+        </gl-card>
+      </div>
+    </div>
+
+    <script>
+      const html = document.documentElement;
+      const toaster = document.getElementById("toaster");
+      const modal = document.getElementById("modal");
+      const sidebar = document.getElementById("sidebar");
+
+      const setTheme = (t) => html.setAttribute("data-glint-theme", t);
+      document.getElementById("toggleTheme").addEventListener("gl-press", () => {
+        const cur = html.getAttribute("data-glint-theme") || "system";
+        setTheme(cur === "dark" ? "light" : "dark");
+      });
+      document.getElementById("themeLight").addEventListener("gl-press", () => setTheme("light"));
+      document.getElementById("themeDark").addEventListener("gl-press", () => setTheme("dark"));
+      document.getElementById("themeSystem").addEventListener("gl-press", () => setTheme("system"));
+
+      document.getElementById("openModal").addEventListener("gl-press", () => modal.show());
+      document.getElementById("closeModal").addEventListener("gl-press", () => modal.close("api"));
+      document.getElementById("saveModal").addEventListener("gl-press", () => {
+        toaster.show({ title: "Saved", description: "Changes have been saved.", duration: 3500 });
+        modal.close("api");
+      });
+
+      document.getElementById("openSidebar").addEventListener("gl-press", () => sidebar.show());
+
+      const showToast = () =>
+        toaster.show({
+          title: "Hello",
+          description: "This toast auto-dismisses. Hover to pause.",
+          duration: 4000
+        });
+      document.getElementById("showToast").addEventListener("gl-press", showToast);
+      document.getElementById("toastFromButtons").addEventListener("gl-press", showToast);
+
+      const progressDemo = document.getElementById("progressDemo");
+      if (progressDemo) {
+        let val = 45;
+        setInterval(() => {
+          val = val >= 100 ? 0 : val + 5;
+          progressDemo.setAttribute("value", String(val));
+        }, 500);
+      }
+
+      const grid = document.getElementById("grid");
+      const cards = Array.from(grid.querySelectorAll("gl-card[data-tags]"));
+      let activeFilter = "all";
+
+      const applyFilter = () => {
+        const q = (document.getElementById("search")?.getAttribute("value") || "").toLowerCase();
+        for (const card of cards) {
+          const tags = (card.getAttribute("data-tags") || "").toLowerCase();
+          const matchesFilter = activeFilter === "all" ? true : tags.includes(activeFilter);
+          const matchesQuery = !q ? true : tags.includes(q);
+          card.classList.toggle("hidden", !(matchesFilter && matchesQuery));
+        }
+      };
+
+      document.getElementById("search").addEventListener("gl-change", applyFilter);
+      document.querySelectorAll(".chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          const next = chip.getAttribute("data-filter") || "all";
+          activeFilter = next;
+          document.querySelectorAll(".chip").forEach((c) => c.setAttribute("variant", "outline"));
+          chip.setAttribute("variant", "secondary");
+          applyFilter();
+        });
+      });
+
+      applyFilter();
+
+      document.addEventListener("gl-press", (e) => console.log("gl-press", e.target));
+      document.addEventListener("gl-change", (e) => console.log("gl-change", e.detail, e.target));
+      document.addEventListener("gl-commit", (e) => console.log("gl-commit", e.detail, e.target));
+      document.addEventListener("gl-toggle", (e) => console.log("gl-toggle", e.detail, e.target));
+      document.addEventListener("gl-close", (e) => console.log("gl-close", e.detail, e.target));
+      document.addEventListener("gl-dismiss", (e) => console.log("gl-dismiss", e.detail, e.target));
+    </script>
+  </body>
+</html>

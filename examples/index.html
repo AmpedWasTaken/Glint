@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en" class="glint" data-glint-theme="system">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Glint — Examples</title>
+    <link rel="stylesheet" href="../dist/glint.css" />
+    <style>
+      .page {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 18px 18px 80px;
+        display: grid;
+        gap: 14px;
+      }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding-top: 10px;
+        backdrop-filter: blur(10px);
+      }
+      .topbarInner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        min-width: 0;
+      }
+      .logo {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        border: 1px solid var(--gl-border);
+        background: var(--gl-panel);
+        box-shadow: var(--gl-shadow-sm);
+        object-fit: cover;
+        flex: 0 0 auto;
+      }
+      .brandText {
+        display: grid;
+        gap: 2px;
+        min-width: 0;
+      }
+      .brandText b {
+        font-size: 14px;
+        line-height: 18px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .brandText span {
+        color: var(--gl-muted);
+        font-size: 12px;
+        line-height: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 12px;
+        align-items: start;
+      }
+      .span-7 {
+        grid-column: span 7;
+      }
+      .span-5 {
+        grid-column: span 5;
+      }
+      .span-12 {
+        grid-column: 1 / -1;
+      }
+      .muted {
+        color: var(--gl-muted);
+        font-size: var(--gl-text-md);
+        line-height: var(--gl-line-md);
+      }
+      .heroTitle {
+        margin: 0;
+        font-size: 30px;
+        line-height: 36px;
+        letter-spacing: -0.02em;
+      }
+      .heroCopy {
+        margin: 0;
+        color: var(--gl-muted);
+        font-size: 14px;
+        line-height: 20px;
+        max-width: 70ch;
+      }
+      .pillRow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .pillRow gl-badge {
+        user-select: none;
+      }
+      .link {
+        text-decoration: none;
+      }
+      @media (max-width: 900px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .span-7,
+        .span-5,
+        .span-12 {
+          grid-column: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script src="../dist/glint.js"></script>
+
+    <gl-toaster id="toaster"></gl-toaster>
+
+    <div class="page">
+      <div class="topbar">
+        <gl-card surface="glass" class="span-12">
+          <div class="topbarInner" style="padding: 10px 12px">
+            <a class="brand" href="./index.html">
+              <img
+                class="logo"
+                src="https://i.ibb.co/Fbv2JygS/Chat-GPT-Image-Jan-21-2026-10-06-54-AM.png"
+                alt="Glint"
+              />
+              <div class="brandText">
+                <b>Glint</b>
+                <span>Modern Web Components UI</span>
+              </div>
+            </a>
+            <div class="row">
+              <a class="link" href="./components.html"
+                ><gl-button variant="secondary" motion="snappy">Components</gl-button></a
+              >
+              <gl-button id="toggleTheme" variant="ghost">Toggle theme</gl-button>
+            </div>
+          </div>
+        </gl-card>
+      </div>
+
+      <div class="grid">
+        <gl-card class="span-7" surface="glass" effect="tilt" motion="snappy">
+          <div slot="header">
+            <div class="heroTitle gl-gradient-text" data-animate="true">Build crisp UI fast.</div>
+            <div class="heroCopy">
+              Glint ships as one CSS + one JS file. Accessibility, keyboard support, dark mode
+              tokens, and configurable motion are baked in.
+            </div>
+          </div>
+          <div class="row">
+            <a class="link" href="./components.html"
+              ><gl-button motion="snappy">Open the gallery</gl-button></a
+            >
+            <gl-button id="demoToast" variant="secondary" motion="snappy">Show toast</gl-button>
+            <gl-tooltip>
+              <gl-button variant="ghost">What’s included?</gl-button>
+              <span slot="content">Sidebar · Modal · Toast · Tabs · Accordion · Forms · More</span>
+            </gl-tooltip>
+          </div>
+          <div slot="footer">
+            <div class="pillRow">
+              <gl-badge variant="secondary">Shadow DOM</gl-badge>
+              <gl-badge variant="secondary">TypeScript</gl-badge>
+              <gl-badge variant="secondary">ESM/CJS</gl-badge>
+              <gl-badge variant="secondary">Dark mode</gl-badge>
+              <gl-badge variant="secondary">Motion</gl-badge>
+              <gl-badge variant="secondary">Glass + Tilt</gl-badge>
+            </div>
+          </div>
+        </gl-card>
+
+        <gl-card class="span-5" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Quick start</div>
+            <div class="muted">Plain HTML or npm.</div>
+          </div>
+          <div class="muted">
+            Link <code>dist/glint.css</code> + <code>dist/glint.js</code> or import via
+            <code>@glint-ui/glint</code>.
+          </div>
+          <div slot="footer" class="row">
+            <a class="link" href="../README.md"><gl-button variant="ghost">Read docs</gl-button></a>
+            <gl-button id="copySnippet" variant="secondary">Copy HTML snippet</gl-button>
+          </div>
+        </gl-card>
+
+        <gl-card class="span-12" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Feels like a product UI</div>
+            <div class="muted">A few primitives go a long way.</div>
+          </div>
+          <div class="grid">
+            <gl-card surface="glass" effect="tilt" motion="subtle" class="span-5">
+              <div slot="header">
+                <div style="font-weight: 600">Status</div>
+                <div class="muted">Alert + progress + badges</div>
+              </div>
+              <div style="display: grid; gap: 10px">
+                <gl-alert variant="success" motion="subtle">
+                  <span slot="title">All systems go</span>
+                  Deployed in 14 seconds.
+                </gl-alert>
+                <div>
+                  <div class="muted" style="margin-bottom: 8px">Build</div>
+                  <gl-progress id="homeProgress" value="62" motion="snappy"></gl-progress>
+                </div>
+                <div class="pillRow">
+                  <gl-badge>Live</gl-badge>
+                  <gl-badge variant="secondary">v0.1</gl-badge>
+                  <gl-badge variant="outline">Web Components</gl-badge>
+                </div>
+              </div>
+            </gl-card>
+
+            <gl-card motion="subtle" class="span-7">
+              <div slot="header">
+                <div style="font-weight: 600">Actions</div>
+                <div class="muted">Modal + tabs + motion</div>
+              </div>
+              <gl-tabs value="account">
+                <gl-tab slot="tabs" value="account">Account</gl-tab>
+                <gl-tab slot="tabs" value="security">Security</gl-tab>
+                <gl-tab slot="tabs" value="billing">Billing</gl-tab>
+                <gl-tab-panel slot="panels" value="account">
+                  <div class="muted">Account settings preview.</div>
+                </gl-tab-panel>
+                <gl-tab-panel slot="panels" value="security">
+                  <div class="muted">Security settings preview.</div>
+                </gl-tab-panel>
+                <gl-tab-panel slot="panels" value="billing">
+                  <div class="muted">Billing settings preview.</div>
+                </gl-tab-panel>
+              </gl-tabs>
+              <div slot="footer" class="row">
+                <gl-button id="openModal" variant="secondary" motion="snappy">Open modal</gl-button>
+                <gl-button id="openSidebar" motion="snappy">Open sidebar</gl-button>
+              </div>
+            </gl-card>
+          </div>
+        </gl-card>
+      </div>
+    </div>
+
+    <gl-sidebar id="sidebar" motion="snappy" side="right" surface="glass">
+      <span slot="title">Glint</span>
+      <div style="display: grid; gap: 10px">
+        <a class="link muted" href="./index.html">Home</a>
+        <a class="link muted" href="./components.html">Components</a>
+        <gl-divider></gl-divider>
+        <div class="muted">Theme</div>
+        <div class="row">
+          <gl-button id="themeLight" variant="secondary" size="sm">Light</gl-button>
+          <gl-button id="themeDark" variant="secondary" size="sm">Dark</gl-button>
+          <gl-button id="themeSystem" variant="secondary" size="sm">System</gl-button>
+        </div>
+      </div>
+    </gl-sidebar>
+
+    <gl-modal id="modal" label="Example modal" motion="snappy" surface="glass">
+      <div slot="header">
+        <div style="font-weight: 600; font-size: 16px; line-height: 24px">Confirm action</div>
+        <div class="muted">Focus is trapped. Esc closes.</div>
+      </div>
+      <div style="display: grid; gap: 12px">
+        <gl-input placeholder="Type anything">
+          <span slot="label">Input</span>
+          <span slot="description">This is inside the modal.</span>
+        </gl-input>
+      </div>
+      <div slot="footer" class="row" style="justify-content: flex-end">
+        <gl-button id="closeModal" variant="secondary">Cancel</gl-button>
+        <gl-button id="confirmModal" motion="snappy">Confirm</gl-button>
+      </div>
+    </gl-modal>
+
+    <script>
+      const html = document.documentElement;
+      const toaster = document.getElementById("toaster");
+      const sidebar = document.getElementById("sidebar");
+      const modal = document.getElementById("modal");
+
+      const setTheme = (t) => html.setAttribute("data-glint-theme", t);
+      document.getElementById("toggleTheme").addEventListener("gl-press", () => {
+        const cur = html.getAttribute("data-glint-theme") || "system";
+        setTheme(cur === "dark" ? "light" : "dark");
+      });
+
+      document.getElementById("themeLight").addEventListener("gl-press", () => setTheme("light"));
+      document.getElementById("themeDark").addEventListener("gl-press", () => setTheme("dark"));
+      document.getElementById("themeSystem").addEventListener("gl-press", () => setTheme("system"));
+
+      document.getElementById("openSidebar").addEventListener("gl-press", () => sidebar.show());
+      document.getElementById("openModal").addEventListener("gl-press", () => modal.show());
+      document.getElementById("closeModal").addEventListener("gl-press", () => modal.close("api"));
+      document.getElementById("confirmModal").addEventListener("gl-press", () => {
+        toaster.show({ title: "Done", description: "Action confirmed.", duration: 3200 });
+        modal.close("api");
+      });
+      document
+        .getElementById("demoToast")
+        .addEventListener("gl-press", () =>
+          toaster.show({
+            title: "Hello",
+            description: "Hover to pause. Click close to dismiss.",
+            duration: 4000
+          })
+        );
+
+      const copy = async (text) => {
+        try {
+          await navigator.clipboard.writeText(text);
+          toaster.show({
+            title: "Copied",
+            description: "Snippet copied to clipboard.",
+            duration: 2200
+          });
+        } catch {
+          toaster.show({
+            title: "Copy failed",
+            description: "Clipboard permission denied.",
+            duration: 2500
+          });
+        }
+      };
+      document
+        .getElementById("copySnippet")
+        .addEventListener("gl-press", () =>
+          copy(
+            `<link rel="stylesheet" href="./dist/glint.css" />\n` +
+              `<script src="./dist/glint.js"></scr` +
+              `ipt>`
+          )
+        );
+
+      const prog = document.getElementById("homeProgress");
+      if (prog) {
+        let v = 62;
+        setInterval(() => {
+          v = v >= 100 ? 18 : v + 4;
+          prog.setAttribute("value", String(v));
+        }, 700);
+      }
+    </script>
+  </body>
+</html>
