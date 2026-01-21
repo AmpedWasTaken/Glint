@@ -14,8 +14,10 @@ template.innerHTML = `
       background:color-mix(in srgb, var(--gl-overlay) 65%, transparent);
       z-index:var(--gl-z-modal);
       display:none;
+      opacity:0;
+      transition:opacity var(--gl-motion-dur) var(--gl-motion-ease);
     }
-    :host([open]) .overlay{display:block}
+    :host([open]) .overlay{display:block;opacity:1}
     .drawer{
       position:fixed;
       top:0;
@@ -26,7 +28,7 @@ template.innerHTML = `
       color:var(--gl-fg);
       border-right:1px solid var(--gl-border);
       box-shadow:var(--gl-shadow-md);
-      transform:translateX(calc(-12px * var(--gl-motion)));
+      transform:translateX(calc(-18px * var(--gl-motion)));
       opacity:0;
       transition:opacity var(--gl-motion-dur) var(--gl-motion-ease), transform var(--gl-motion-dur) var(--gl-motion-ease);
       z-index:calc(var(--gl-z-modal) + 1);
@@ -37,6 +39,21 @@ template.innerHTML = `
       display:block;
       transform:translateX(0);
       opacity:1;
+    }
+
+    :host([side="right"]) .drawer{
+      left:auto;
+      right:0;
+      border-right:none;
+      border-left:1px solid var(--gl-border);
+      transform:translateX(calc(18px * var(--gl-motion)));
+    }
+
+    :host([surface="glass"]) .drawer{
+      background:var(--gl-glass-bg);
+      border-color:var(--gl-glass-border);
+      backdrop-filter:blur(var(--gl-glass-blur));
+      -webkit-backdrop-filter:blur(var(--gl-glass-blur));
     }
     .header{
       display:flex;
@@ -75,7 +92,7 @@ template.innerHTML = `
 export class GlSidebar extends HTMLElement {
   static tagName = "gl-sidebar";
   static get observedAttributes() {
-    return ["open"];
+    return ["open", "side"];
   }
 
   #overlay!: HTMLDivElement;
