@@ -10,68 +10,77 @@ export class GlCodeblock extends HTMLElement {
 
   constructor() {
     super();
-    const observer = new MutationObserver(() => {
-      if (!this.#codeContent && this.isConnected) {
-        this.#extractContent();
-      }
-    });
-    observer.observe(this, { childList: true, subtree: true });
+    if (this.hasAttribute("data-code")) {
+      this.#codeContent = this.getAttribute("data-code") || "";
+    }
   }
 
   #extractContent(): void {
     if (this.#codeContent) return;
     
-    const result: string[] = [];
+    if (this.hasAttribute("data-code")) {
+      this.#codeContent = this.getAttribute("data-code") || "";
+      return;
+    }
     
-    const processNode = (node: Node): void => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        const text = node.textContent?.trim();
-        if (text) {
-          result.push(text);
-        }
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        const el = node as HTMLElement;
-        if (el.tagName.startsWith("GL-")) {
-          const tagName = el.tagName.toLowerCase();
-          const attrs: string[] = [];
-          for (const attr of el.attributes) {
-            if (attr.name !== "is" && !attr.name.startsWith("data-")) {
-              attrs.push(`${attr.name}="${attr.value}"`);
-            }
-          }
-          const attrStr = attrs.length ? " " + attrs.join(" ") : "";
-          const children: string[] = [];
-          
-          for (const child of Array.from(el.childNodes)) {
-            if (child.nodeType === Node.TEXT_NODE) {
-              const text = child.textContent?.trim();
-              if (text) children.push(text);
-            } else if (child.nodeType === Node.ELEMENT_NODE && (child as HTMLElement).tagName.startsWith("GL-")) {
-              const childEl = child as HTMLElement;
-              const childTag = childEl.tagName.toLowerCase();
-              const childAttrs: string[] = [];
-              for (const attr of childEl.attributes) {
-                if (attr.name !== "is" && !attr.name.startsWith("data-")) {
-                  childAttrs.push(`${attr.name}="${attr.value}"`);
-                }
-              }
-              const childAttrStr = childAttrs.length ? " " + childAttrs.join(" ") : "";
-              const childText = childEl.textContent?.trim() || "";
-              children.push(`<${childTag}${childAttrStr}>${childText}</${childTag}>`);
-            }
-          }
-          
-          const content = children.join("\n");
-          result.push(`<${tagName}${attrStr}>${content}</${tagName}>`);
+    if ("getInnerHTML" in this && typeof (this as any).getInnerHTML === "function") {
+      this.#codeContent = (this as any).getInnerHTML({ includeShadowRoots: false }).trim();
+      return;
+    }
+    
+    const parts: string[] = [];
+    
+    const processElement = (el: HTMLElement, depth = 0): void => {
+      if (depth > 10) return;
+      if (el.shadowRoot) return;
+      
+      const tagName = el.tagName.toLowerCase();
+      if (!tagName.startsWith("gl-")) return;
+      
+      const attrs: string[] = [];
+      for (const attr of Array.from(el.attributes)) {
+        if (attr.name !== "is" && !attr.name.startsWith("data-") && attr.name !== "part" && !attr.name.includes("shadowroot")) {
+          attrs.push(`${attr.name}="${attr.value}"`);
         }
       }
+      const attrStr = attrs.length ? " " + attrs.join(" ") : "";
+      
+      const children: string[] = [];
+      for (const child of Array.from(el.childNodes)) {
+        if (child.nodeType === Node.TEXT_NODE) {
+          const text = child.textContent?.trim();
+          if (text) children.push(text);
+        } else if (child instanceof HTMLElement) {
+          if (child.tagName.startsWith("GL-") && !child.shadowRoot) {
+            processElement(child, depth + 1);
+            const childTag = child.tagName.toLowerCase();
+            const childAttrs: string[] = [];
+            for (const attr of Array.from(child.attributes)) {
+              if (attr.name !== "is" && !attr.name.startsWith("data-") && attr.name !== "part" && !attr.name.includes("shadowroot")) {
+                childAttrs.push(`${attr.name}="${attr.value}"`);
+              }
+            }
+            const childAttrStr = childAttrs.length ? " " + childAttrs.join(" ") : "";
+            const childText = child.textContent?.trim() || "";
+            children.push(`<${childTag}${childAttrStr}>${childText}</${childTag}>`);
+          }
+        }
+      }
+      
+      const content = children.length ? children.join("\n") : el.textContent?.trim() || "";
+      parts.push(`<${tagName}${attrStr}>${content}</${tagName}>`);
     };
     
     for (const child of Array.from(this.childNodes)) {
-      processNode(child);
+      if (child instanceof HTMLElement && child.tagName.startsWith("GL-")) {
+        processElement(child);
+      } else if (child.nodeType === Node.TEXT_NODE) {
+        const text = child.textContent?.trim();
+        if (text) parts.push(text);
+      }
     }
     
-    this.#codeContent = result.join("\n").trim() || this.textContent?.trim() || "";
+    this.#codeContent = parts.join("\n").trim() || this.textContent?.trim() || "";
   }
 
   connectedCallback(): void {
