@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en" class="glint" data-glint-theme="system">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Codeblock Debug Test</title>
+    <link rel="stylesheet" href="../dist/glint.css" />
+    <style>
+      body {
+        margin: 40px;
+        font-family: var(--gl-font-sans);
+      }
+      .test-section {
+        margin: 40px 0;
+        padding: 20px;
+        border: 2px solid var(--gl-border);
+        border-radius: var(--gl-radius);
+      }
+      .test-section h2 {
+        margin-top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Codeblock Debug Test</h1>
+    <p>Open browser console (F12) to see debug logs</p>
+
+    <div class="test-section">
+      <h2>Test 1: Simple HTML with data-code attribute</h2>
+      <gl-codeblock id="test1" lang="html" copy data-code="<gl-button>Click me</gl-button>"></gl-codeblock>
+    </div>
+
+    <div class="test-section">
+      <h2>Test 2: HTML content directly inside (no template)</h2>
+      <gl-codeblock id="test2" lang="html" copy>
+<gl-button>Primary</gl-button>
+<gl-button variant="secondary">Secondary</gl-button>
+      </gl-codeblock>
+    </div>
+
+    <div class="test-section">
+      <h2>Test 3: JavaScript code</h2>
+      <gl-codeblock id="test3" lang="js" copy>
+const button = document.querySelector('gl-button');
+button.addEventListener('gl-press', () => {
+  console.log('Button clicked!');
+});
+      </gl-codeblock>
+    </div>
+
+    <div class="test-section">
+      <h2>Test 4: CSS code</h2>
+      <gl-codeblock id="test4" lang="css" copy>
+.my-class {
+  color: var(--gl-primary);
+  padding: var(--gl-space-4);
+}
+      </gl-codeblock>
+    </div>
+
+    <div class="test-section">
+      <h2>Test 5: Plain text</h2>
+      <gl-codeblock id="test5" lang="text" copy>
+This is plain text content
+Multiple lines
+Should work
+      </gl-codeblock>
+    </div>
+
+    <script src="../dist/glint.js"></script>
+    <script>
+      console.log("=== Codeblock Debug Test ===");
+      
+      // Wait for components to be defined
+      setTimeout(() => {
+        console.log("\n--- Checking all codeblocks ---");
+        
+        const codeblocks = document.querySelectorAll('gl-codeblock');
+        console.log(`Found ${codeblocks.length} codeblock(s)`);
+        
+        codeblocks.forEach((cb, index) => {
+          const id = cb.id || `codeblock-${index}`;
+          console.log(`\n[${id}]`);
+          console.log("  - innerHTML:", cb.innerHTML);
+          console.log("  - textContent:", cb.textContent);
+          console.log("  - childNodes count:", cb.childNodes.length);
+          console.log("  - childNodes:", Array.from(cb.childNodes).map(n => ({
+            type: n.nodeType,
+            name: n.nodeName,
+            text: n.textContent?.substring(0, 50)
+          })));
+          console.log("  - has data-code:", cb.hasAttribute("data-code"));
+          if (cb.hasAttribute("data-code")) {
+            console.log("  - data-code value:", cb.getAttribute("data-code"));
+          }
+          
+          // Check shadow root
+          if (cb.shadowRoot) {
+            const codeEl = cb.shadowRoot.querySelector("code");
+            if (codeEl) {
+              console.log("  - shadowRoot code.innerHTML:", codeEl.innerHTML);
+              console.log("  - shadowRoot code.textContent:", codeEl.textContent);
+            } else {
+              console.log("  - shadowRoot code element: NOT FOUND");
+            }
+          } else {
+            console.log("  - shadowRoot: NOT ATTACHED YET");
+          }
+        });
+        
+        // Try to access private property via prototype (for debugging)
+        console.log("\n--- Attempting to access internal state ---");
+        codeblocks.forEach((cb, index) => {
+          const id = cb.id || `codeblock-${index}`;
+          console.log(`\n[${id}]`);
+          // Check if we can see the rendered code
+          if (cb.shadowRoot) {
+            const pre = cb.shadowRoot.querySelector("pre");
+            const code = cb.shadowRoot.querySelector("code");
+            console.log("  - pre element:", pre ? "FOUND" : "NOT FOUND");
+            console.log("  - code element:", code ? "FOUND" : "NOT FOUND");
+            if (code) {
+              console.log("  - code innerHTML length:", code.innerHTML.length);
+              console.log("  - code innerHTML preview:", code.innerHTML.substring(0, 100));
+            }
+          }
+        });
+      }, 1000);
+    </script>
+  </body>
+</html>
+

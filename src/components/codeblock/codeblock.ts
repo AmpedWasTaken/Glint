@@ -95,6 +95,16 @@ export class GlCodeblock extends HTMLElement {
 
     // Extract content BEFORE attaching shadow DOM
     this.#extractContent();
+    
+    // Debug logging
+    console.log("[GlCodeblock] connectedCallback", {
+      id: this.id || "no-id",
+      innerHTML: this.innerHTML.substring(0, 100),
+      textContent: this.textContent?.substring(0, 100),
+      childNodes: this.childNodes.length,
+      extractedContent: this.#codeContent.substring(0, 100),
+      extractedLength: this.#codeContent.length
+    });
 
     const lang = this.getAttribute("lang") || "text";
     const showCopy = this.hasAttribute("copy");
@@ -203,6 +213,20 @@ export class GlCodeblock extends HTMLElement {
 
     // Highlight and display the code
     this.#highlight(this.#codeContent, lang);
+    
+    // Debug: Check if code was set
+    setTimeout(() => {
+      if (this.#code) {
+        console.log("[GlCodeblock] After highlight", {
+          id: this.id || "no-id",
+          codeInnerHTML: this.#code.innerHTML.substring(0, 100),
+          codeInnerHTMLLength: this.#code.innerHTML.length,
+          codeTextContent: this.#code.textContent?.substring(0, 100)
+        });
+      } else {
+        console.warn("[GlCodeblock] Code element not found!", this.id || "no-id");
+      }
+    }, 100);
   }
 
   #highlight(code: string, lang: string): void {
