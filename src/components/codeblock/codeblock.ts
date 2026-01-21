@@ -17,7 +17,7 @@ export class GlCodeblock extends HTMLElement {
   #extractContent(): void {
     if (this.#codeContent) return;
 
-    // Method 1: Check for data-code attribute (easiest for developers)
+    // Method 1: Check for data-code attribute (supports multiline)
     if (this.hasAttribute("data-code")) {
       this.#codeContent = this.getAttribute("data-code") || "";
       return;
@@ -27,18 +27,36 @@ export class GlCodeblock extends HTMLElement {
     // Clone the element to preserve its state
     const clone = this.cloneNode(true) as HTMLElement;
     
-    // Remove any template tags (they're just markers)
+    // Remove any template tags and shadow root templates (they're just markers)
     const templates = clone.querySelectorAll("template");
-    templates.forEach((tpl) => tpl.remove());
+    templates.forEach((tpl) => {
+      // Skip shadow root templates
+      if (!tpl.hasAttribute("shadowrootmode")) {
+        // Extract content from template and replace it
+        if (tpl.content && tpl.content.childNodes.length > 0) {
+          const div = document.createElement("div");
+          div.appendChild(tpl.content.cloneNode(true));
+          const parent = tpl.parentNode;
+          if (parent) {
+            const textNode = document.createTextNode(div.innerHTML);
+            parent.replaceChild(textNode, tpl);
+          }
+        } else {
+          tpl.remove();
+        }
+      } else {
+        tpl.remove();
+      }
+    });
     
-    // Get the innerHTML of what's left
+    // Get the innerHTML of what's left (supports multiline)
     const innerHTML = clone.innerHTML.trim();
     if (innerHTML) {
       this.#codeContent = innerHTML;
       return;
     }
 
-    // Method 3: Fallback to textContent
+    // Method 3: Fallback to textContent (supports multiline)
     this.#codeContent = this.textContent?.trim() || "";
   }
 
