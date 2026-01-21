@@ -40,10 +40,7 @@
         gap: 12px;
         align-items: start;
       }
-      .col-6 {
-        grid-column: auto;
-      }
-      .col-12 {
+      .full {
         grid-column: 1 / -1;
       }
       .row {
@@ -68,8 +65,8 @@
         .grid {
           grid-template-columns: 1fr;
         }
-        .col-6 {
-          grid-column: span 12;
+        .full {
+          grid-column: auto;
         }
       }
     </style>
@@ -118,9 +115,9 @@
       </div>
 
       <div class="grid">
-        <gl-card class="col-6">
+        <gl-card>
           <div slot="header">
-            <div style="font-weight: 600">Buttons</div>
+            <div style="font-weight: 600" class="gl-gradient-text" data-animate="true">Buttons</div>
             <div class="muted">Variants, sizes, events, motion</div>
           </div>
           <div class="row">
@@ -140,7 +137,7 @@
           </div>
         </gl-card>
 
-        <gl-card class="col-6">
+        <gl-card>
           <div slot="header">
             <div style="font-weight: 600">Form controls</div>
             <div class="muted">Input, select, checkbox, radio</div>
@@ -165,7 +162,7 @@
           </div>
         </gl-card>
 
-        <gl-card class="col-6">
+        <gl-card>
           <div slot="header">
             <div style="font-weight: 600">Accordion</div>
             <div class="muted">Single / multiple</div>
@@ -194,7 +191,7 @@
           </div>
         </gl-card>
 
-        <gl-card class="col-6">
+        <gl-card>
           <div slot="header">
             <div style="font-weight: 600">Tabs</div>
             <div class="muted">Arrow keys, home/end, selection</div>
@@ -220,7 +217,7 @@
           </div>
         </gl-card>
 
-        <gl-card class="col-6" motion="subtle">
+        <gl-card motion="subtle">
           <div slot="header">
             <div style="font-weight: 600">Badge</div>
             <div class="muted">Variants, sizes, motion</div>
@@ -235,7 +232,7 @@
           </div>
         </gl-card>
 
-        <gl-card class="col-6" motion="subtle">
+        <gl-card motion="subtle">
           <div slot="header">
             <div style="font-weight: 600">Progress & Spinner</div>
             <div class="muted">Loading indicators</div>
@@ -254,7 +251,7 @@
           </div>
         </gl-card>
 
-        <gl-card class="col-6" motion="subtle">
+        <gl-card motion="subtle">
           <div slot="header">
             <div style="font-weight: 600">Divider</div>
             <div class="muted">Horizontal and vertical</div>
@@ -271,7 +268,7 @@
           </div>
         </gl-card>
 
-        <gl-card class="col-6" motion="subtle">
+        <gl-card motion="subtle">
           <div slot="header">
             <div style="font-weight: 600">Alert</div>
             <div class="muted">Variants with close</div>
@@ -296,9 +293,22 @@
           </div>
         </gl-card>
 
-        <gl-card class="col-12" motion="subtle" surface="glass">
+        <gl-card class="full" motion="subtle" surface="glass">
           <div slot="header">
-            <div style="font-weight: 600">Motion System</div>
+            <div
+              class="gl-gradient-text"
+              data-animate="true"
+              style="
+                font-weight: 600;
+                --gl-grad-1: #7dd3fc;
+                --gl-grad-2: #a78bfa;
+                --gl-grad-3: #fb7185;
+                --gl-grad-4: #34d399;
+                --gl-grad-speed: 5s;
+              "
+            >
+              Motion System
+            </div>
             <div class="muted">
               Set motion="none|subtle|snappy|bounce" on interactive components
             </div>
@@ -332,7 +342,7 @@
           </div>
         </gl-card>
 
-        <gl-card class="col-12">
+        <gl-card class="full">
           <div slot="header">
             <div style="font-weight: 600">Events</div>
             <div class="muted">Open DevTools console to see events</div>

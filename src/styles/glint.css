@@ -166,3 +166,41 @@ a {
   outline: 2px solid var(--gl-ring);
   outline-offset: 2px;
 }
+
+.gl-gradient-text {
+  --gl-grad-1: #60a5fa;
+  --gl-grad-2: #a78bfa;
+  --gl-grad-3: #fb7185;
+  --gl-grad-4: #34d399;
+  --gl-grad-angle: 120deg;
+  --gl-grad-size: 200%;
+
+  background-image: linear-gradient(
+    var(--gl-grad-angle),
+    var(--gl-grad-1),
+    var(--gl-grad-2),
+    var(--gl-grad-3),
+    var(--gl-grad-4)
+  );
+  background-size: var(--gl-grad-size) var(--gl-grad-size);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.gl-gradient-text[data-animate="true"] {
+  --gl-grad-speed: 6s;
+  animation: gl-gradient-shift var(--gl-grad-speed) linear infinite;
+}
+
+@keyframes gl-gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

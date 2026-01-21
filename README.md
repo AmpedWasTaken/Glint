@@ -114,6 +114,34 @@ Examples:
 <gl-sidebar side="right" surface="glass" motion="snappy">...</gl-sidebar>
 ```
 
+## Text effects (gradients)
+
+Glint ships with a small utility class for gradient text:
+
+```html
+<h1 class="gl-gradient-text">Glint</h1>
+<h1 class="gl-gradient-text" data-animate="true">Animated</h1>
+```
+
+Customize the gradient stops (up to 4), angle, and speed:
+
+```html
+<h1
+  class="gl-gradient-text"
+  data-animate="true"
+  style="
+    --gl-grad-1: #7dd3fc;
+    --gl-grad-2: #a78bfa;
+    --gl-grad-3: #fb7185;
+    --gl-grad-4: #34d399;
+    --gl-grad-angle: 120deg;
+    --gl-grad-speed: 5s;
+  "
+>
+  Glint
+</h1>
+```
+
 ## Components
 
 ### Button
