@@ -55,13 +55,12 @@
         max-width: var(--docs-content-width);
         padding: 40px 32px;
       }
-      .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 10;
+      gl-topbar {
         margin-bottom: 32px;
-        backdrop-filter: blur(10px);
-        padding-top: 10px;
+      }
+      gl-topbar[variant="glass"] {
+        --gl-glass-bg: rgba(26, 11, 46, 0.7);
+        --gl-glass-border: rgba(226, 232, 240, 0.1);
       }
       .section {
         margin-bottom: 64px;
@@ -208,38 +207,6 @@
     </style>
   </head>
   <body class="glint-bg">
-    <script src="../dist/glint.js"></script>
-    <script>
-      // Debug codeblocks in components.html
-      setTimeout(() => {
-        console.log("=== Components.html Codeblock Debug ===");
-        const codeblocks = document.querySelectorAll('gl-codeblock');
-        console.log(`Found ${codeblocks.length} codeblock(s) in components.html`);
-        
-        codeblocks.forEach((cb, index) => {
-          const id = cb.id || `codeblock-${index}`;
-          console.log(`\n[${id}]`);
-          console.log("  - innerHTML length:", cb.innerHTML.length);
-          console.log("  - innerHTML preview:", cb.innerHTML.substring(0, 150));
-          console.log("  - textContent:", cb.textContent?.substring(0, 100));
-          console.log("  - childNodes count:", cb.childNodes.length);
-          console.log("  - has data-code:", cb.hasAttribute("data-code"));
-          
-          if (cb.shadowRoot) {
-            const codeEl = cb.shadowRoot.querySelector("code");
-            if (codeEl) {
-              console.log("  - shadowRoot code.innerHTML length:", codeEl.innerHTML.length);
-              console.log("  - shadowRoot code.innerHTML preview:", codeEl.innerHTML.substring(0, 150));
-              console.log("  - shadowRoot code.textContent:", codeEl.textContent?.substring(0, 100));
-            } else {
-              console.log("  - shadowRoot code element: NOT FOUND");
-            }
-          } else {
-            console.log("  - shadowRoot: NOT ATTACHED");
-          }
-        });
-      }, 2000);
-    </script>
 
     <gl-toaster id="toaster"></gl-toaster>
 
@@ -265,23 +232,21 @@
       </aside>
 
       <main class="content">
-        <div class="topbar">
-          <gl-card surface="glass" motion="subtle">
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px">
-              <div>
-                <h1 style="margin: 0; font-size: 20px; line-height: 26px" class="gl-gradient-text" data-animate="true">
-                  Components
-                </h1>
-                <p style="margin: 4px 0 0; color: var(--gl-muted); font-size: 14px">Documentation & examples</p>
-              </div>
-              <div class="row">
-                <a class="link" href="./index.html"><gl-button variant="ghost">Home</gl-button></a>
-                <gl-button id="toggleSidebar" variant="secondary" size="sm">Menu</gl-button>
-                <gl-button id="toggleTheme" variant="ghost">Theme</gl-button>
-              </div>
+        <gl-topbar variant="glass" sticky motion="subtle" style="margin-bottom: 32px">
+          <div slot="left">
+            <div>
+              <h1 style="margin: 0; font-size: 20px; line-height: 26px" class="gl-gradient-text" data-animate="true">
+                Components
+              </h1>
+              <p style="margin: 4px 0 0; color: var(--gl-muted); font-size: 14px">Documentation & examples</p>
             </div>
-          </gl-card>
-        </div>
+          </div>
+          <div slot="right" class="row">
+            <a class="link" href="./index.html"><gl-button variant="ghost">Home</gl-button></a>
+            <gl-button id="toggleSidebar" variant="secondary" size="sm">Menu</gl-button>
+            <gl-button id="toggleTheme" variant="ghost">Theme</gl-button>
+          </div>
+        </gl-topbar>
 
         <section id="buttons" class="section">
           <h1>Buttons</h1>
@@ -833,6 +798,203 @@
             <gl-codeblock lang="html" copy motion="subtle">
 <gl-pagination page="3" pages="12"></gl-pagination>
             </gl-codeblock>
+          </div>
+
+          <div class="component">
+            <h2>Navbar</h2>
+            <p class="desc">Navigation bar component with brand, nav links, and actions.</p>
+            <gl-card motion="subtle" style="margin: 24px 0">
+              <div class="stack">
+                <div class="muted" style="margin-bottom: 8px; font-size: 12px">Default</div>
+                <gl-navbar>
+                  <div slot="brand">Logo</div>
+                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg)">Home</a>
+                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg)">About</a>
+                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg)">Contact</a>
+                  <gl-button slot="actions" size="sm">Sign In</gl-button>
+                </gl-navbar>
+                <div class="muted" style="margin: 16px 0 8px; font-size: 12px">Glass variant</div>
+                <gl-navbar variant="glass">
+                  <div slot="brand">Logo</div>
+                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg)">Home</a>
+                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg)">About</a>
+                  <gl-button slot="actions" variant="secondary" size="sm">Sign In</gl-button>
+                </gl-navbar>
+                <div class="muted" style="margin: 16px 0 8px; font-size: 12px">Bordered variant</div>
+                <gl-navbar variant="bordered">
+                  <div slot="brand">Logo</div>
+                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg)">Home</a>
+                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg)">About</a>
+                  <gl-button slot="actions" variant="ghost" size="sm">Menu</gl-button>
+                </gl-navbar>
+              </div>
+            </gl-card>
+            <gl-codeblock lang="html" copy motion="subtle">
+<gl-navbar variant="glass" sticky motion="snappy">
+  <div slot="brand">Logo</div>
+  <a slot="nav" href="#">Home</a>
+  <a slot="nav" href="#">About</a>
+  <a slot="nav" href="#">Contact</a>
+  <gl-button slot="actions">Sign In</gl-button>
+</gl-navbar>
+            </gl-codeblock>
+            <div class="props">
+              <h3>Attributes</h3>
+              <table class="propsTable">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "glass" | "bordered" | "minimal"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Visual style variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>sticky</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Make navbar sticky at top</td>
+                  </tr>
+                  <tr>
+                    <td><code>align</code></td>
+                    <td><code>"start" | "center" | "end"</code></td>
+                    <td><code>"start"</code></td>
+                    <td>Align nav items</td>
+                  </tr>
+                  <tr>
+                    <td><code>motion</code></td>
+                    <td><code>"none" | "subtle" | "snappy" | "bounce"</code></td>
+                    <td><code>"subtle"</code></td>
+                    <td>Animation preset</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="props">
+              <h3>Slots</h3>
+              <table class="propsTable">
+                <thead>
+                  <tr>
+                    <th>Slot</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>brand</code></td>
+                    <td>Brand/logo content</td>
+                  </tr>
+                  <tr>
+                    <td><code>nav</code></td>
+                    <td>Navigation links</td>
+                  </tr>
+                  <tr>
+                    <td><code>actions</code></td>
+                    <td>Action buttons (right side)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="component">
+            <h2>Topbar</h2>
+            <p class="desc">Top bar component with left, center, and right slots.</p>
+            <gl-card motion="subtle" style="margin: 24px 0">
+              <div class="stack">
+                <div class="muted" style="margin-bottom: 8px; font-size: 12px">Default</div>
+                <gl-topbar>
+                  <div slot="left">Logo</div>
+                  <div slot="center" class="muted">Center content</div>
+                  <gl-button slot="right" size="sm">Menu</gl-button>
+                </gl-topbar>
+                <div class="muted" style="margin: 16px 0 8px; font-size: 12px">Glass variant</div>
+                <gl-topbar variant="glass">
+                  <div slot="left">Logo</div>
+                  <div slot="center" class="muted">Search</div>
+                  <gl-button slot="right" variant="secondary" size="sm">Actions</gl-button>
+                </gl-topbar>
+                <div class="muted" style="margin: 16px 0 8px; font-size: 12px">Floating variant</div>
+                <gl-topbar variant="floating">
+                  <div slot="left">Logo</div>
+                  <div slot="right">
+                    <gl-button size="sm">Sign In</gl-button>
+                  </div>
+                </gl-topbar>
+              </div>
+            </gl-card>
+            <gl-codeblock lang="html" copy motion="subtle">
+<gl-topbar variant="glass" sticky motion="snappy">
+  <div slot="left">Logo</div>
+  <div slot="center">Search or center content</div>
+  <gl-button slot="right">Menu</gl-button>
+</gl-topbar>
+            </gl-codeblock>
+            <div class="props">
+              <h3>Attributes</h3>
+              <table class="propsTable">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "glass" | "floating" | "minimal"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Visual style variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>sticky</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Make topbar sticky at top</td>
+                  </tr>
+                  <tr>
+                    <td><code>motion</code></td>
+                    <td><code>"none" | "subtle" | "snappy" | "bounce"</code></td>
+                    <td><code>"subtle"</code></td>
+                    <td>Animation preset</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="props">
+              <h3>Slots</h3>
+              <table class="propsTable">
+                <thead>
+                  <tr>
+                    <th>Slot</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>left</code></td>
+                    <td>Left side content (logo, etc.)</td>
+                  </tr>
+                  <tr>
+                    <td><code>center</code></td>
+                    <td>Center content (search, title, etc.)</td>
+                  </tr>
+                  <tr>
+                    <td><code>right</code></td>
+                    <td>Right side content (actions, buttons)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
 
@@ -1527,5 +1689,6 @@ button.addEventListener('gl-press', () => {
         });
       });
     </script>
+    <script src="../dist/glint.js"></script>
   </body>
 </html>

@@ -22,6 +22,7 @@ import { defineLink } from "./components/link/define.js";
 import { defineDropdown } from "./components/dropdown/define.js";
 import { defineInput } from "./components/input/define.js";
 import { defineModal } from "./components/modal/define.js";
+import { defineNavbar } from "./components/navbar/define.js";
 import { definePagination } from "./components/pagination/define.js";
 import { definePopover } from "./components/popover/define.js";
 import { defineProgress } from "./components/progress/define.js";
@@ -37,6 +38,7 @@ import { defineTable } from "./components/table/define.js";
 import { defineTabs } from "./components/tabs/define.js";
 import { defineToast } from "./components/toast/define.js";
 import { defineTooltip } from "./components/tooltip/define.js";
+import { defineTopbar } from "./components/topbar/define.js";
 
 export { defineAccordion, GlAccordion, GlAccordionItem } from "./components/accordion/define.js";
 export { defineAlert, GlAlert } from "./components/alert/define.js";
@@ -52,6 +54,7 @@ export { defineLink, GlLink } from "./components/link/define.js";
 export { defineDropdown, GlDropdown } from "./components/dropdown/define.js";
 export { defineInput, GlInput } from "./components/input/define.js";
 export { defineModal, GlModal } from "./components/modal/define.js";
+export { defineNavbar, GlNavbar } from "./components/navbar/define.js";
 export { definePagination, GlPagination } from "./components/pagination/define.js";
 export { definePopover, GlPopover } from "./components/popover/define.js";
 export { defineProgress, GlProgress } from "./components/progress/define.js";
@@ -67,6 +70,7 @@ export { defineTextarea, GlTextarea } from "./components/textarea/define.js";
 export { defineTabs, GlTabs, GlTab, GlTabPanel } from "./components/tabs/define.js";
 export { defineToast, GlToast, GlToaster } from "./components/toast/define.js";
 export { defineTooltip, GlTooltip } from "./components/tooltip/define.js";
+export { defineTopbar, GlTopbar } from "./components/topbar/define.js";
 
 export function defineGlint(): void {
   defineAccordion();
@@ -83,6 +87,7 @@ export function defineGlint(): void {
   defineDropdown();
   defineInput();
   defineModal();
+  defineNavbar();
   definePagination();
   definePopover();
   defineProgress();
@@ -98,6 +103,7 @@ export function defineGlint(): void {
   defineTabs();
   defineToast();
   defineTooltip();
+  defineTopbar();
 }
 
 declare global {

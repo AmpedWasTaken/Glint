@@ -1,42 +1,77 @@
 <!doctype html>
-<html lang="en" class="glint" data-glint-theme="system">
+<html lang="en" class="glint" data-glint-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Glint — Examples</title>
+    <title>Glint — Modern Web Components UI Library</title>
+    <meta name="description" content="Build crisp UI fast with Glint. Modern, minimal UI components built with Web Components + Shadow DOM. One CSS file, one JS file." />
     <link rel="stylesheet" href="../dist/glint.css" />
     <style>
+      :root {
+        --hero-gradient-1: #fb7185;
+        --hero-gradient-2: #a78bfa;
+        --hero-gradient-3: #7dd3fc;
+        --hero-gradient-4: #a78bfa;
+      }
+      [data-glint-theme="dark"] {
+        --gl-bg: #11071F;
+        --gl-panel: #1A0B2E;
+        --gl-primary: #693B93;
+        --gl-primary-fg: #ffffff;
+        --gl-app-grad-1: rgba(251, 113, 133, 0.2);
+        --gl-app-grad-2: rgba(167, 139, 250, 0.18);
+        --gl-app-grad-3: rgba(125, 211, 252, 0.15);
+        --gl-glass-bg: rgba(26, 11, 46, 0.7);
+        --gl-glass-border: rgba(226, 232, 240, 0.1);
+      }
+      * {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: var(--gl-font-sans);
+        background: #11071F;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      body.glint-bg {
+        background:
+          radial-gradient(1200px 800px at 20% 0%, rgba(251, 113, 133, 0.15), transparent 60%),
+          radial-gradient(1000px 700px at 80% 20%, rgba(167, 139, 250, 0.18), transparent 60%),
+          radial-gradient(900px 600px at 50% 80%, rgba(125, 211, 252, 0.12), transparent 60%),
+          #11071F !important;
+      }
+      .gl-gradient-text {
+        --gl-grad-1: #fb7185;
+        --gl-grad-2: #a78bfa;
+        --gl-grad-3: #7dd3fc;
+        --gl-grad-4: #a78bfa;
+      }
       .page {
-        max-width: 1120px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 18px 18px 80px;
-        display: grid;
-        gap: 14px;
+        padding: 0 24px 120px;
+        position: relative;
       }
-      .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        padding-top: 10px;
-        backdrop-filter: blur(10px);
+      gl-topbar {
+        margin-bottom: 32px;
       }
-      .topbarInner {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
+      gl-topbar[variant="glass"] {
+        --gl-glass-bg: rgba(26, 11, 46, 0.7);
+        --gl-glass-border: rgba(226, 232, 240, 0.1);
       }
       .brand {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         text-decoration: none;
         min-width: 0;
       }
       .logo {
-        width: 34px;
-        height: 34px;
-        border-radius: 10px;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
         border: 1px solid var(--gl-border);
         background: var(--gl-panel);
         box-shadow: var(--gl-shadow-sm);
@@ -49,256 +84,992 @@
         min-width: 0;
       }
       .brandText b {
-        font-size: 14px;
-        line-height: 18px;
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 700;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
       .brandText span {
         color: var(--gl-muted);
         font-size: 12px;
         line-height: 16px;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
       .row {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: 10px;
-      }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(12, minmax(0, 1fr));
         gap: 12px;
-        align-items: start;
       }
-      .span-7 {
-        grid-column: span 7;
+      .hero {
+        text-align: center;
+        padding: 80px 0 100px;
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
       }
-      .span-5 {
-        grid-column: span 5;
-      }
-      .span-12 {
-        grid-column: 1 / -1;
-      }
-      .muted {
-        color: var(--gl-muted);
-        font-size: var(--gl-text-md);
-        line-height: var(--gl-line-md);
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: -20%;
+        right: -10%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(251, 113, 133, 0.3) 0%, rgba(167, 139, 250, 0.2) 50%, transparent 70%);
+        border-radius: 50%;
+        filter: blur(80px);
+        z-index: -1;
+        pointer-events: none;
       }
       .heroTitle {
-        margin: 0;
-        font-size: 30px;
-        line-height: 36px;
-        letter-spacing: -0.02em;
+        margin: 0 0 24px;
+        font-size: clamp(36px, 8vw, 64px);
+        line-height: 1.1;
+        font-weight: 800;
+        letter-spacing: -0.03em;
       }
-      .heroCopy {
-        margin: 0;
+      .heroSubtitle {
+        margin: 0 0 40px;
+        font-size: clamp(18px, 2.5vw, 22px);
+        line-height: 1.6;
         color: var(--gl-muted);
-        font-size: 14px;
-        line-height: 20px;
-        max-width: 70ch;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
       }
-      .pillRow {
+      .heroButtons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+        margin-bottom: 48px;
+      }
+      .heroBadges {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
+        justify-content: center;
       }
-      .pillRow gl-badge {
-        user-select: none;
+      .section {
+        margin: 100px 0;
+      }
+      .sectionTitle {
+        margin: 0 0 12px;
+        font-size: clamp(28px, 5vw, 36px);
+        line-height: 1.2;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .sectionSubtitle {
+        margin: 0 0 48px;
+        font-size: clamp(16px, 2vw, 18px);
+        line-height: 1.6;
+        color: var(--gl-muted);
+        max-width: 600px;
+      }
+      .showcase {
+        display: grid;
+        gap: 48px;
+        margin-top: 48px;
+      }
+      .showcaseItem {
+        display: grid;
+        gap: 24px;
+      }
+      .showcasePreview {
+        border-radius: var(--gl-radius);
+        overflow: hidden;
+        backdrop-filter: blur(20px) saturate(180%);
+      }
+      .showcaseTitle {
+        margin: 0 0 8px;
+        font-size: 24px;
+        line-height: 32px;
+        font-weight: 600;
+      }
+      .showcaseDesc {
+        margin: 0 0 16px;
+        color: var(--gl-muted);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-top: 48px;
+      }
+      .feature {
+        padding: 24px;
+        border-radius: var(--gl-radius);
+        background: var(--gl-panel);
+        border: 1px solid var(--gl-border);
+        backdrop-filter: blur(10px);
+        transition: transform var(--gl-dur-2) var(--gl-ease), box-shadow var(--gl-dur-2) var(--gl-ease), border-color var(--gl-dur-2) var(--gl-ease);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .feature:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(105, 59, 147, 0.2);
+        border-color: rgba(105, 59, 147, 0.4);
+      }
+      .featureIcon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #693B93 0%, #4F228D 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        font-size: 24px;
+        box-shadow: 0 4px 12px rgba(105, 59, 147, 0.3);
+      }
+      .featureTitle {
+        margin: 0 0 8px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .featureDesc {
+        margin: 0;
+        color: var(--gl-muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .installSection {
+        background: var(--gl-panel);
+        border: 1px solid var(--gl-border);
+        border-radius: var(--gl-radius);
+        padding: 48px;
+        margin-top: 48px;
+        backdrop-filter: blur(20px) saturate(180%);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        transition: box-shadow var(--gl-dur-2) var(--gl-ease);
+      }
+      .installSection:hover {
+        box-shadow: 0 12px 40px rgba(105, 59, 147, 0.2);
+      }
+      .installTabs {
+        margin-top: 32px;
+      }
+      .footer {
+        margin-top: 120px;
+        padding-top: 48px;
+        border-top: 1px solid var(--gl-border);
+        text-align: center;
+      }
+      .footerGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 48px;
+        margin-bottom: 48px;
+        text-align: left;
+      }
+      .footerSection {
+        display: grid;
+        gap: 16px;
+      }
+      .footerSectionTitle {
+        font-weight: 600;
+        margin-bottom: 4px;
+        font-size: 15px;
+      }
+      .footerSectionLinks {
+        display: grid;
+        gap: 12px;
+      }
+      .footerLinks {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        justify-content: center;
+        margin-bottom: 32px;
+      }
+      .footerLink {
+        color: var(--gl-muted);
+        text-decoration: none;
+        font-size: 14px;
+        transition: color var(--gl-dur-1) var(--gl-ease), transform var(--gl-dur-1) var(--gl-ease);
+        display: inline-block;
+      }
+      .footerLink:hover {
+        color: var(--gl-fg);
+        transform: translateX(2px);
+      }
+      .footerLink:focus-visible {
+        outline: 2px solid var(--gl-primary);
+        outline-offset: 2px;
+        border-radius: 4px;
       }
       .link {
         text-decoration: none;
       }
-      @media (max-width: 900px) {
-        .grid {
+      .muted {
+        color: var(--gl-muted);
+      }
+      .announcement {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        background: rgba(105, 59, 147, 0.2);
+        border: 1px solid rgba(105, 59, 147, 0.3);
+        margin-bottom: 32px;
+        font-size: 14px;
+        backdrop-filter: blur(10px);
+        transition: all var(--gl-dur-2) var(--gl-ease);
+      }
+      .announcement:hover {
+        background: rgba(105, 59, 147, 0.3);
+        border-color: rgba(105, 59, 147, 0.5);
+        transform: translateY(-1px);
+      }
+      .announcement a {
+        transition: opacity var(--gl-dur-1) var(--gl-ease);
+      }
+      .announcement a:hover {
+        opacity: 0.8;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 32px;
+        margin: 60px 0;
+        padding: 48px 0;
+        border-top: 1px solid var(--gl-border);
+        border-bottom: 1px solid var(--gl-border);
+      }
+      .stat {
+        text-align: center;
+        transition: transform var(--gl-dur-2) var(--gl-ease);
+      }
+      .stat:hover {
+        transform: translateY(-2px);
+      }
+      .statNumber {
+        font-size: clamp(40px, 6vw, 56px);
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 8px;
+        background: linear-gradient(135deg, #fb7185 0%, #a78bfa 50%, #7dd3fc 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .statLabel {
+        color: var(--gl-muted);
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .trustSection {
+        text-align: center;
+        padding: 60px 0;
+        border-top: 1px solid var(--gl-border);
+        border-bottom: 1px solid var(--gl-border);
+        margin: 80px 0;
+      }
+      .trustLogos {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 48px;
+        margin-top: 32px;
+        opacity: 0.6;
+      }
+      .trustLogo {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--gl-muted);
+      }
+      .componentGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin-top: 48px;
+      }
+      .componentGrid .link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+      }
+      .componentCard {
+        padding: 24px;
+        border-radius: var(--gl-radius);
+        background: var(--gl-panel);
+        border: 1px solid var(--gl-border);
+        backdrop-filter: blur(10px);
+        transition: transform var(--gl-dur-2) var(--gl-ease), box-shadow var(--gl-dur-2) var(--gl-ease), border-color var(--gl-dur-2) var(--gl-ease);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 220px;
+        cursor: pointer;
+      }
+      .componentCard:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(105, 59, 147, 0.2);
+        border-color: rgba(105, 59, 147, 0.4);
+      }
+      .componentCard:focus-visible {
+        outline: 2px solid var(--gl-primary);
+        outline-offset: 2px;
+      }
+      .componentIcon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #693B93 0%, #4F228D 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        font-size: 20px;
+        transition: transform var(--gl-dur-2) var(--gl-ease);
+      }
+      .componentCard:hover .componentIcon {
+        transform: scale(1.05);
+      }
+      .componentName {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        transition: color var(--gl-dur-1) var(--gl-ease);
+      }
+      .componentCard:hover .componentName {
+        color: var(--gl-primary);
+      }
+      .componentDesc {
+        color: var(--gl-muted);
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 16px;
+        flex: 1;
+      }
+      .useCase {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: center;
+        margin: 60px 0;
+        padding: 32px 0;
+      }
+      .useCase:nth-child(even) {
+        direction: rtl;
+      }
+      .useCase:nth-child(even) > * {
+        direction: ltr;
+      }
+      .useCaseContent {
+        display: grid;
+        gap: 16px;
+      }
+      .useCaseTitle {
+        font-size: clamp(24px, 4vw, 28px);
+        font-weight: 700;
+        margin: 0;
+        line-height: 1.2;
+      }
+      .useCaseDesc {
+        color: var(--gl-muted);
+        font-size: clamp(14px, 2vw, 16px);
+        line-height: 1.6;
+        margin: 0;
+      }
+      .useCasePreview {
+        border-radius: var(--gl-radius);
+        overflow: hidden;
+        backdrop-filter: blur(20px) saturate(180%);
+        transition: transform var(--gl-dur-2) var(--gl-ease);
+      }
+      .useCase:hover .useCasePreview {
+        transform: scale(1.02);
+      }
+      .codeExample {
+        margin: 48px 0;
+        padding: 24px;
+        border-radius: var(--gl-radius);
+        background: var(--gl-panel);
+        border: 1px solid var(--gl-border);
+        backdrop-filter: blur(10px);
+      }
+      .codeExampleTitle {
+        font-size: clamp(20px, 3vw, 24px);
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+      .codeExampleDesc {
+        color: var(--gl-muted);
+        margin-bottom: 20px;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      @media (max-width: 768px) {
+        .page {
+          padding: 0 16px 80px;
+        }
+        .hero {
+          padding: 60px 0 80px;
+        }
+        .heroTitle {
+          font-size: clamp(32px, 8vw, 48px);
+        }
+        .section {
+          margin: 60px 0;
+        }
+        .sectionTitle {
+          text-align: center;
+        }
+        .sectionSubtitle {
+          text-align: center;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .installSection {
+          padding: 32px 24px;
+        }
+        .useCase {
+          grid-template-columns: 1fr;
+          gap: 32px;
+          padding: 24px 0;
+        }
+        .useCase:nth-child(even) {
+          direction: ltr;
+        }
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 24px;
+          padding: 32px 0;
+        }
+        .componentGrid {
           grid-template-columns: 1fr;
         }
-        .span-7,
-        .span-5,
-        .span-12 {
-          grid-column: auto;
+        .features {
+          grid-template-columns: 1fr;
+        }
+        .footerGrid {
+          grid-template-columns: 1fr;
+          gap: 32px;
+          text-align: center;
+        }
+        .footerSection {
+          text-align: center;
+        }
+        .codeExample {
+          padding: 16px;
+        }
+        .topbarInner {
+          flex-wrap: wrap;
+        }
+      }
+      @media (max-width: 480px) {
+        .heroButtons {
+          flex-direction: column;
+          width: 100%;
+        }
+        .heroButtons gl-button,
+        .heroButtons a {
+          width: 100%;
+        }
+        .heroButtons gl-button::part(button) {
+          width: 100%;
+        }
+        .stats {
+          grid-template-columns: 1fr;
+        }
+        .announcement {
+          flex-direction: column;
+          text-align: center;
         }
       }
     </style>
   </head>
   <body class="glint-bg">
-    <script src="../dist/glint.js"></script>
 
     <gl-toaster id="toaster"></gl-toaster>
 
     <div class="page">
-      <div class="topbar">
-        <gl-card surface="glass" class="span-12">
-          <div class="topbarInner" style="padding: 10px 12px">
-            <a class="brand" href="./index.html">
-              <img
-                class="logo"
-                src="../images/logo.png"
-                alt="Glint"
-              />
-              <div class="brandText">
-                <b>Glint</b>
-                <span>Modern Web Components UI</span>
+      <!-- Topbar -->
+      <gl-topbar variant="glass" sticky motion="snappy">
+        <div slot="left">
+          <a class="brand" href="./index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit">
+            <img class="logo" src="../images/logo.png" alt="Glint" />
+            <div class="brandText">
+              <b>Glint</b>
+              <span>Web Components UI</span>
+            </div>
+          </a>
+        </div>
+        <div slot="right" class="row">
+          <a class="link" href="./components.html">
+            <gl-button variant="secondary" motion="snappy">Components</gl-button>
+          </a>
+          <gl-button id="toggleTheme" variant="ghost" motion="snappy">Theme</gl-button>
+        </div>
+      </gl-topbar>
+
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="announcement">
+          <span>✨</span>
+          <span>New: v1.0 released with enhanced animations and new components</span>
+          <a href="#" class="link" style="color: inherit; text-decoration: underline;">Learn more →</a>
+        </div>
+        <h1 class="heroTitle gl-gradient-text" data-animate="true">
+          Build crisp UI fast
+        </h1>
+        <p class="heroSubtitle">
+          Modern, minimal UI components built with Web Components + Shadow DOM.
+          One CSS file, one JS file. Accessibility, keyboard support, dark mode,
+          and configurable motion baked in.
+        </p>
+        <div class="heroButtons">
+          <a class="link" href="./components.html">
+            <gl-button size="lg" motion="snappy">View Components</gl-button>
+          </a>
+          <gl-button id="copyInstall" size="lg" variant="secondary" motion="snappy">
+            Copy Install
+          </gl-button>
+
+        </div>
+        <div class="heroBadges">
+          <gl-badge variant="secondary">Shadow DOM</gl-badge>
+          <gl-badge variant="secondary">TypeScript</gl-badge>
+          <gl-badge variant="secondary">ESM/CJS</gl-badge>
+          <gl-badge variant="secondary">Dark Mode</gl-badge>
+          <gl-badge variant="secondary">Motion</gl-badge>
+          <gl-badge variant="secondary">Accessible</gl-badge>
+          <gl-badge variant="secondary">Zero Dependencies</gl-badge>
+        </div>
+      </section>
+
+      <!-- Stats Section -->
+      <section class="stats">
+        <div class="stat">
+          <div class="statNumber">30+</div>
+          <div class="statLabel">Components</div>
+        </div>
+        <div class="stat">
+          <div class="statNumber">0</div>
+          <div class="statLabel">Dependencies</div>
+        </div>
+        <div class="stat">
+          <div class="statNumber">100%</div>
+          <div class="statLabel">Accessible</div>
+        </div>
+        <div class="stat">
+          <div class="statNumber">∞</div>
+          <div class="statLabel">Frameworks</div>
+        </div>
+      </section>
+
+      <!-- Installation Section -->
+      <section class="section">
+        <h2 class="sectionTitle">Get started in seconds</h2>
+        <p class="sectionSubtitle">
+          Install via npm or use the CDN. Works with any framework or vanilla HTML.
+        </p>
+        <div class="installSection">
+          <gl-tabs value="npm" class="installTabs">
+            <gl-tab slot="tabs" value="npm">npm</gl-tab>
+            <gl-tab slot="tabs" value="cdn">CDN</gl-tab>
+            <gl-tab slot="tabs" value="esm">ESM</gl-tab>
+            <gl-tab-panel slot="panels" value="npm">
+              <gl-codeblock lang="bash" copy motion="subtle">npm i @glint-ui/glint</gl-codeblock>
+            </gl-tab-panel>
+            <gl-tab-panel slot="panels" value="cdn">
+              <gl-codeblock lang="html" copy motion="subtle">
+<link rel="stylesheet" href="./dist/glint.css" />
+<script src="./dist/glint.js"></script>
+              </gl-codeblock>
+            </gl-tab-panel>
+            <gl-tab-panel slot="panels" value="esm">
+              <gl-codeblock lang="typescript" copy motion="subtle">
+import "@glint-ui/glint/glint.css";
+import { defineGlint } from "@glint-ui/glint";
+
+defineGlint();
+              </gl-codeblock>
+            </gl-tab-panel>
+          </gl-tabs>
+        </div>
+      </section>
+
+      <!-- Component Showcase Section -->
+      <section class="section">
+        <h2 class="sectionTitle">Beautiful components</h2>
+        <p class="sectionSubtitle">
+          Everything you need to build modern interfaces. Fully accessible, keyboard navigable, and customizable.
+        </p>
+        <div class="componentGrid">
+          <a href="./components.html" class="link" style="text-decoration: none">
+            <div class="componentCard">
+              <div class="componentIcon">🔘</div>
+              <div class="componentName">Buttons</div>
+              <div class="componentDesc">Multiple variants, sizes, and motion options. Built-in ripple effects and keyboard support.</div>
+              <gl-button size="sm" variant="secondary" motion="snappy">View →</gl-button>
+            </div>
+          </a>
+          <a href="./components.html" class="link" style="text-decoration: none">
+            <div class="componentCard">
+              <div class="componentIcon">📝</div>
+              <div class="componentName">Forms</div>
+              <div class="componentDesc">Input, select, checkbox, switch, slider, and more. All with consistent styling and validation.</div>
+              <gl-button size="sm" variant="secondary" motion="snappy">View →</gl-button>
+            </div>
+          </a>
+          <a href="./components.html" class="link" style="text-decoration: none">
+            <div class="componentCard">
+              <div class="componentIcon">🃏</div>
+              <div class="componentName">Cards</div>
+              <div class="componentDesc">Flexible card component with glass effects, tilt animations, and customizable surfaces.</div>
+              <gl-button size="sm" variant="secondary" motion="snappy">View →</gl-button>
+            </div>
+          </a>
+          <a href="./components.html" class="link" style="text-decoration: none">
+            <div class="componentCard">
+              <div class="componentIcon">🧭</div>
+              <div class="componentName">Navigation</div>
+              <div class="componentDesc">Tabs, breadcrumbs, pagination, and dropdowns. All with smooth transitions and keyboard navigation.</div>
+              <gl-button size="sm" variant="secondary" motion="snappy">View →</gl-button>
+            </div>
+          </a>
+          <a href="./components.html" class="link" style="text-decoration: none">
+            <div class="componentCard">
+              <div class="componentIcon">🔔</div>
+              <div class="componentName">Overlays</div>
+              <div class="componentDesc">Modal, sidebar, popover, and tooltip components. Focus trapping, keyboard shortcuts, and smooth animations.</div>
+              <gl-button size="sm" variant="secondary" motion="snappy">View →</gl-button>
+            </div>
+          </a>
+          <a href="./components.html" class="link" style="text-decoration: none">
+            <div class="componentCard">
+              <div class="componentIcon">💬</div>
+              <div class="componentName">Feedback</div>
+              <div class="componentDesc">Alerts, toasts, progress bars, spinners, and skeletons. Keep users informed with beautiful feedback.</div>
+              <gl-button size="sm" variant="secondary" motion="snappy">View →</gl-button>
+            </div>
+          </a>
+        </div>
+        <div style="text-align: center; margin-top: 48px">
+          <a class="link" href="./components.html">
+            <gl-button size="lg" motion="snappy">View All Components</gl-button>
+          </a>
+        </div>
+      </section>
+
+      <!-- Use Cases Section -->
+      <section class="section">
+        <h2 class="sectionTitle">Built for every use case</h2>
+        <p class="sectionSubtitle">
+          From simple landing pages to complex dashboards, Glint adapts to your needs.
+        </p>
+        
+        <div class="useCase">
+          <div class="useCaseContent">
+            <h3 class="useCaseTitle">Dashboard Applications</h3>
+            <p class="useCaseDesc">
+              Build powerful admin panels and analytics dashboards with our comprehensive component library. 
+              Cards, tables, charts, and data visualization components work seamlessly together.
+            </p>
+            <gl-button variant="secondary" motion="snappy">Learn more →</gl-button>
+          </div>
+          <gl-card surface="glass" motion="subtle" class="useCasePreview">
+            <div slot="header" style="padding: 24px">
+              <div style="display: grid; gap: 16px">
+                <div style="display: flex; justify-content: space-between; align-items: center">
+                  <div>
+                    <div style="font-weight: 600; margin-bottom: 4px">Total Revenue</div>
+                    <div style="font-size: 24px; font-weight: 700">$45,231</div>
+                  </div>
+                  <gl-badge>+20%</gl-badge>
+                </div>
+                <gl-progress value="75" motion="snappy"></gl-progress>
+                <div class="muted" style="font-size: 12px">Compared to last month</div>
               </div>
+            </div>
+          </gl-card>
+        </div>
+
+        <div class="useCase">
+          <div class="useCaseContent">
+            <h3 class="useCaseTitle">Form Heavy Applications</h3>
+            <p class="useCaseDesc">
+              Create beautiful, accessible forms with validation, error handling, and smooth animations. 
+              All form components work together with consistent styling and behavior.
+            </p>
+            <gl-button variant="secondary" motion="snappy">Learn more →</gl-button>
+          </div>
+          <gl-card surface="glass" motion="subtle" class="useCasePreview">
+            <div slot="header" style="padding: 24px; display: grid; gap: 16px">
+              <gl-input placeholder="Enter your email">
+                <span slot="label">Email</span>
+              </gl-input>
+              <gl-select value="option1" options='[{"value":"option1","label":"Option 1"},{"value":"option2","label":"Option 2"}]'>
+                <span slot="label">Category</span>
+              </gl-select>
+              <div class="row" style="align-items: center; gap: 12px">
+                <gl-checkbox checked></gl-checkbox>
+                <span class="muted">I agree to the terms</span>
+              </div>
+              <gl-button motion="snappy">Submit</gl-button>
+            </div>
+          </gl-card>
+        </div>
+
+        <div class="useCase">
+          <div class="useCaseContent">
+            <h3 class="useCaseTitle">Marketing Websites</h3>
+            <p class="useCaseDesc">
+              Build stunning landing pages with glassmorphism effects, gradient text, and smooth animations. 
+              Perfect for showcasing products and services with modern design.
+            </p>
+            <gl-button variant="secondary" motion="snappy">Learn more →</gl-button>
+          </div>
+          <gl-card surface="glass" effect="tilt" motion="snappy" class="useCasePreview">
+            <div slot="header" style="padding: 32px; text-align: center">
+              <div style="font-size: 32px; font-weight: 800; margin-bottom: 8px">Modern Design</div>
+              <div class="muted">Beautiful components for your next project</div>
+          </div>
+        </gl-card>
+        </div>
+      </section>
+
+      <!-- Code Examples Section -->
+      <section class="section">
+        <h2 class="sectionTitle">Simple, intuitive API</h2>
+        <p class="sectionSubtitle">
+          Write less code, build more. Glint's API is designed to be intuitive and powerful.
+        </p>
+        
+        <div class="codeExample">
+          <div class="codeExampleTitle">Quick Start</div>
+          <div class="codeExampleDesc">Get up and running in seconds with just a few lines of code.</div>
+          <gl-codeblock lang="html" copy motion="subtle">
+&lt;gl-button motion="snappy"&gt;Click me&lt;/gl-button&gt;
+&lt;gl-input placeholder="Enter text"&gt;
+  &lt;span slot="label"&gt;Label&lt;/span&gt;
+&lt;/gl-input&gt;
+&lt;gl-card surface="glass" effect="tilt"&gt;
+  &lt;div slot="header"&gt;Card Title&lt;/div&gt;
+  &lt;div&gt;Card content&lt;/div&gt;
+&lt;/gl-card&gt;
+          </gl-codeblock>
+        </div>
+
+        <div class="codeExample">
+          <div class="codeExampleTitle">Customization</div>
+          <div class="codeExampleDesc">Override colors, spacing, and more with CSS custom properties.</div>
+          <gl-codeblock lang="css" copy motion="subtle">
+:root {
+  --gl-primary: #693B93;
+  --gl-radius: 16px;
+  --gl-space-4: 20px;
+}
+          </gl-codeblock>
+        </div>
+
+        <div class="codeExample">
+          <div class="codeExampleTitle">Framework Integration</div>
+          <div class="codeExampleDesc">Works seamlessly with React, Vue, Angular, and more.</div>
+          <gl-codeblock lang="jsx" copy motion="subtle">
+import { useEffect } from 'react';
+
+function App() {
+  useEffect(() => {
+    import('@glint-ui/glint').then(({ defineGlint }) => {
+      defineGlint();
+    });
+  }, []);
+
+  return (
+    &lt;gl-button motion="snappy"&gt;
+      Click me
+    &lt;/gl-button&gt;
+  );
+}
+          </gl-codeblock>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="section">
+        <h2 class="sectionTitle">Why Glint?</h2>
+        <p class="sectionSubtitle">
+          Built with modern web standards and best practices. No framework lock-in, works everywhere.
+        </p>
+        <div class="features">
+          <div class="feature">
+            <div class="featureIcon">⚡</div>
+            <h3 class="featureTitle">Zero Dependencies</h3>
+            <p class="featureDesc">
+              One CSS file, one JS file. No build step required. Works with vanilla HTML or any framework.
+            </p>
+          </div>
+          <div class="feature">
+            <div class="featureIcon">♿</div>
+            <h3 class="featureTitle">Fully Accessible</h3>
+            <p class="featureDesc">
+              Built with accessibility in mind. ARIA attributes, keyboard navigation, and focus management included.
+            </p>
+          </div>
+          <div class="feature">
+            <div class="featureIcon">🌙</div>
+            <h3 class="featureTitle">Dark Mode Ready</h3>
+            <p class="featureDesc">
+              Dark mode support out of the box. System preference detection and manual theme switching.
+            </p>
+          </div>
+          <div class="feature">
+            <div class="featureIcon">🎨</div>
+            <h3 class="featureTitle">Customizable</h3>
+            <p class="featureDesc">
+              CSS custom properties for easy theming. Override colors, spacing, and more with simple CSS.
+            </p>
+          </div>
+          <div class="feature">
+            <div class="featureIcon">🎭</div>
+            <h3 class="featureTitle">Motion Options</h3>
+            <p class="featureDesc">
+              Subtle, snappy, or bounce animations. Respects prefers-reduced-motion automatically.
+            </p>
+          </div>
+          <div class="feature">
+            <div class="featureIcon">🔒</div>
+            <h3 class="featureTitle">Shadow DOM</h3>
+            <p class="featureDesc">
+              Styles are encapsulated. No CSS conflicts. Works alongside any existing stylesheet.
+            </p>
+              </div>
+          <div class="feature">
+            <div class="featureIcon">📦</div>
+            <h3 class="featureTitle">Tree Shakeable</h3>
+            <p class="featureDesc">
+              Import only what you need. ESM and CommonJS support. TypeScript definitions included.
+            </p>
+                </div>
+          <div class="feature">
+            <div class="featureIcon">🚀</div>
+            <h3 class="featureTitle">Framework Agnostic</h3>
+            <p class="featureDesc">
+              Works with React, Vue, Angular, Svelte, or vanilla JavaScript. No framework-specific code.
+            </p>
+          </div>
+          <div class="feature">
+            <div class="featureIcon">⚙️</div>
+            <h3 class="featureTitle">TypeScript Ready</h3>
+            <p class="featureDesc">
+              Full TypeScript support with comprehensive type definitions. Get autocomplete and type safety out of the box.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section>
+        <gl-card surface="glass" effect="tilt" motion="snappy" style="text-align: center;">
+              <div slot="header">
+            <h2 class="sectionTitle" style="margin-bottom: 16px">Ready to build?</h2>
+            <p class="sectionSubtitle" style="margin: 0 auto">
+              Explore all components, see examples, and start building your next project.
+            </p>
+              </div>
+          <div class="row" style="justify-content: center; margin-top: 32px">
+            <a class="link" href="./components.html">
+              <gl-button size="lg" motion="snappy">Browse Components</gl-button>
             </a>
-            <div class="row">
-              <a class="link" href="./components.html"
-                ><gl-button variant="secondary" motion="snappy">Components</gl-button></a
-              >
-              <gl-button id="toggleTheme" variant="ghost">Toggle theme</gl-button>
+            <gl-button id="copyInstall2" size="lg" variant="secondary" motion="snappy">
+              Copy Install Code
+            </gl-button>
+              </div>
+            </gl-card>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footerGrid">
+          <div class="footerSection">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; justify-content: center">
+              <img class="logo" src="../images/logo.png" alt="Glint" style="width: 32px; height: 32px" />
+              <div style="font-weight: 700">Glint</div>
+            </div>
+            <p class="muted" style="font-size: 14px; margin: 0; text-align: center">
+              Modern UI components built with Web Components and Shadow DOM.
+            </p>
+          </div>
+          <div class="footerSection">
+            <div class="footerSectionTitle">Resources</div>
+            <div class="footerSectionLinks">
+              <a href="./components.html" class="footerLink">Components</a>
+              <a href="../README.md" class="footerLink">Documentation</a>
+              <a href="https://github.com" class="footerLink">GitHub</a>
             </div>
           </div>
-        </gl-card>
+          <div class="footerSection">
+            <div class="footerSectionTitle">Features</div>
+            <div class="footerSectionLinks">
+              <a href="#" class="footerLink">Dark Mode</a>
+              <a href="#" class="footerLink">Accessibility</a>
+              <a href="#" class="footerLink">Customization</a>
+            </div>
+          </div>
+          <div class="footerSection">
+            <div class="footerSectionTitle">Community</div>
+            <div class="footerSectionLinks">
+              <a href="#" class="footerLink">Discord</a>
+              <a href="#" class="footerLink">Twitter</a>
+              <a href="#" class="footerLink">GitHub Discussions</a>
+            </div>
+          </div>
+        </div>
+        <div class="footerLinks">
+          <a href="./components.html" class="footerLink">Components</a>
+          <a href="../README.md" class="footerLink">Documentation</a>
+          <a href="https://github.com" class="footerLink">GitHub</a>
       </div>
-
-      <div class="grid">
-        <gl-card class="span-7" surface="glass" effect="tilt" motion="snappy">
-          <div slot="header">
-            <div class="heroTitle gl-gradient-text" data-animate="true">Build crisp UI fast.</div>
-            <div class="heroCopy">
-              Glint ships as one CSS + one JS file. Accessibility, keyboard support, dark mode
-              tokens, and configurable motion are baked in.
-            </div>
-          </div>
-          <div class="row">
-            <a class="link" href="./components.html"
-              ><gl-button motion="snappy">Open the gallery</gl-button></a
-            >
-            <gl-button trigger="toast" toast-title="Hello" toast-description="Hover to pause. Click close to dismiss." variant="secondary" motion="snappy">Show toast</gl-button>
-            <gl-tooltip>
-              <gl-button variant="ghost">What’s included?</gl-button>
-              <span slot="content">Sidebar · Modal · Toast · Tabs · Accordion · Forms · More</span>
-            </gl-tooltip>
-          </div>
-          <div slot="footer">
-            <div class="pillRow">
-              <gl-badge variant="secondary">Shadow DOM</gl-badge>
-              <gl-badge variant="secondary">TypeScript</gl-badge>
-              <gl-badge variant="secondary">ESM/CJS</gl-badge>
-              <gl-badge variant="secondary">Dark mode</gl-badge>
-              <gl-badge variant="secondary">Motion</gl-badge>
-              <gl-badge variant="secondary">Glass + Tilt</gl-badge>
-            </div>
-          </div>
-        </gl-card>
-
-        <gl-card class="span-5" motion="subtle">
-          <div slot="header">
-            <div style="font-weight: 600">Quick start</div>
-            <div class="muted">Plain HTML or npm.</div>
-          </div>
-          <div class="muted">
-            Link <code>dist/glint.css</code> + <code>dist/glint.js</code> or import via
-            <code>@glint-ui/glint</code>.
-          </div>
-          <div slot="footer" class="row">
-            <a class="link" href="../README.md"><gl-button variant="ghost">Read docs</gl-button></a>
-            <gl-button id="copySnippet" variant="secondary">Copy HTML snippet</gl-button>
-          </div>
-        </gl-card>
-
-        <gl-card class="span-12" motion="subtle">
-          <div slot="header">
-            <div style="font-weight: 600">Feels like a product UI</div>
-            <div class="muted">A few primitives go a long way.</div>
-          </div>
-          <div class="grid">
-            <gl-card surface="glass" effect="tilt" motion="subtle" class="span-5">
-              <div slot="header">
-                <div style="font-weight: 600">Status</div>
-                <div class="muted">Alert + progress + badges</div>
-              </div>
-              <div style="display: grid; gap: 10px">
-                <gl-alert variant="success" motion="subtle">
-                  <span slot="title">All systems go</span>
-                  Deployed in 14 seconds.
-                </gl-alert>
-                <div>
-                  <div class="muted" style="margin-bottom: 8px">Build</div>
-                  <gl-progress id="homeProgress" value="62" motion="snappy"></gl-progress>
-                </div>
-                <div class="pillRow">
-                  <gl-badge>Live</gl-badge>
-                  <gl-badge variant="secondary">v0.1</gl-badge>
-                  <gl-badge variant="outline">Web Components</gl-badge>
-                </div>
-              </div>
-            </gl-card>
-
-            <gl-card motion="subtle" class="span-7">
-              <div slot="header">
-                <div style="font-weight: 600">Actions</div>
-                <div class="muted">Modal + tabs + motion</div>
-              </div>
-              <gl-tabs value="account">
-                <gl-tab slot="tabs" value="account">Account</gl-tab>
-                <gl-tab slot="tabs" value="security">Security</gl-tab>
-                <gl-tab slot="tabs" value="billing">Billing</gl-tab>
-                <gl-tab-panel slot="panels" value="account">
-                  <div class="muted">Account settings preview.</div>
-                </gl-tab-panel>
-                <gl-tab-panel slot="panels" value="security">
-                  <div class="muted">Security settings preview.</div>
-                </gl-tab-panel>
-                <gl-tab-panel slot="panels" value="billing">
-                  <div class="muted">Billing settings preview.</div>
-                </gl-tab-panel>
-              </gl-tabs>
-              <div slot="footer" class="row">
-                <gl-button trigger="modal:modal" variant="secondary" motion="snappy">Open modal</gl-button>
-                <gl-button trigger="sidebar:sidebar" motion="snappy">Open sidebar</gl-button>
-              </div>
-            </gl-card>
-
-            <gl-card class="span-12" surface="glass" motion="subtle">
-              <div slot="header">
-                <div style="font-weight: 600">New components</div>
-                <div class="muted">Textarea · Popover · Breadcrumb · Pagination · Switch · Slider</div>
-              </div>
-              <div style="display: grid; gap: 12px">
-                <gl-breadcrumb separator="›">
-                  <gl-breadcrumb-item href="./index.html">Home</gl-breadcrumb-item>
-                  <gl-breadcrumb-item href="./components.html">Components</gl-breadcrumb-item>
-                  <gl-breadcrumb-item current>New</gl-breadcrumb-item>
-                </gl-breadcrumb>
-                <div class="row" style="align-items: center; justify-content: space-between">
-                  <div class="muted">Page: <span id="homePageLabel">1</span></div>
-                  <gl-pagination id="homePager" page="1" pages="12"></gl-pagination>
-                </div>
-                <div class="row" style="align-items: center; gap: 12px">
-                  <gl-switch id="homeSwitch" checked motion="snappy"></gl-switch>
-                  <div class="muted">Enable something</div>
-                  <div style="flex: 1"></div>
-                  <gl-popover motion="snappy" surface="glass">
-                    <gl-button slot="trigger" variant="secondary">Open popover</gl-button>
-                    <div slot="content" style="display: grid; gap: 10px">
-                      <div style="font-weight: 600">Popover</div>
-                      <div class="muted">Rich content, aligned to the trigger.</div>
-                    </div>
-                  </gl-popover>
-                </div>
-                <gl-textarea rows="3" placeholder="Write a note…">
-                  <span slot="label">Textarea</span>
-                </gl-textarea>
-                <gl-slider id="homeSlider" value="35" motion="snappy"></gl-slider>
-              </div>
-            </gl-card>
-          </div>
-        </gl-card>
-      </div>
+        <p class="muted" style="margin: 0; font-size: 14px">
+          Built with Web Components · Shadow DOM · TypeScript
+        </p>
+        <p class="muted" style="margin: 16px 0 0; font-size: 12px">
+          © 2024 Glint. All rights reserved.
+        </p>
+      </footer>
     </div>
 
-    <gl-sidebar id="sidebar" motion="snappy" side="right" surface="glass">
-      <span slot="title">Glint</span>
-      <div style="display: grid; gap: 10px">
-        <a class="link muted" href="./index.html">Home</a>
-        <a class="link muted" href="./components.html">Components</a>
+    <!-- Demo Modal -->
+    <gl-modal id="demoModal" label="Example Modal" motion="snappy" surface="glass">
+      <div slot="header">
+        <div style="font-weight: 600; font-size: 18px; margin-bottom: 8px">Modal Example</div>
+        <div class="muted">Focus is trapped. Press Esc to close.</div>
+      </div>
+      <div style="padding: 24px; display: grid; gap: 16px">
+        <gl-input placeholder="Type something">
+          <span slot="label">Input</span>
+          <span slot="description">This input is inside the modal</span>
+        </gl-input>
+        <gl-textarea rows="3" placeholder="Write a message...">
+          <span slot="label">Message</span>
+        </gl-textarea>
+      </div>
+      <div slot="footer" class="row" style="justify-content: flex-end">
+        <gl-button trigger="close:demoModal" variant="secondary">Cancel</gl-button>
+        <gl-button trigger="toast" toast-title="Saved!" toast-description="Your changes have been saved." motion="snappy">
+          Save
+        </gl-button>
+      </div>
+    </gl-modal>
+
+    <!-- Demo Sidebar -->
+    <gl-sidebar id="demoSidebar" motion="snappy" side="right" surface="glass">
+      <span slot="title">Navigation</span>
+      <div style="display: grid; gap: 12px; padding: 8px">
+        <a href="./index.html" class="footerLink" style="text-align: left">Home</a>
+        <a href="./components.html" class="footerLink" style="text-align: left">Components</a>
         <gl-divider></gl-divider>
-        <div class="muted">Theme</div>
+        <div class="muted" style="font-size: 12px; margin-bottom: 8px">THEME</div>
         <div class="row">
           <gl-button id="themeLight" variant="secondary" size="sm">Light</gl-button>
           <gl-button id="themeDark" variant="secondary" size="sm">Dark</gl-button>
@@ -306,81 +1077,61 @@
         </div>
       </div>
     </gl-sidebar>
-
-    <gl-modal id="modal" label="Example modal" motion="snappy" surface="glass">
-      <div slot="header">
-        <div style="font-weight: 600; font-size: 16px; line-height: 24px">Confirm action</div>
-        <div class="muted">Focus is trapped. Esc closes.</div>
-      </div>
-      <div style="display: grid; gap: 12px">
-        <gl-input placeholder="Type anything">
-          <span slot="label">Input</span>
-          <span slot="description">This is inside the modal.</span>
-        </gl-input>
-      </div>
-      <div slot="footer" class="row" style="justify-content: flex-end">
-        <gl-button trigger="close:modal" variant="secondary">Cancel</gl-button>
-        <gl-button trigger="toast" toast-title="Done" toast-description="Action confirmed." motion="snappy" id="confirmModal">Confirm</gl-button>
-      </div>
-    </gl-modal>
+    <script src="../dist/glint.js"></script>
 
     <script>
       const html = document.documentElement;
       const toaster = document.getElementById("toaster");
-      const sidebar = document.getElementById("sidebar");
-      const modal = document.getElementById("modal");
 
+      // Theme toggle
+      const toggleTheme = document.getElementById("toggleTheme");
+      if (toggleTheme) {
+        toggleTheme.addEventListener("gl-press", () => {
+          const cur = html.getAttribute("data-glint-theme") || "system";
+          html.setAttribute("data-glint-theme", cur === "dark" ? "light" : "dark");
+        });
+      }
+
+      // Theme buttons
       const setTheme = (t) => html.setAttribute("data-glint-theme", t);
-      document.getElementById("toggleTheme").addEventListener("gl-press", () => {
-        const cur = html.getAttribute("data-glint-theme") || "system";
-        setTheme(cur === "dark" ? "light" : "dark");
-      });
+      document.getElementById("themeLight")?.addEventListener("gl-press", () => setTheme("light"));
+      document.getElementById("themeDark")?.addEventListener("gl-press", () => setTheme("dark"));
+      document.getElementById("themeSystem")?.addEventListener("gl-press", () => setTheme("system"));
 
-      document.getElementById("themeLight").addEventListener("gl-press", () => setTheme("light"));
-      document.getElementById("themeDark").addEventListener("gl-press", () => setTheme("dark"));
-      document.getElementById("themeSystem").addEventListener("gl-press", () => setTheme("system"));
-
-      document.getElementById("confirmModal")?.addEventListener("gl-press", () => {
-        modal.close("api");
-      });
-
-      document.getElementById("homePager")?.addEventListener("gl-change", (e) => {
-        document.getElementById("homePageLabel").textContent = String(e.detail.page);
-      });
-
-      const copy = async (text) => {
+      // Copy install code
+      const copyInstall = async () => {
+        const text = `npm i @glint-ui/glint`;
         try {
           await navigator.clipboard.writeText(text);
           toaster.show({
-            title: "Copied",
-            description: "Snippet copied to clipboard.",
-            duration: 2200
+            title: "Copied!",
+            description: "Install command copied to clipboard.",
+            duration: 2000
           });
         } catch {
           toaster.show({
             title: "Copy failed",
-            description: "Clipboard permission denied.",
-            duration: 2500
+            description: "Could not copy to clipboard.",
+            duration: 2000
           });
         }
       };
-      document
-        .getElementById("copySnippet")
-        .addEventListener("gl-press", () =>
-          copy(
-            `<link rel="stylesheet" href="./dist/glint.css" />\n` +
-              `<script src="./dist/glint.js"></scr` +
-              `ipt>`
-          )
-        );
+      document.getElementById("copyInstall")?.addEventListener("gl-press", copyInstall);
+      document.getElementById("copyInstall2")?.addEventListener("gl-press", copyInstall);
 
-      const prog = document.getElementById("homeProgress");
-      if (prog) {
-        let v = 62;
+      // Demo pagination
+      document.getElementById("demoPager")?.addEventListener("gl-change", (e) => {
+        console.log("Page changed:", e.detail.page);
+      });
+
+      // Animate progress bar
+      const demoProgress = document.getElementById("demoProgress");
+      if (demoProgress) {
+        let progress = 75;
         setInterval(() => {
-          v = v >= 100 ? 18 : v + 4;
-          prog.setAttribute("value", String(v));
-        }, 700);
+          progress = progress >= 100 ? 20 : progress + 5;
+          demoProgress.setAttribute("value", String(progress));
+        }, 800);
       }
     </script>
   </body>

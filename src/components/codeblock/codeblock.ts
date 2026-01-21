@@ -10,11 +10,18 @@ export class GlCodeblock extends HTMLElement {
 
   constructor() {
     super();
+    // Extract content immediately in constructor, before shadow DOM
+    this.#extractContent();
+  }
+
+  #decodeHTMLEntities(text: string): string {
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = text;
+    return textarea.value;
   }
 
   #extractContent(): void {
-    // Don't return early if content is empty string - we need to try again
-    if (this.#codeContent && this.#codeContent.trim().length > 0) return;
+    if (this.#codeContent) return;
 
     // Method 1: Check for data-code attribute (supports multiline)
     if (this.hasAttribute("data-code")) {
@@ -22,121 +29,54 @@ export class GlCodeblock extends HTMLElement {
       return;
     }
 
-    // Method 2: Read innerHTML directly before shadow DOM is attached
-    // This is the most reliable - innerHTML contains the raw HTML string
-    let innerHTML = this.innerHTML;
+    // Method 2: Read innerHTML before shadow DOM is attached
+    // Clone the element to preserve its state
+    const clone = this.cloneNode(true) as HTMLElement;
     
-    console.log("[GlCodeblock] #extractContent - Method 2", {
-      innerHTMLLength: innerHTML?.length || 0,
-      innerHTMLPreview: innerHTML?.substring(0, 100) || "",
-      childNodesCount: this.childNodes.length
-    });
-    
-    // If innerHTML exists and has content
-    if (innerHTML && innerHTML.trim().length > 0) {
-      innerHTML = innerHTML.trim();
-      
-      // Remove shadow root templates if present
-      if (innerHTML.includes("shadowrootmode")) {
-        const before = innerHTML.length;
-        innerHTML = innerHTML.replace(/<template[^>]*shadowrootmode[^>]*>[\s\S]*?<\/template>/gi, "").trim();
-        console.log("[GlCodeblock] Removed shadow root templates", { before, after: innerHTML.length });
-      }
-      
-      // Remove regular template tags but extract their content
-      if (innerHTML.includes("<template")) {
-        // Replace template tags with their content
-        innerHTML = innerHTML.replace(/<template[^>]*>([\s\S]*?)<\/template>/gi, (match, content) => {
-          return content.trim();
-        }).trim();
-      }
-      
-      if (innerHTML && innerHTML.length > 0) {
-        this.#codeContent = innerHTML;
-        console.log("[GlCodeblock] #extractContent - Set content from innerHTML", {
-          contentLength: this.#codeContent.length,
-          contentPreview: this.#codeContent.substring(0, 100)
-        });
-        return;
-      }
-    }
-
-    // Method 3: Fallback - read from childNodes and serialize
-    const contentParts: string[] = [];
-    
-    for (const child of Array.from(this.childNodes)) {
-      if (child.nodeType === Node.TEXT_NODE) {
-        const text = child.textContent?.trim();
-        if (text) contentParts.push(text);
-      } else if (child.nodeType === Node.ELEMENT_NODE) {
-        const el = child as Element;
-        // Skip shadow root templates
-        if (el.tagName === "TEMPLATE" && el.hasAttribute("shadowrootmode")) {
-          continue;
-        }
-        // Extract content from regular template tags
-        if (el.tagName === "TEMPLATE") {
-          const templateEl = el as HTMLTemplateElement;
-          if (templateEl.content && templateEl.content.childNodes.length > 0) {
-            const div = document.createElement("div");
-            div.appendChild(templateEl.content.cloneNode(true));
-            const serialized = div.innerHTML.trim();
-            if (serialized) {
-              contentParts.push(serialized);
-              continue;
-            }
-          }
-          // Fallback: try textContent of template
-          const textContent = templateEl.textContent?.trim();
-          if (textContent) {
-            contentParts.push(textContent);
-            continue;
+    // Remove any template tags and shadow root templates (they're just markers)
+    const templates = clone.querySelectorAll("template");
+    templates.forEach((tpl) => {
+      // Skip shadow root templates
+      if (!tpl.hasAttribute("shadowrootmode")) {
+        // Extract content from template and replace it
+        if (tpl.content && tpl.content.childNodes.length > 0) {
+          const div = document.createElement("div");
+          div.appendChild(tpl.content.cloneNode(true));
+          const parent = tpl.parentNode;
+          if (parent) {
+            const textNode = document.createTextNode(div.innerHTML);
+            parent.replaceChild(textNode, tpl);
           }
         } else {
-          // Regular element - use outerHTML to preserve structure
-          contentParts.push(el.outerHTML);
+          tpl.remove();
         }
+      } else {
+        tpl.remove();
       }
-    }
-
-    if (contentParts.length > 0) {
-      this.#codeContent = contentParts.join("\n").trim();
+    });
+    
+    // Get the innerHTML of what's left (supports multiline)
+    const innerHTML = clone.innerHTML.trim();
+    if (innerHTML) {
+      // Decode HTML entities (e.g., &quot; -> ")
+      this.#codeContent = this.#decodeHTMLEntities(innerHTML);
       return;
     }
 
-    // Method 4: Last resort - textContent
+    // Method 3: Fallback to textContent (supports multiline)
     this.#codeContent = this.textContent?.trim() || "";
   }
 
   connectedCallback(): void {
     if (this.shadowRoot) return;
 
-    // Force re-extraction in connectedCallback (element is now in DOM)
-    // Reset content first to ensure we try again
-    this.#codeContent = "";
-    this.#extractContent();
-    
-    // Debug logging
-    console.log("[GlCodeblock] connectedCallback", {
-      id: this.id || "no-id",
-      innerHTML: this.innerHTML.substring(0, 100),
-      textContent: this.textContent?.substring(0, 100),
-      childNodes: this.childNodes.length,
-      extractedContent: this.#codeContent.substring(0, 100),
-      extractedLength: this.#codeContent.length
-    });
-    
-    // If still no content, log warning
-    if (!this.#codeContent || this.#codeContent.trim().length === 0) {
-      console.warn("[GlCodeblock] No content extracted!", {
-        id: this.id || "no-id",
-        innerHTML: this.innerHTML,
-        hasDataCode: this.hasAttribute("data-code")
-      });
-    }
-
     const lang = this.getAttribute("lang") || "text";
     const showCopy = this.hasAttribute("copy");
+
+    // Ensure content is extracted
+    if (!this.#codeContent) {
+      this.#extractContent();
+    }
 
     const template = document.createElement("template");
     template.innerHTML = `
@@ -240,29 +180,7 @@ export class GlCodeblock extends HTMLElement {
       this.#copyBtn.addEventListener("click", () => this.#copy());
     }
 
-    // Highlight and display the code
-    console.log("[GlCodeblock] About to highlight", {
-      id: this.id || "no-id",
-      codeContentLength: this.#codeContent.length,
-      codeContentPreview: this.#codeContent.substring(0, 100),
-      lang
-    });
-    
     this.#highlight(this.#codeContent, lang);
-    
-    // Debug: Check if code was set
-    setTimeout(() => {
-      if (this.#code) {
-        console.log("[GlCodeblock] After highlight", {
-          id: this.id || "no-id",
-          codeInnerHTML: this.#code.innerHTML.substring(0, 100),
-          codeInnerHTMLLength: this.#code.innerHTML.length,
-          codeTextContent: this.#code.textContent?.substring(0, 100)
-        });
-      } else {
-        console.warn("[GlCodeblock] Code element not found!", this.id || "no-id");
-      }
-    }, 100);
   }
 
   #highlight(code: string, lang: string): void {
@@ -272,8 +190,12 @@ export class GlCodeblock extends HTMLElement {
       this.#code.innerHTML = this.#highlightHTML(code);
     } else if (lang === "css") {
       this.#code.innerHTML = this.#highlightCSS(code);
-    } else if (lang === "js" || lang === "javascript" || lang === "ts" || lang === "typescript") {
-      this.#code.innerHTML = this.#highlightJS(code);
+    } else if (lang === "js" || lang === "javascript" || lang === "ts" || lang === "typescript" || lang === "jsx" || lang === "tsx") {
+      if (lang === "jsx" || lang === "tsx") {
+        this.#code.innerHTML = this.#highlightJSX(code);
+      } else {
+        this.#code.innerHTML = this.#highlightJS(code);
+      }
     } else if (lang === "json") {
       this.#code.innerHTML = this.#highlightJSON(code);
     } else {
@@ -296,70 +218,86 @@ export class GlCodeblock extends HTMLElement {
   }
 
   #highlightCSS(code: string): string {
-    // Escape HTML first
-    let result = code
+    // First escape HTML entities
+    let highlighted = code
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
     
-    // Use a simpler approach: process line by line to avoid regex conflicts
-    const lines = result.split("\n");
-    const highlightedLines = lines.map((line) => {
-      // Skip if already has spans (shouldn't happen, but safety check)
-      if (line.includes('<span')) return line;
-      
-      let highlighted = line;
-      
-      // Comments (multiline handled separately)
-      highlighted = highlighted.replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="comment">$1</span>');
-      
-      // Strings
-      highlighted = highlighted.replace(/(["'][^"']*["'])/g, '<span class="string">$1</span>');
-      
-      // Numbers (but not inside strings - simple check)
-      if (!highlighted.includes('<span class="string">')) {
-        highlighted = highlighted.replace(/(\d+\.?\d*)/g, '<span class="number">$1</span>');
-      }
-      
-      // Selectors: word followed by {
-      highlighted = highlighted.replace(/([\w-]+)(\s*)(\{)/g, '<span class="selector">$1</span>$2<span class="punctuation">$3</span>');
-      
-      // Properties: word followed by :
-      highlighted = highlighted.replace(/([\w-]+)(\s*)(:)/g, '<span class="property">$1</span>$2<span class="operator">$3</span>');
-      
-      return highlighted;
-    });
+    // Comments (must be first to avoid breaking other patterns)
+    highlighted = highlighted.replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="comment">$1</span>');
     
-    return highlightedLines.join("\n");
+    // Strings (before other patterns to avoid breaking them)
+    highlighted = highlighted.replace(/(["'][^"']*["'])/g, '<span class="string">$1</span>');
+    
+    // Numbers
+    highlighted = highlighted.replace(/(\d+\.?\d*)/g, '<span class="number">$1</span>');
+    
+    // Selectors (before properties to avoid conflicts)
+    highlighted = highlighted.replace(/([\w-.#:\[\]()]+)(\s*)(\{)/g, '<span class="selector">$1</span>$2<span class="punctuation">$3</span>');
+    
+    // Properties and values
+    highlighted = highlighted.replace(/([\w-]+)(\s*)(:)(\s*)([^;{}]+)(;)/g, '<span class="property">$1</span>$2<span class="operator">$3</span>$4<span class="attr-value">$5</span><span class="punctuation">$6</span>');
+    
+    // Closing braces
+    highlighted = highlighted.replace(/(\})/g, '<span class="punctuation">$1</span>');
+    
+    return highlighted;
   }
 
   #highlightJS(code: string): string {
-    // Escape HTML first
-    let result = code
+    const keywords = /\b(const|let|var|function|if|else|for|while|return|class|extends|import|export|from|default|async|await|try|catch|throw|new|this|super|static|public|private|protected|interface|type|enum|namespace|declare|as|of|in|typeof|instanceof|true|false|null|undefined|void)\b/g;
+    const strings = /(["'`])(?:(?=(\\?))\2.)*?\1/g;
+    const numbers = /\b\d+\.?\d*\b/g;
+    const functions = /\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g;
+    const comments = /(\/\/.*$|\/\*[\s\S]*?\*\/)/gm;
+
+    return code
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(comments, '<span class="comment">$1</span>')
+      .replace(strings, '<span class="string">$&</span>')
+      .replace(numbers, '<span class="number">$&</span>')
+      .replace(keywords, '<span class="keyword">$&</span>')
+      .replace(functions, '<span class="function">$1</span> ');
+  }
+
+  #highlightJSX(code: string): string {
+    // First escape HTML entities
+    let highlighted = code
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
     
-    // Process in order: comments, strings, numbers, keywords, functions
-    // Use simpler regex patterns to avoid conflicts
+    // Comments (must be first)
+    highlighted = highlighted.replace(/(\/\/.*$|\/\*[\s\S]*?\*\/)/gm, '<span class="comment">$1</span>');
     
-    // Comments first
-    result = result.replace(/(\/\/.*$|\/\*[\s\S]*?\*\/)/gm, '<span class="comment">$1</span>');
+    // JSX tags - handle both opening and closing tags
+    // Match: &lt;tag&gt; or &lt;/tag&gt; or &lt;tag attr="value"&gt;
+    highlighted = highlighted.replace(/&lt;(\/?)([\w-]+)([^&]*?)&gt;/g, (match, close, tag, attrs) => {
+      // Highlight attributes
+      const attrsHighlighted = attrs.replace(
+        /(\w+)(=)(["'][^"']*["']|\{[^}]*\})/g,
+        '<span class="attr-name">$1</span><span class="operator">$2</span><span class="attr-value">$3</span>'
+      );
+      return `<span class="tag">&lt;${close}${tag}</span>${attrsHighlighted}<span class="tag">&gt;</span>`;
+    });
     
-    // Strings (simple pattern)
-    result = result.replace(/(["'`][^"'`]*["'`])/g, '<span class="string">$1</span>');
+    // Strings (after JSX tags to avoid breaking them, but before other patterns)
+    highlighted = highlighted.replace(/(["'`])(?:(?=(\\?))\2.)*?\1/g, '<span class="string">$&</span>');
     
     // Numbers
-    result = result.replace(/\b(\d+\.?\d*)\b/g, '<span class="number">$1</span>');
+    highlighted = highlighted.replace(/\b\d+\.?\d*\b/g, '<span class="number">$&</span>');
     
     // Keywords
-    const keywordPattern = /\b(const|let|var|function|if|else|for|while|return|class|extends|import|export|from|default|async|await|try|catch|throw|new|this|super|static|public|private|protected|interface|type|enum|namespace|declare|as|of|in|typeof|instanceof|true|false|null|undefined|void)\b/g;
-    result = result.replace(keywordPattern, '<span class="keyword">$1</span>');
+    const keywords = /\b(const|let|var|function|if|else|for|while|return|class|extends|import|export|from|default|async|await|try|catch|throw|new|this|super|static|public|private|protected|interface|type|enum|namespace|declare|as|of|in|typeof|instanceof|true|false|null|undefined|void)\b/g;
+    highlighted = highlighted.replace(keywords, '<span class="keyword">$&</span>');
     
-    // Functions: identifier followed by (
-    result = result.replace(/\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g, '<span class="function">$1</span>');
+    // Functions (simple approach - JSX tags already handled)
+    highlighted = highlighted.replace(/\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g, '<span class="function">$1</span> ');
     
-    return result;
+    return highlighted;
   }
 
   #highlightJSON(code: string): string {
