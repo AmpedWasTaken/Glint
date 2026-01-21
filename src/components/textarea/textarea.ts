@@ -78,6 +78,7 @@ export class GlTextarea extends HTMLElement {
   #textarea!: HTMLTextAreaElement;
   #message!: HTMLSpanElement;
   #autoError = false;
+  #hasInteracted = false;
 
   get value() {
     return this.#textarea?.value ?? this.getAttribute("value") ?? "";
@@ -95,7 +96,15 @@ export class GlTextarea extends HTMLElement {
   }
 
   reportValidity() {
-    return this.#textarea?.reportValidity() ?? true;
+    const valid = this.#textarea?.reportValidity() ?? true;
+    if (!valid && this.#textarea) {
+      this.#hasInteracted = true;
+      if (!this.hasAttribute("error") && !this.hasAttribute("success")) {
+        this.#autoError = true;
+        this.setAttribute("error", this.#textarea.validationMessage || "Invalid value");
+      }
+    }
+    return valid;
   }
 
   connectedCallback() {
@@ -108,16 +117,36 @@ export class GlTextarea extends HTMLElement {
 
     this.#textarea.addEventListener("input", () => {
       this.setAttribute("value", this.#textarea.value);
-      if (this.#autoError && this.#textarea.checkValidity()) {
+      if (this.#hasInteracted && this.#textarea.value.length > 0) {
+        if (this.#textarea.checkValidity()) {
+          if (this.#autoError) {
+            this.#autoError = false;
+            this.removeAttribute("error");
+          }
+        } else if (this.#autoError || !this.hasAttribute("error")) {
+          this.#autoError = true;
+          this.setAttribute("error", this.#textarea.validationMessage || "Invalid value");
+        }
+      }
+      emit(this, "gl-change", { value: this.#textarea.value });
+    });
+    this.#textarea.addEventListener("blur", () => {
+      this.#hasInteracted = true;
+      if (this.#textarea.value.length > 0 && !this.#textarea.checkValidity()) {
+        if (!this.hasAttribute("error") && !this.hasAttribute("success")) {
+          this.#autoError = true;
+          this.setAttribute("error", this.#textarea.validationMessage || "Invalid value");
+        }
+      } else if (this.#autoError && this.#textarea.checkValidity()) {
         this.#autoError = false;
         this.removeAttribute("error");
       }
-      emit(this, "gl-change", { value: this.#textarea.value });
     });
     this.#textarea.addEventListener("change", () => {
       emit(this, "gl-commit", { value: this.#textarea.value });
     });
     this.#textarea.addEventListener("invalid", () => {
+      this.#hasInteracted = true;
       if (this.hasAttribute("error") || this.hasAttribute("success")) return;
       this.#autoError = true;
       this.setAttribute("error", this.#textarea.validationMessage || "Invalid value");

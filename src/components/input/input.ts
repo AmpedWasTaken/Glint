@@ -76,6 +76,7 @@ export class GlInput extends HTMLElement {
   #input!: HTMLInputElement;
   #message!: HTMLSpanElement;
   #autoError = false;
+  #hasInteracted = false;
 
   get value() {
     return this.#input?.value ?? this.getAttribute("value") ?? "";
@@ -93,7 +94,15 @@ export class GlInput extends HTMLElement {
   }
 
   reportValidity() {
-    return this.#input?.reportValidity() ?? true;
+    const valid = this.#input?.reportValidity() ?? true;
+    if (!valid && this.#input) {
+      this.#hasInteracted = true;
+      if (!this.hasAttribute("error") && !this.hasAttribute("success")) {
+        this.#autoError = true;
+        this.setAttribute("error", this.#input.validationMessage || "Invalid value");
+      }
+    }
+    return valid;
   }
 
   connectedCallback() {
@@ -106,16 +115,36 @@ export class GlInput extends HTMLElement {
 
     this.#input.addEventListener("input", () => {
       this.setAttribute("value", this.#input.value);
-      if (this.#autoError && this.#input.checkValidity()) {
+      if (this.#hasInteracted && this.#input.value.length > 0) {
+        if (this.#input.checkValidity()) {
+          if (this.#autoError) {
+            this.#autoError = false;
+            this.removeAttribute("error");
+          }
+        } else if (this.#autoError || !this.hasAttribute("error")) {
+          this.#autoError = true;
+          this.setAttribute("error", this.#input.validationMessage || "Invalid value");
+        }
+      }
+      emit(this, "gl-change", { value: this.#input.value });
+    });
+    this.#input.addEventListener("blur", () => {
+      this.#hasInteracted = true;
+      if (this.#input.value.length > 0 && !this.#input.checkValidity()) {
+        if (!this.hasAttribute("error") && !this.hasAttribute("success")) {
+          this.#autoError = true;
+          this.setAttribute("error", this.#input.validationMessage || "Invalid value");
+        }
+      } else if (this.#autoError && this.#input.checkValidity()) {
         this.#autoError = false;
         this.removeAttribute("error");
       }
-      emit(this, "gl-change", { value: this.#input.value });
     });
     this.#input.addEventListener("change", () => {
       emit(this, "gl-commit", { value: this.#input.value });
     });
     this.#input.addEventListener("invalid", () => {
+      this.#hasInteracted = true;
       if (this.hasAttribute("error") || this.hasAttribute("success")) return;
       this.#autoError = true;
       this.setAttribute("error", this.#input.validationMessage || "Invalid value");

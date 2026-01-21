@@ -26,18 +26,8 @@
         width: var(--docs-sidebar-width);
         height: 100vh;
         overflow-y: auto;
-        background: var(--gl-panel);
-        border-right: 1px solid var(--gl-border);
         padding: 20px 16px;
         z-index: 5;
-      }
-      .sidebar h2 {
-        margin: 0 0 16px;
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--gl-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
       }
       .sidebar nav {
         display: grid;
@@ -73,17 +63,6 @@
         backdrop-filter: blur(10px);
         padding-top: 10px;
       }
-      .topbarInner {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 12px 16px;
-        background: var(--gl-panel);
-        border: 1px solid var(--gl-border);
-        border-radius: var(--gl-radius);
-        box-shadow: var(--gl-shadow-sm);
-      }
       .section {
         margin-bottom: 64px;
         scroll-margin-top: 100px;
@@ -93,12 +72,6 @@
         font-size: 32px;
         line-height: 40px;
         font-weight: 700;
-      }
-      .section p {
-        margin: 0 0 32px;
-        color: var(--gl-muted);
-        font-size: var(--gl-text-md);
-        line-height: var(--gl-line-md);
       }
       .component {
         margin-bottom: 48px;
@@ -114,37 +87,18 @@
         line-height: 32px;
         font-weight: 600;
       }
-      .component .desc {
-        margin: 0 0 24px;
-        color: var(--gl-muted);
-        font-size: var(--gl-text-md);
-        line-height: var(--gl-line-md);
-      }
-      .demo {
-        margin: 24px 0;
-        padding: 24px;
-        background: var(--gl-panel);
-        border: 1px solid var(--gl-border);
-        border-radius: var(--gl-radius);
-        box-shadow: var(--gl-shadow-sm);
-      }
-      .codeBlock {
-        position: relative;
-        margin: 24px 0;
+      .code {
+        padding: 16px;
+        margin: 0;
+        overflow-x: auto;
+        font-family: "Consolas", "Monaco", "Courier New", monospace;
+        font-size: 13px;
+        line-height: 1.6;
+        color: var(--gl-fg);
         background: var(--gl-bg);
-        border: 1px solid var(--gl-border);
-        border-radius: var(--gl-radius);
-        overflow: hidden;
       }
-      .codeHeader {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 8px 12px;
-        background: var(--gl-panel);
-        border-bottom: 1px solid var(--gl-border);
-        font-size: 12px;
-        color: var(--gl-muted);
+      .code code {
+        font-family: inherit;
       }
       .codeCopy {
         all: unset;
@@ -160,19 +114,6 @@
       }
       .codeCopy.copied {
         color: var(--gl-success);
-      }
-      .code {
-        padding: 16px;
-        margin: 0;
-        overflow-x: auto;
-        font-family: "Consolas", "Monaco", "Courier New", monospace;
-        font-size: 13px;
-        line-height: 1.6;
-        color: var(--gl-fg);
-        background: var(--gl-bg);
-      }
-      .code code {
-        font-family: inherit;
       }
       .props {
         margin: 24px 0;
@@ -273,33 +214,41 @@
 
     <div class="layout">
       <aside class="sidebar" id="sidebar">
-        <h2>Components</h2>
-        <nav>
-          <a href="#buttons" class="nav-link">Buttons</a>
-          <a href="#cards" class="nav-link">Cards</a>
-          <a href="#forms" class="nav-link">Forms</a>
-          <a href="#navigation" class="nav-link">Navigation</a>
-          <a href="#overlays" class="nav-link">Overlays</a>
-          <a href="#feedback" class="nav-link">Feedback</a>
-          <a href="#display" class="nav-link">Display</a>
-        </nav>
+        <gl-card surface="glass" style="padding: 0; border: none; box-shadow: none">
+          <div slot="header" style="padding-bottom: 8px">
+            <div style="font-size: 14px; font-weight: 600; color: var(--gl-muted); text-transform: uppercase; letter-spacing: 0.5px">
+              Components
+            </div>
+          </div>
+          <nav>
+            <a href="#buttons" class="nav-link">Buttons</a>
+            <a href="#cards" class="nav-link">Cards</a>
+            <a href="#forms" class="nav-link">Forms</a>
+            <a href="#navigation" class="nav-link">Navigation</a>
+            <a href="#overlays" class="nav-link">Overlays</a>
+            <a href="#feedback" class="nav-link">Feedback</a>
+            <a href="#display" class="nav-link">Display</a>
+          </nav>
+        </gl-card>
       </aside>
 
       <main class="content">
         <div class="topbar">
-          <div class="topbarInner">
-            <div>
-              <h1 style="margin: 0; font-size: 20px; line-height: 26px" class="gl-gradient-text" data-animate="true">
-                Components
-              </h1>
-              <p style="margin: 4px 0 0; color: var(--gl-muted); font-size: 14px">Documentation & examples</p>
+          <gl-card surface="glass" motion="subtle">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px">
+              <div>
+                <h1 style="margin: 0; font-size: 20px; line-height: 26px" class="gl-gradient-text" data-animate="true">
+                  Components
+                </h1>
+                <p style="margin: 4px 0 0; color: var(--gl-muted); font-size: 14px">Documentation & examples</p>
+              </div>
+              <div class="row">
+                <a class="link" href="./index.html"><gl-button variant="ghost">Home</gl-button></a>
+                <gl-button id="toggleSidebar" variant="secondary" size="sm">Menu</gl-button>
+                <gl-button id="toggleTheme" variant="ghost">Theme</gl-button>
+              </div>
             </div>
-            <div class="row">
-              <a class="link" href="./index.html"><gl-button variant="ghost">Home</gl-button></a>
-              <gl-button id="toggleSidebar" variant="secondary" size="sm">Menu</gl-button>
-              <gl-button id="toggleTheme" variant="ghost">Theme</gl-button>
-            </div>
-          </div>
+          </gl-card>
         </div>
 
         <section id="buttons" class="section">
@@ -309,91 +258,91 @@
           <div class="component">
             <h2>Basic usage</h2>
             <p class="desc">Default button with primary styling.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <gl-button>Primary</gl-button>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-button>Primary</gl-button>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-button&gt;Primary&lt;/gl-button&gt;</code></pre>
-            </div>
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-button&gt;Primary&lt;/gl-button&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Variants</h2>
             <p class="desc">Different visual styles for different contexts.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="row">
                 <gl-button>Primary</gl-button>
                 <gl-button variant="secondary">Secondary</gl-button>
                 <gl-button variant="ghost">Ghost</gl-button>
                 <gl-button variant="destructive">Destructive</gl-button>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-button>Primary</gl-button>
 <gl-button variant="secondary">Secondary</gl-button>
 <gl-button variant="ghost">Ghost</gl-button>
 <gl-button variant="destructive">Destructive</gl-button>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-button&gt;Primary&lt;/gl-button&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-button&gt;Primary&lt;/gl-button&gt;
 &lt;gl-button variant="secondary"&gt;Secondary&lt;/gl-button&gt;
 &lt;gl-button variant="ghost"&gt;Ghost&lt;/gl-button&gt;
-&lt;gl-button variant="destructive"&gt;Destructive&lt;/gl-button&gt;</code></pre>
-            </div>
+&lt;gl-button variant="destructive"&gt;Destructive&lt;/gl-button&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Sizes</h2>
             <p class="desc">Control button size with the size attribute.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="row">
                 <gl-button size="sm">Small</gl-button>
                 <gl-button>Default</gl-button>
                 <gl-button size="lg">Large</gl-button>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-button size="sm">Small</gl-button>
 <gl-button>Default</gl-button>
 <gl-button size="lg">Large</gl-button>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-button size="sm"&gt;Small&lt;/gl-button&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-button size="sm"&gt;Small&lt;/gl-button&gt;
 &lt;gl-button&gt;Default&lt;/gl-button&gt;
-&lt;gl-button size="lg"&gt;Large&lt;/gl-button&gt;</code></pre>
-            </div>
+&lt;gl-button size="lg"&gt;Large&lt;/gl-button&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Motion</h2>
             <p class="desc">Customize animation behavior with motion presets.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="row">
                 <gl-button motion="none">None</gl-button>
                 <gl-button motion="subtle">Subtle</gl-button>
                 <gl-button motion="snappy">Snappy</gl-button>
                 <gl-button motion="bounce">Bounce</gl-button>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-button motion="none">None</gl-button>
 <gl-button motion="subtle">Subtle</gl-button>
 <gl-button motion="snappy">Snappy</gl-button>
 <gl-button motion="bounce">Bounce</gl-button>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-button motion="none"&gt;None&lt;/gl-button&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-button motion="none"&gt;None&lt;/gl-button&gt;
 &lt;gl-button motion="subtle"&gt;Subtle&lt;/gl-button&gt;
 &lt;gl-button motion="snappy"&gt;Snappy&lt;/gl-button&gt;
-&lt;gl-button motion="bounce"&gt;Bounce&lt;/gl-button&gt;</code></pre>
-            </div>
+&lt;gl-button motion="bounce"&gt;Bounce&lt;/gl-button&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="props">
@@ -464,7 +413,7 @@
           <div class="component">
             <h2>Basic usage</h2>
             <p class="desc">Card with slots for structured content.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <gl-card>
                 <div slot="header">
                   <div style="font-weight: 600">Card title</div>
@@ -475,9 +424,9 @@
                   <gl-button variant="secondary">Action</gl-button>
                 </div>
               </gl-card>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-card>
   <div slot="header">
@@ -490,7 +439,7 @@
   </div>
 </gl-card>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-card&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-card&gt;
   &lt;div slot="header"&gt;
     &lt;div style="font-weight: 600"&gt;Card title&lt;/div&gt;
     &lt;div class="muted"&gt;Card description&lt;/div&gt;
@@ -499,14 +448,14 @@
   &lt;div slot="footer"&gt;
     &lt;gl-button variant="secondary"&gt;Action&lt;/gl-button&gt;
   &lt;/div&gt;
-&lt;/gl-card&gt;</code></pre>
-            </div>
+&lt;/gl-card&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Effects</h2>
             <p class="desc">Add tilt effect and glass surface.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="row">
                 <gl-card effect="tilt" motion="snappy" style="padding: 20px; min-width: 180px">
                   <div style="font-weight: 600">Tilt effect</div>
@@ -521,18 +470,18 @@
                   <div class="muted">Tilt + glass</div>
                 </gl-card>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-card effect="tilt" motion="snappy">Tilt effect</gl-card>
 <gl-card surface="glass" motion="snappy">Glass surface</gl-card>
 <gl-card effect="tilt" surface="glass" motion="snappy">Both</gl-card>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-card effect="tilt" motion="snappy"&gt;Tilt effect&lt;/gl-card&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-card effect="tilt" motion="snappy"&gt;Tilt effect&lt;/gl-card&gt;
 &lt;gl-card surface="glass" motion="snappy"&gt;Glass surface&lt;/gl-card&gt;
-&lt;gl-card effect="tilt" surface="glass" motion="snappy"&gt;Both&lt;/gl-card&gt;</code></pre>
-            </div>
+&lt;gl-card effect="tilt" surface="glass" motion="snappy"&gt;Both&lt;/gl-card&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="props">
@@ -603,7 +552,7 @@
           <div class="component">
             <h2>Input</h2>
             <p class="desc">Text input with label, description, and validation.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="stack">
                 <gl-input placeholder="you@company.com">
                   <span slot="label">Email</span>
@@ -616,9 +565,9 @@
                   <span slot="label">Username</span>
                 </gl-input>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-input placeholder="you@company.com">
   <span slot="label">Email</span>
@@ -631,7 +580,7 @@
   <span slot="label">Username</span>
 </gl-input>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-input placeholder="you@company.com"&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-input placeholder="you@company.com"&gt;
   &lt;span slot="label"&gt;Email&lt;/span&gt;
   &lt;span slot="description"&gt;Enter your email address&lt;/span&gt;
 &lt;/gl-input&gt;
@@ -640,47 +589,47 @@
 &lt;/gl-input&gt;
 &lt;gl-input placeholder="Username" success="Username is available"&gt;
   &lt;span slot="label"&gt;Username&lt;/span&gt;
-&lt;/gl-input&gt;</code></pre>
-            </div>
+&lt;/gl-input&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Textarea</h2>
             <p class="desc">Multi-line text input with resize options.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <gl-textarea rows="4" placeholder="Tell us what you need…">
                 <span slot="label">Message</span>
                 <span slot="description">Minimum 10 characters</span>
               </gl-textarea>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-textarea rows="4" placeholder="Tell us what you need…">
   <span slot="label">Message</span>
   <span slot="description">Minimum 10 characters</span>
 </gl-textarea>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-textarea rows="4" placeholder="Tell us what you need…"&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-textarea rows="4" placeholder="Tell us what you need…"&gt;
   &lt;span slot="label"&gt;Message&lt;/span&gt;
   &lt;span slot="description"&gt;Minimum 10 characters&lt;/span&gt;
-&lt;/gl-textarea&gt;</code></pre>
-            </div>
+&lt;/gl-textarea&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Select</h2>
             <p class="desc">Dropdown select with options.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <gl-select
                 value="design"
                 options='[{"value":"design","label":"Design"},{"value":"engineering","label":"Engineering"},{"value":"ops","label":"Ops"}]'
               >
                 <span slot="label">Team</span>
               </gl-select>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-select
   value="design"
@@ -689,19 +638,19 @@
   <span slot="label">Team</span>
 </gl-select>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-select
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-select
   value="design"
   options='[{"value":"design","label":"Design"},{"value":"engineering","label":"Engineering"},{"value":"ops","label":"Ops"}]'
 &gt;
   &lt;span slot="label"&gt;Team&lt;/span&gt;
-&lt;/gl-select&gt;</code></pre>
-            </div>
+&lt;/gl-select&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Checkbox & Radio</h2>
             <p class="desc">Selection controls with keyboard support.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="stack">
                 <gl-checkbox checked>Remember me</gl-checkbox>
                 <gl-checkbox>Subscribe to newsletter</gl-checkbox>
@@ -712,9 +661,9 @@
                   <gl-radio name="plan" value="enterprise">Enterprise</gl-radio>
                 </div>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-checkbox checked>Remember me</gl-checkbox>
 <gl-checkbox>Subscribe to newsletter</gl-checkbox>
@@ -723,19 +672,19 @@
 <gl-radio name="plan" value="pro">Pro</gl-radio>
 <gl-radio name="plan" value="enterprise">Enterprise</gl-radio>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-checkbox checked&gt;Remember me&lt;/gl-checkbox&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-checkbox checked&gt;Remember me&lt;/gl-checkbox&gt;
 &lt;gl-checkbox&gt;Subscribe to newsletter&lt;/gl-checkbox&gt;
 
 &lt;gl-radio name="plan" value="starter" checked&gt;Starter&lt;/gl-radio&gt;
 &lt;gl-radio name="plan" value="pro"&gt;Pro&lt;/gl-radio&gt;
-&lt;gl-radio name="plan" value="enterprise"&gt;Enterprise&lt;/gl-radio&gt;</code></pre>
-            </div>
+&lt;gl-radio name="plan" value="enterprise"&gt;Enterprise&lt;/gl-radio&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Switch</h2>
             <p class="desc">Toggle switch with motion variations.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="stack">
                 <div class="row" style="align-items: center; gap: 12px">
                   <gl-switch checked motion="none"></gl-switch>
@@ -754,24 +703,24 @@
                   <span class="muted">motion="bounce"</span>
                 </div>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-switch checked motion="snappy"></gl-switch>
 <gl-switch checked size="sm"></gl-switch>
 <gl-switch checked size="lg"></gl-switch>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-switch checked motion="snappy"&gt;&lt;/gl-switch&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-switch checked motion="snappy"&gt;&lt;/gl-switch&gt;
 &lt;gl-switch checked size="sm"&gt;&lt;/gl-switch&gt;
-&lt;gl-switch checked size="lg"&gt;&lt;/gl-switch&gt;</code></pre>
-            </div>
+&lt;gl-switch checked size="lg"&gt;&lt;/gl-switch&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Slider</h2>
             <p class="desc">Range input with motion and keyboard support.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="stack">
                 <div>
                   <div class="muted" style="margin-bottom: 8px">Value: <span id="sliderValue">50</span></div>
@@ -783,20 +732,20 @@
                   <gl-slider value="80" size="lg" motion="snappy" style="flex: 1"></gl-slider>
                 </div>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-slider value="50" min="0" max="100" step="1" motion="snappy"></gl-slider>
 <gl-slider value="40" size="sm"></gl-slider>
 <gl-slider value="60"></gl-slider>
 <gl-slider value="80" size="lg"></gl-slider>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-slider value="50" min="0" max="100" step="1" motion="snappy"&gt;&lt;/gl-slider&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-slider value="50" min="0" max="100" step="1" motion="snappy"&gt;&lt;/gl-slider&gt;
 &lt;gl-slider value="40" size="sm"&gt;&lt;/gl-slider&gt;
 &lt;gl-slider value="60"&gt;&lt;/gl-slider&gt;
-&lt;gl-slider value="80" size="lg"&gt;&lt;/gl-slider&gt;</code></pre>
-            </div>
+&lt;gl-slider value="80" size="lg"&gt;&lt;/gl-slider&gt;</code>              </pre>
+            </gl-card>
           </div>
         </section>
 
@@ -807,7 +756,7 @@
           <div class="component">
             <h2>Tabs</h2>
             <p class="desc">Tabbed interface with keyboard navigation.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <gl-tabs value="account">
                 <gl-tab slot="tabs" value="account">Account</gl-tab>
                 <gl-tab slot="tabs" value="security">Security</gl-tab>
@@ -822,9 +771,9 @@
                   <div class="muted">Billing settings content</div>
                 </gl-tab-panel>
               </gl-tabs>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-tabs value="account">
   <gl-tab slot="tabs" value="account">Account</gl-tab>
@@ -835,21 +784,21 @@
   <gl-tab-panel slot="panels" value="billing">Billing content</gl-tab-panel>
 </gl-tabs>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-tabs value="account"&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-tabs value="account"&gt;
   &lt;gl-tab slot="tabs" value="account"&gt;Account&lt;/gl-tab&gt;
   &lt;gl-tab slot="tabs" value="security"&gt;Security&lt;/gl-tab&gt;
   &lt;gl-tab slot="tabs" value="billing"&gt;Billing&lt;/gl-tab&gt;
   &lt;gl-tab-panel slot="panels" value="account"&gt;Account content&lt;/gl-tab-panel&gt;
   &lt;gl-tab-panel slot="panels" value="security"&gt;Security content&lt;/gl-tab-panel&gt;
   &lt;gl-tab-panel slot="panels" value="billing"&gt;Billing content&lt;/gl-tab-panel&gt;
-&lt;/gl-tabs&gt;</code></pre>
-            </div>
+&lt;/gl-tabs&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Accordion</h2>
             <p class="desc">Collapsible content panels, single or multiple.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="stack">
                 <gl-accordion>
                   <gl-accordion-item open>
@@ -872,9 +821,9 @@
                   </gl-accordion-item>
                 </gl-accordion>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-accordion>
   <gl-accordion-item open>
@@ -887,7 +836,7 @@
   <gl-accordion-item open>Multiple panels</gl-accordion-item>
 </gl-accordion>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-accordion&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-accordion&gt;
   &lt;gl-accordion-item open&gt;
     &lt;span slot="title"&gt;Title&lt;/span&gt;
     Content goes here.
@@ -896,22 +845,22 @@
 
 &lt;gl-accordion multiple&gt;
   &lt;gl-accordion-item open&gt;Multiple panels&lt;/gl-accordion-item&gt;
-&lt;/gl-accordion&gt;</code></pre>
-            </div>
+&lt;/gl-accordion&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Breadcrumb</h2>
             <p class="desc">Navigation trail with separators.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <gl-breadcrumb separator="›">
                 <gl-breadcrumb-item href="./index.html">Home</gl-breadcrumb-item>
                 <gl-breadcrumb-item href="./components.html">Components</gl-breadcrumb-item>
                 <gl-breadcrumb-item current>Navigation</gl-breadcrumb-item>
               </gl-breadcrumb>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-breadcrumb separator="›">
   <gl-breadcrumb-item href="/">Home</gl-breadcrumb-item>
@@ -919,30 +868,30 @@
   <gl-breadcrumb-item current>Current</gl-breadcrumb-item>
 </gl-breadcrumb>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-breadcrumb separator="›"&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-breadcrumb separator="›"&gt;
   &lt;gl-breadcrumb-item href="/"&gt;Home&lt;/gl-breadcrumb-item&gt;
   &lt;gl-breadcrumb-item href="/docs"&gt;Docs&lt;/gl-breadcrumb-item&gt;
   &lt;gl-breadcrumb-item current&gt;Current&lt;/gl-breadcrumb-item&gt;
-&lt;/gl-breadcrumb&gt;</code></pre>
-            </div>
+&lt;/gl-breadcrumb&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Pagination</h2>
             <p class="desc">Page navigation with prev/next and page numbers.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="row" style="justify-content: space-between; align-items: center">
                 <div class="muted">Page: <span id="pageLabel">3</span></div>
                 <gl-pagination id="pagerDemo" page="3" pages="12"></gl-pagination>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-pagination page="3" pages="12"></gl-pagination>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-pagination page="3" pages="12"&gt;&lt;/gl-pagination&gt;</code></pre>
-            </div>
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-pagination page="3" pages="12"&gt;&lt;/gl-pagination&gt;</code>              </pre>
+            </gl-card>
           </div>
         </section>
 
@@ -953,11 +902,11 @@
           <div class="component">
             <h2>Modal</h2>
             <p class="desc">Dialog with focus trap and backdrop.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <gl-button id="openModalDemo" motion="snappy">Open modal</gl-button>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-modal id="modal" label="Example modal">
   <div slot="header">
@@ -978,7 +927,7 @@
   });
 </script>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-modal id="modal" label="Example modal"&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-modal id="modal" label="Example modal"&gt;
   &lt;div slot="header"&gt;
     &lt;div style="font-weight: 600"&gt;Modal title&lt;/div&gt;
   &lt;/div&gt;
@@ -995,14 +944,14 @@
   document.getElementById("closeModal").addEventListener("gl-press", () =&gt; {
     document.getElementById("modal").close();
   });
-&lt;/script&gt;</code></pre>
-            </div>
+&lt;/script&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Popover</h2>
             <p class="desc">Positioned popup with rich content.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="row" style="flex-wrap: wrap; gap: 12px">
                 <gl-popover motion="subtle" surface="glass">
                   <gl-button slot="trigger" variant="secondary">Bottom / start</gl-button>
@@ -1029,9 +978,9 @@
                   </div>
                 </gl-popover>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-popover motion="subtle" side="bottom" align="start">
   <gl-button slot="trigger">Open</gl-button>
@@ -1041,44 +990,44 @@
   </div>
 </gl-popover>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-popover motion="subtle" side="bottom" align="start"&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-popover motion="subtle" side="bottom" align="start"&gt;
   &lt;gl-button slot="trigger"&gt;Open&lt;/gl-button&gt;
   &lt;div slot="content"&gt;
     &lt;div style="font-weight: 600"&gt;Popover title&lt;/div&gt;
     &lt;div class="muted"&gt;Content here&lt;/div&gt;
   &lt;/div&gt;
-&lt;/gl-popover&gt;</code></pre>
-            </div>
+&lt;/gl-popover&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Tooltip</h2>
             <p class="desc">Simple hover/focus tooltip.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <gl-tooltip motion="snappy">
                 <gl-button variant="secondary">Hover me</gl-button>
                 <span slot="content">This is a tooltip</span>
               </gl-tooltip>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-tooltip>
   <gl-button>Hover me</gl-button>
   <span slot="content">This is a tooltip</span>
 </gl-tooltip>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-tooltip&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-tooltip&gt;
   &lt;gl-button&gt;Hover me&lt;/gl-button&gt;
   &lt;span slot="content"&gt;This is a tooltip&lt;/span&gt;
-&lt;/gl-tooltip&gt;</code></pre>
-            </div>
+&lt;/gl-tooltip&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Dropdown</h2>
             <p class="desc">Menu dropdown with focus trap.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <gl-dropdown id="dropdownDemo" motion="subtle">
                 <gl-button slot="trigger" variant="secondary">Menu</gl-button>
                 <button class="item" data-value="edit">Edit</button>
@@ -1086,9 +1035,9 @@
                 <div class="divider"></div>
                 <button class="item" data-value="delete">Delete</button>
               </gl-dropdown>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-dropdown>
   <gl-button slot="trigger">Menu</gl-button>
@@ -1114,7 +1063,7 @@
   }
 </style>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-dropdown&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-dropdown&gt;
   &lt;gl-button slot="trigger"&gt;Menu&lt;/gl-button&gt;
   &lt;button class="item" data-value="edit"&gt;Edit&lt;/button&gt;
   &lt;button class="item" data-value="duplicate"&gt;Duplicate&lt;/button&gt;
@@ -1136,18 +1085,18 @@
   gl-dropdown .item:hover {
     background: var(--gl-hover);
   }
-&lt;/style&gt;</code></pre>
-            </div>
+&lt;/style&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Sidebar</h2>
             <p class="desc">Slide-out panel with backdrop.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <gl-button id="openSidebarDemo" motion="snappy">Open sidebar</gl-button>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-sidebar id="sidebar" side="right" surface="glass">
   <span slot="title">Sidebar</span>
@@ -1160,7 +1109,7 @@
   });
 </script>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-sidebar id="sidebar" side="right" surface="glass"&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-sidebar id="sidebar" side="right" surface="glass"&gt;
   &lt;span slot="title"&gt;Sidebar&lt;/span&gt;
   &lt;div&gt;Sidebar content&lt;/div&gt;
 &lt;/gl-sidebar&gt;
@@ -1169,8 +1118,8 @@
   document.getElementById("openSidebar").addEventListener("gl-press", () =&gt; {
     document.getElementById("sidebar").show();
   });
-&lt;/script&gt;</code></pre>
-            </div>
+&lt;/script&gt;</code>              </pre>
+            </gl-card>
           </div>
         </section>
 
@@ -1181,7 +1130,7 @@
           <div class="component">
             <h2>Alert</h2>
             <p class="desc">Alert messages with variants and close button.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="stack">
                 <gl-alert variant="default" motion="subtle">
                   <span slot="title">Info</span>
@@ -1200,9 +1149,9 @@
                   Something went wrong.
                 </gl-alert>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-alert variant="success">
   <span slot="title">Success</span>
@@ -1217,7 +1166,7 @@
   Something went wrong.
 </gl-alert>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-alert variant="success"&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-alert variant="success"&gt;
   &lt;span slot="title"&gt;Success&lt;/span&gt;
   Operation completed successfully.
 &lt;/gl-alert&gt;
@@ -1228,18 +1177,18 @@
 &lt;gl-alert variant="destructive"&gt;
   &lt;span slot="title"&gt;Error&lt;/span&gt;
   Something went wrong.
-&lt;/gl-alert&gt;</code></pre>
-            </div>
+&lt;/gl-alert&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Toast</h2>
             <p class="desc">Notification toasts with auto-dismiss.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <gl-button id="showToastDemo" motion="snappy">Show toast</gl-button>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-toaster id="toaster"></gl-toaster>
 
@@ -1252,7 +1201,7 @@
   });
 </script>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-toaster id="toaster"&gt;&lt;/gl-toaster&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-toaster id="toaster"&gt;&lt;/gl-toaster&gt;
 
 &lt;script&gt;
   const toaster = document.getElementById("toaster");
@@ -1261,14 +1210,14 @@
     description: "This toast auto-dismisses. Hover to pause.",
     duration: 4000
   });
-&lt;/script&gt;</code></pre>
-            </div>
+&lt;/script&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Progress</h2>
             <p class="desc">Progress bar with animation.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="stack">
                 <div>
                   <div class="muted" style="margin-bottom: 8px">45%</div>
@@ -1283,50 +1232,50 @@
                   <gl-progress value="100" motion="snappy"></gl-progress>
                 </div>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-progress value="45" motion="snappy"></gl-progress>
 <gl-progress value="75" motion="snappy"></gl-progress>
 <gl-progress value="100" motion="snappy"></gl-progress>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-progress value="45" motion="snappy"&gt;&lt;/gl-progress&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-progress value="45" motion="snappy"&gt;&lt;/gl-progress&gt;
 &lt;gl-progress value="75" motion="snappy"&gt;&lt;/gl-progress&gt;
-&lt;gl-progress value="100" motion="snappy"&gt;&lt;/gl-progress&gt;</code></pre>
-            </div>
+&lt;gl-progress value="100" motion="snappy"&gt;&lt;/gl-progress&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Spinner</h2>
             <p class="desc">Loading spinner with sizes and variants.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="row">
                 <gl-spinner size="sm"></gl-spinner>
                 <gl-spinner></gl-spinner>
                 <gl-spinner size="lg"></gl-spinner>
                 <gl-spinner variant="destructive"></gl-spinner>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-spinner size="sm"></gl-spinner>
 <gl-spinner></gl-spinner>
 <gl-spinner size="lg"></gl-spinner>
 <gl-spinner variant="destructive"></gl-spinner>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-spinner size="sm"&gt;&lt;/gl-spinner&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-spinner size="sm"&gt;&lt;/gl-spinner&gt;
 &lt;gl-spinner&gt;&lt;/gl-spinner&gt;
 &lt;gl-spinner size="lg"&gt;&lt;/gl-spinner&gt;
-&lt;gl-spinner variant="destructive"&gt;&lt;/gl-spinner&gt;</code></pre>
-            </div>
+&lt;gl-spinner variant="destructive"&gt;&lt;/gl-spinner&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Badge</h2>
             <p class="desc">Small status indicator with variants.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="row">
                 <gl-badge>Default</gl-badge>
                 <gl-badge variant="secondary">Secondary</gl-badge>
@@ -1335,9 +1284,9 @@
                 <gl-badge size="sm">Small</gl-badge>
                 <gl-badge size="lg" motion="snappy">Large</gl-badge>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-badge>Default</gl-badge>
 <gl-badge variant="secondary">Secondary</gl-badge>
@@ -1346,13 +1295,13 @@
 <gl-badge size="sm">Small</gl-badge>
 <gl-badge size="lg">Large</gl-badge>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-badge&gt;Default&lt;/gl-badge&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-badge&gt;Default&lt;/gl-badge&gt;
 &lt;gl-badge variant="secondary"&gt;Secondary&lt;/gl-badge&gt;
 &lt;gl-badge variant="outline"&gt;Outline&lt;/gl-badge&gt;
 &lt;gl-badge variant="destructive"&gt;Destructive&lt;/gl-badge&gt;
 &lt;gl-badge size="sm"&gt;Small&lt;/gl-badge&gt;
-&lt;gl-badge size="lg"&gt;Large&lt;/gl-badge&gt;</code></pre>
-            </div>
+&lt;gl-badge size="lg"&gt;Large&lt;/gl-badge&gt;</code>              </pre>
+            </gl-card>
           </div>
         </section>
 
@@ -1363,7 +1312,7 @@
           <div class="component">
             <h2>Avatar</h2>
             <p class="desc">User avatar with image, initials, and status.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="row" style="align-items: center; gap: 16px">
                 <gl-avatar name="John Doe" size="sm" status="online"></gl-avatar>
                 <gl-avatar name="Jane Smith" size="md" status="away" motion="snappy"></gl-avatar>
@@ -1371,24 +1320,24 @@
                 <gl-avatar name="Sam Wilson" size="xl" status="offline"></gl-avatar>
                 <gl-avatar src="https://i.pravatar.cc/150?img=12" alt="User" size="lg" status="online" motion="snappy"></gl-avatar>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-avatar name="John Doe" size="md" status="online"></gl-avatar>
 <gl-avatar name="Jane Smith" size="lg" status="away"></gl-avatar>
 <gl-avatar src="https://example.com/avatar.jpg" alt="User" size="lg" status="online"></gl-avatar>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-avatar name="John Doe" size="md" status="online"&gt;&lt;/gl-avatar&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-avatar name="John Doe" size="md" status="online"&gt;&lt;/gl-avatar&gt;
 &lt;gl-avatar name="Jane Smith" size="lg" status="away"&gt;&lt;/gl-avatar&gt;
-&lt;gl-avatar src="https://example.com/avatar.jpg" alt="User" size="lg" status="online"&gt;&lt;/gl-avatar&gt;</code></pre>
-            </div>
+&lt;gl-avatar src="https://example.com/avatar.jpg" alt="User" size="lg" status="online"&gt;&lt;/gl-avatar&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Skeleton</h2>
             <p class="desc">Loading placeholders with variants.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="stack">
                 <div class="row" style="align-items: center; gap: 12px">
                   <gl-skeleton width="40px" height="40px" shape="circle" variant="shimmer"></gl-skeleton>
@@ -1403,26 +1352,26 @@
                   <gl-skeleton width="120px" height="32px" variant="shimmer"></gl-skeleton>
                 </div>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-skeleton width="40px" height="40px" shape="circle" variant="shimmer"></gl-skeleton>
 <gl-skeleton width="200px" height="16px" variant="shimmer"></gl-skeleton>
 <gl-skeleton width="150px" height="32px" variant="pulse"></gl-skeleton>
 <gl-skeleton width="100%" height="200px" variant="wave"></gl-skeleton>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;gl-skeleton width="40px" height="40px" shape="circle" variant="shimmer"&gt;&lt;/gl-skeleton&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-skeleton width="40px" height="40px" shape="circle" variant="shimmer"&gt;&lt;/gl-skeleton&gt;
 &lt;gl-skeleton width="200px" height="16px" variant="shimmer"&gt;&lt;/gl-skeleton&gt;
 &lt;gl-skeleton width="150px" height="32px" variant="pulse"&gt;&lt;/gl-skeleton&gt;
-&lt;gl-skeleton width="100%" height="200px" variant="wave"&gt;&lt;/gl-skeleton&gt;</code></pre>
-            </div>
+&lt;gl-skeleton width="100%" height="200px" variant="wave"&gt;&lt;/gl-skeleton&gt;</code>              </pre>
+            </gl-card>
           </div>
 
           <div class="component">
             <h2>Divider</h2>
             <p class="desc">Horizontal and vertical dividers.</p>
-            <div class="demo">
+            <gl-card motion="subtle" style="margin: 24px 0">
               <div class="stack">
                 <div>Content above</div>
                 <gl-divider></gl-divider>
@@ -1433,9 +1382,9 @@
                   <span>Right</span>
                 </div>
               </div>
-            </div>
-            <div class="codeBlock">
-              <div class="codeHeader">
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<div>Content above</div>
 <gl-divider></gl-divider>
@@ -1447,7 +1396,7 @@
   <span>Right</span>
 </div>'>Copy</button>
               </div>
-              <pre class="code"><code>&lt;div&gt;Content above&lt;/div&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;div&gt;Content above&lt;/div&gt;
 &lt;gl-divider&gt;&lt;/gl-divider&gt;
 &lt;div&gt;Content below&lt;/div&gt;
 
@@ -1455,8 +1404,8 @@
   &lt;span&gt;Left&lt;/span&gt;
   &lt;gl-divider orientation="vertical" style="height: 40px"&gt;&lt;/gl-divider&gt;
   &lt;span&gt;Right&lt;/span&gt;
-&lt;/div&gt;</code></pre>
-            </div>
+&lt;/div&gt;</code>              </pre>
+            </gl-card>
           </div>
         </section>
       </main>
