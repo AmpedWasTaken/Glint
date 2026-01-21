@@ -1,11 +1,8 @@
 <div align="center">
 
-<table>
-  <tr>
-    <td><img src="https://github.com/AmpedWasTaken/Glint/blob/main/images/logo.png?raw=true" alt="Glint Logo" width="48" height="48" /></td>
-    <td><h1 style="margin: 0;">Glint</h1></td>
-  </tr>
-</table>
+<p align="center">
+  <img src="https://i.postimg.cc/Nf5mThW2/Chat-GPT-Image-Jan-21-2026-10-06-54-AM-(1).png" alt="Glint" width="180" />
+</p>
 
 **Modern, minimal UI components built with Web Components + Shadow DOM**
 
