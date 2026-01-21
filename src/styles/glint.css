@@ -5,12 +5,19 @@
     Arial, "Apple Color Emoji", "Segoe UI Emoji";
 
   --gl-bg: #ffffff;
-  --gl-fg: #0f172a;
-  --gl-muted: #64748b;
-  --gl-border: rgba(15, 23, 42, 0.14);
-  --gl-ring: rgba(59, 130, 246, 0.35);
+  --gl-panel: #ffffff;
+  --gl-fg: #0b1220;
+  --gl-muted: #5b6b82;
+  --gl-border: rgba(2, 6, 23, 0.14);
+  --gl-primary: #2563eb;
+  --gl-primary-fg: #ffffff;
+  --gl-danger: #dc2626;
+  --gl-danger-fg: #ffffff;
+  --gl-ring: rgba(37, 99, 235, 0.35);
 
+  --gl-radius-sm: 10px;
   --gl-radius: 12px;
+  --gl-radius-lg: 16px;
   --gl-shadow-sm: 0 1px 2px rgba(2, 6, 23, 0.08);
   --gl-shadow-md: 0 10px 25px rgba(2, 6, 23, 0.14);
 
@@ -19,23 +26,95 @@
   --gl-space-3: 12px;
   --gl-space-4: 16px;
   --gl-space-5: 24px;
+  --gl-space-6: 32px;
+
+  --gl-text-sm: 12px;
+  --gl-text-md: 14px;
+  --gl-text-lg: 16px;
+
+  --gl-line-sm: 16px;
+  --gl-line-md: 20px;
+  --gl-line-lg: 24px;
+
+  --gl-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --gl-dur-1: 120ms;
+  --gl-dur-2: 180ms;
+
+  --gl-z-tooltip: 40;
+  --gl-z-toast: 50;
+  --gl-z-modal: 60;
 }
 
 [data-glint-theme="dark"] {
   --gl-bg: #0b1220;
+  --gl-panel: #0f172a;
   --gl-fg: #e5e7eb;
   --gl-muted: #94a3b8;
   --gl-border: rgba(226, 232, 240, 0.16);
-  --gl-ring: rgba(147, 197, 253, 0.35);
+  --gl-primary: #60a5fa;
+  --gl-primary-fg: #0b1220;
+  --gl-danger: #f87171;
+  --gl-danger-fg: #0b1220;
+  --gl-ring: rgba(96, 165, 250, 0.35);
 
   --gl-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
   --gl-shadow-md: 0 16px 40px rgba(0, 0, 0, 0.5);
 }
 
-body {
+@media (prefers-color-scheme: dark) {
+  [data-glint-theme="system"] {
+    --gl-bg: #0b1220;
+    --gl-panel: #0f172a;
+    --gl-fg: #e5e7eb;
+    --gl-muted: #94a3b8;
+    --gl-border: rgba(226, 232, 240, 0.16);
+    --gl-primary: #60a5fa;
+    --gl-primary-fg: #0b1220;
+    --gl-danger: #f87171;
+    --gl-danger-fg: #0b1220;
+    --gl-ring: rgba(96, 165, 250, 0.35);
+    --gl-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+    --gl-shadow-md: 0 16px 40px rgba(0, 0, 0, 0.5);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
   font-family: var(--gl-font-sans);
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
   color: var(--gl-fg);
   background: var(--gl-bg);
+  margin: 0;
+  line-height: var(--gl-line-lg);
+  font-size: var(--gl-text-lg);
+}
+
+a {
+  color: inherit;
+}
+
+:where(button, input, select, textarea) {
+  font: inherit;
+  color: inherit;
+}
+
+.glint {
+  font-family: var(--gl-font-sans);
+  color: var(--gl-fg);
+}
+
+.glint :focus-visible {
+  outline: 2px solid var(--gl-ring);
+  outline-offset: 2px;
 }
 
 
