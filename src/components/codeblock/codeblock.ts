@@ -260,34 +260,93 @@ export class GlCodeblock extends HTMLElement {
   }
 
   #highlightCSS(code: string): string {
-    return code
+    // First escape HTML
+    let result = code
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="comment">$1</span>')
-      .replace(/([\w-]+)(\s*)(\{)/g, '<span class="selector">$1</span>$2<span class="punctuation">$3</span>')
-      .replace(/([\w-]+)(\s*)(:)/g, '<span class="property">$1</span>$2<span class="operator">$3</span>')
-      .replace(/(:)(\s*)([^;]+)(;)/g, '<span class="operator">$1</span>$2<span class="string">$3</span><span class="punctuation">$4</span>')
-      .replace(/(["'][^"']*["'])/g, '<span class="string">$1</span>')
-      .replace(/(\d+\.?\d*)/g, '<span class="number">$1</span>');
+      .replace(/>/g, "&gt;");
+    
+    // Then apply syntax highlighting (order matters - avoid already-highlighted parts)
+    // Comments first
+    result = result.replace(/(\/\*[\s\S]*?\*\/)/g, (match) => {
+      if (match.includes('<span')) return match;
+      return `<span class="comment">${match}</span>`;
+    });
+    
+    // Strings
+    result = result.replace(/(["'][^"']*["'])/g, (match) => {
+      if (match.includes('<span')) return match;
+      return `<span class="string">${match}</span>`;
+    });
+    
+    // Numbers
+    result = result.replace(/(\d+\.?\d*)/g, (match) => {
+      if (match.includes('<span')) return match;
+      return `<span class="number">${match}</span>`;
+    });
+    
+    // Selectors (before properties to avoid conflicts)
+    result = result.replace(/([\w-]+)(\s*)(\{)/g, (match, selector, space, brace) => {
+      if (match.includes('<span')) return match;
+      return `<span class="selector">${selector}</span>${space}<span class="punctuation">${brace}</span>`;
+    });
+    
+    // Properties (avoid already highlighted)
+    result = result.replace(/([\w-]+)(\s*)(:)/g, (match, prop, space, colon) => {
+      if (match.includes('<span')) return match;
+      return `<span class="property">${prop}</span>${space}<span class="operator">${colon}</span>`;
+    });
+    
+    // Values with semicolons
+    result = result.replace(/(:)(\s*)([^;]+)(;)/g, (match, colon, space, value, semi) => {
+      if (match.includes('<span class="string">') || match.includes('<span class="number">')) return match;
+      return `<span class="operator">${colon}</span>${space}<span class="string">${value}</span><span class="punctuation">${semi}</span>`;
+    });
+    
+    return result;
   }
 
   #highlightJS(code: string): string {
-    const keywords = /\b(const|let|var|function|if|else|for|while|return|class|extends|import|export|from|default|async|await|try|catch|throw|new|this|super|static|public|private|protected|interface|type|enum|namespace|declare|as|of|in|typeof|instanceof|true|false|null|undefined|void)\b/g;
-    const strings = /(["'`])(?:(?=(\\?))\2.)*?\1/g;
-    const numbers = /\b\d+\.?\d*\b/g;
-    const functions = /\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g;
-    const comments = /(\/\/.*$|\/\*[\s\S]*?\*\/)/gm;
-
-    return code
+    // First escape HTML
+    let result = code
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(comments, '<span class="comment">$1</span>')
-      .replace(strings, '<span class="string">$&</span>')
-      .replace(numbers, '<span class="number">$&</span>')
-      .replace(keywords, '<span class="keyword">$&</span>')
-      .replace(functions, '<span class="function">$1</span> ');
+      .replace(/>/g, "&gt;");
+    
+    // Then apply syntax highlighting (order matters - comments first, then strings, then others)
+    const comments = /(\/\/.*$|\/\*[\s\S]*?\*\/)/gm;
+    const strings = /(["'`])(?:(?=(\\?))\2.)*?\1/g;
+    const keywords = /\b(const|let|var|function|if|else|for|while|return|class|extends|import|export|from|default|async|await|try|catch|throw|new|this|super|static|public|private|protected|interface|type|enum|namespace|declare|as|of|in|typeof|instanceof|true|false|null|undefined|void)\b/g;
+    const numbers = /\b\d+\.?\d*\b/g;
+    const functions = /\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g;
+    
+    // Apply highlighting in order (avoiding already-highlighted parts)
+    result = result.replace(comments, (match) => {
+      if (match.includes('<span')) return match; // Already highlighted
+      return `<span class="comment">${match}</span>`;
+    });
+    
+    result = result.replace(strings, (match) => {
+      if (match.includes('<span')) return match; // Already highlighted
+      return `<span class="string">${match}</span>`;
+    });
+    
+    result = result.replace(numbers, (match) => {
+      if (match.includes('<span')) return match; // Already highlighted
+      return `<span class="number">${match}</span>`;
+    });
+    
+    result = result.replace(keywords, (match) => {
+      if (match.includes('<span')) return match; // Already highlighted
+      return `<span class="keyword">${match}</span>`;
+    });
+    
+    result = result.replace(functions, (match, name) => {
+      if (match.includes('<span')) return match; // Already highlighted
+      return `<span class="function">${name}</span> `;
+    });
+    
+    return result;
   }
 
   #highlightJSON(code: string): string {
