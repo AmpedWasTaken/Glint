@@ -208,6 +208,24 @@
     </style>
   </head>
   <body class="glint-bg">
+    <script>
+      (function() {
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', extractCodeblockContent);
+        } else {
+          extractCodeblockContent();
+        }
+        function extractCodeblockContent() {
+          const codeblocks = document.querySelectorAll('gl-codeblock');
+          codeblocks.forEach(el => {
+            if (!el.hasAttribute('data-code')) {
+              const html = el.innerHTML.trim();
+              el.setAttribute('data-code', html);
+            }
+          });
+        }
+      })();
+    </script>
     <script src="../dist/glint.js"></script>
 
     <gl-toaster id="toaster"></gl-toaster>
