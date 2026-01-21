@@ -414,16 +414,14 @@
             <h2>Basic usage</h2>
             <p class="desc">Card with slots for structured content.</p>
             <gl-card motion="subtle" style="margin: 24px 0">
-              <gl-card>
-                <div slot="header">
-                  <div style="font-weight: 600">Card title</div>
-                  <div class="muted">Card description</div>
-                </div>
-                <div>Card body content goes here.</div>
-                <div slot="footer">
-                  <gl-button variant="secondary">Action</gl-button>
-                </div>
-              </gl-card>
+              <div slot="header">
+                <div style="font-weight: 600">Card title</div>
+                <div class="muted">Card description</div>
+              </div>
+              <div>Card body content goes here.</div>
+              <div slot="footer">
+                <gl-button variant="secondary">Action</gl-button>
+              </div>
             </gl-card>
             <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
               <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
@@ -554,9 +552,9 @@
             <p class="desc">Text input with label, description, and validation.</p>
             <gl-card motion="subtle" style="margin: 24px 0">
               <div class="stack">
-                <gl-input placeholder="you@company.com">
+                <gl-input placeholder="you@company.com" type="email" required>
                   <span slot="label">Email</span>
-                  <span slot="description">Enter your email address</span>
+                  <span slot="description">Enter your email address. Try typing an invalid email and blur to see validation.</span>
                 </gl-input>
                 <gl-input placeholder="Password" type="password" error="Password is required">
                   <span slot="label">Password</span>
@@ -569,7 +567,7 @@
             <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
               <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
-                <button class="codeCopy" data-code='<gl-input placeholder="you@company.com">
+                <button class="codeCopy" data-code='<gl-input placeholder="you@company.com" type="email" required>
   <span slot="label">Email</span>
   <span slot="description">Enter your email address</span>
 </gl-input>
@@ -580,7 +578,7 @@
   <span slot="label">Username</span>
 </gl-input>'>Copy</button>
               </div>
-              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-input placeholder="you@company.com"&gt;
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-input placeholder="you@company.com" type="email" required&gt;
   &lt;span slot="label"&gt;Email&lt;/span&gt;
   &lt;span slot="description"&gt;Enter your email address&lt;/span&gt;
 &lt;/gl-input&gt;
