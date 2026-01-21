@@ -40,9 +40,7 @@ export class GlCodeblock extends HTMLElement {
     const lang = this.getAttribute("lang") || "text";
     const showCopy = this.hasAttribute("copy");
     
-    if (!this.#codeContent) {
-      this.#extractContent();
-    }
+    this.#extractContent();
     
     if (!this.#codeContent) {
       this.#codeContent = this.textContent?.trim() || "";
