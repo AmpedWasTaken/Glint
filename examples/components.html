@@ -48,13 +48,16 @@
         line-height: var(--gl-line-md);
       }
       .grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-        align-items: start;
+        column-count: 2;
+        column-gap: 12px;
+      }
+      .grid > * {
+        break-inside: avoid;
+        margin: 0 0 12px;
       }
       .full {
-        grid-column: 1 / -1;
+        column-span: all;
+        margin-bottom: 12px;
       }
       .stack {
         display: grid;
@@ -94,10 +97,7 @@
       }
       @media (max-width: 900px) {
         .grid {
-          grid-template-columns: 1fr;
-        }
-        .full {
-          grid-column: auto;
+          column-count: 1;
         }
       }
     </style>
