@@ -10,6 +10,9 @@ export class GlCodeblock extends HTMLElement {
 
   constructor() {
     super();
+    // Try to extract content immediately in constructor
+    // This happens before connectedCallback, so child components haven't upgraded yet
+    this.#extractContent();
   }
 
   #extractContent(): void {
