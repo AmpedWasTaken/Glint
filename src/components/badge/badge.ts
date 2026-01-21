@@ -15,15 +15,12 @@ template.innerHTML = `
       color:var(--gl-primary-fg);
       box-shadow:var(--gl-shadow-sm);
       border:1px solid transparent;
+      transition:transform var(--gl-dur-1) var(--gl-ease), box-shadow var(--gl-dur-1) var(--gl-ease);
+    }
+    :host(:not([motion="none"])) .badge{
       opacity:0;
       transform:scale(0.8);
       animation:gl-scale-in var(--gl-scale-in-dur) var(--gl-ease-spring) forwards;
-      transition:transform var(--gl-dur-1) var(--gl-ease), box-shadow var(--gl-dur-1) var(--gl-ease);
-    }
-    :host([motion="none"]) .badge{
-      animation:none;
-      opacity:1;
-      transform:none;
     }
     :host([motion="subtle"]:hover) .badge{transform:translateY(-1px);box-shadow:var(--gl-shadow-md)}
     :host([motion="snappy"]:hover) .badge{transform:translateY(-2px) scale(1.05);box-shadow:var(--gl-shadow-md)}

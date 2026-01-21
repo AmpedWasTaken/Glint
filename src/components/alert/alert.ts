@@ -14,16 +14,13 @@ template.innerHTML = `
       align-items:flex-start;
       gap:var(--gl-space-3);
       box-shadow:var(--gl-shadow-sm);
+      transition:box-shadow var(--gl-dur-1) var(--gl-ease), transform var(--gl-dur-1) var(--gl-ease);
+    }
+    :host(:not([motion="none"])) .alert{
       opacity:0;
       transform:translateX(-12px) scale(0.98);
       animation:gl-slide-in-up var(--gl-slide-in-dur) var(--gl-ease-out) forwards,
         gl-scale-in var(--gl-scale-in-dur) var(--gl-ease-spring) forwards;
-      transition:box-shadow var(--gl-dur-1) var(--gl-ease), transform var(--gl-dur-1) var(--gl-ease);
-    }
-    :host([motion="none"]) .alert{
-      animation:none;
-      opacity:1;
-      transform:none;
     }
     :host([motion="subtle"]:hover) .alert{box-shadow:var(--gl-shadow-md);transform:translateY(-1px)}
     :host([motion="snappy"]:hover) .alert{box-shadow:var(--gl-shadow-md);transform:translateY(-2px) scale(1.01)}
