@@ -39,6 +39,23 @@ template.innerHTML = `
       background:var(--gl-danger);
       color:var(--gl-danger-fg);
     }
+    :host([variant="success"]) .badge{
+      background:var(--gl-success);
+      color:var(--gl-success-fg);
+    }
+    :host([variant="warning"]) .badge{
+      background:#f59e0b;
+      color:#fff;
+    }
+    :host([variant="dot"]) .badge{
+      padding:0;
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      min-width:8px;
+    }
+    :host([variant="dot"][size="sm"]) .badge{width:6px;height:6px;min-width:6px}
+    :host([variant="dot"][size="lg"]) .badge{width:10px;height:10px;min-width:10px}
     :host([size="sm"]) .badge{padding:2px 8px;font-size:11px;line-height:14px}
     :host([size="lg"]) .badge{padding:6px 12px;font-size:var(--gl-text-md);line-height:var(--gl-line-md)}
   </style>

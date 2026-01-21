@@ -24,7 +24,23 @@ template.innerHTML = `
     :host([size="sm"]) .track{height:4px}
     :host([size="lg"]) .track{height:12px}
     :host([variant="destructive"]) .bar{background:var(--gl-danger)}
+    :host([variant="success"]) .bar{background:var(--gl-success)}
+    :host([variant="warning"]) .bar{background:#f59e0b}
+    .label{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:var(--gl-space-2);
+      font-size:var(--gl-text-sm);
+      line-height:var(--gl-line-sm);
+      color:var(--gl-muted);
+    }
+    .value{font-weight:600;color:var(--gl-fg)}
   </style>
+  <div class="label" part="label" style="display:none">
+    <span part="label-text"><slot name="label"></slot></span>
+    <span class="value" part="value"></span>
+  </div>
   <div part="track" class="track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
     <div part="bar" class="bar"></div>
   </div>
@@ -33,11 +49,13 @@ template.innerHTML = `
 export class GlProgress extends HTMLElement {
   static tagName = "gl-progress";
   static get observedAttributes() {
-    return ["value", "size", "variant"];
+    return ["value", "size", "variant", "show-label"];
   }
 
   #track!: HTMLElement;
   #bar!: HTMLElement;
+  #label!: HTMLElement;
+  #value!: HTMLElement;
 
   get value() {
     const v = Number(this.getAttribute("value") ?? "0");
@@ -52,6 +70,8 @@ export class GlProgress extends HTMLElement {
     this.shadowRoot!.appendChild(template.content.cloneNode(true));
     this.#track = this.shadowRoot!.querySelector(".track") as HTMLElement;
     this.#bar = this.shadowRoot!.querySelector(".bar") as HTMLElement;
+    this.#label = this.shadowRoot!.querySelector(".label") as HTMLElement;
+    this.#value = this.shadowRoot!.querySelector(".value") as HTMLElement;
     this.#sync();
   }
 
@@ -64,5 +84,11 @@ export class GlProgress extends HTMLElement {
     const v = this.value;
     this.#bar.style.width = `${v}%`;
     this.#track.setAttribute("aria-valuenow", String(v));
+    if (this.#value) this.#value.textContent = `${Math.round(v)}%`;
+    if (this.#label && this.hasAttribute("show-label")) {
+      this.#label.style.display = "flex";
+    } else if (this.#label) {
+      this.#label.style.display = "none";
+    }
   }
 }

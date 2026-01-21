@@ -48,10 +48,20 @@ template.innerHTML = `
     :host([size="lg"]) .switch{width:52px;height:28px}
     :host([size="lg"]) .thumb{width:24px;height:24px;top:2px;left:2px}
     :host([size="lg"][checked]) .thumb{transform:translateX(24px)}
+    .wrap{display:inline-flex;align-items:center;gap:var(--gl-space-2)}
+    .label{font-size:var(--gl-text-md);line-height:var(--gl-line-md);color:var(--gl-fg);cursor:pointer;user-select:none}
+    .desc{font-size:var(--gl-text-sm);line-height:var(--gl-line-sm);color:var(--gl-muted);margin-top:2px}
+    :host([disabled]) .label{cursor:not-allowed}
   </style>
-  <div part="switch" class="switch" role="switch" tabindex="0" aria-checked="false">
-    <div part="track" class="track"></div>
-    <div part="thumb" class="thumb"></div>
+  <div class="wrap" part="wrap">
+    <div part="switch" class="switch" role="switch" tabindex="0" aria-checked="false">
+      <div part="track" class="track"></div>
+      <div part="thumb" class="thumb"></div>
+    </div>
+    <div part="label-wrap">
+      <div class="label" part="label"><slot name="label"></slot></div>
+      <div class="desc" part="description"><slot name="description"></slot></div>
+    </div>
   </div>
 `;
 
@@ -83,8 +93,11 @@ export class GlSwitch extends HTMLElement {
     if (!this.shadowRoot) this.attachShadow({ mode: "open" });
     this.shadowRoot!.appendChild(template.content.cloneNode(true));
     this.#switch = this.shadowRoot!.querySelector(".switch") as HTMLDivElement;
+    const label = this.shadowRoot!.querySelector(".label") as HTMLElement;
     this.#sync();
-    this.#switch.addEventListener("click", () => this.toggle());
+    const handleClick = () => this.toggle();
+    this.#switch.addEventListener("click", handleClick);
+    if (label) label.addEventListener("click", handleClick);
     this.#switch.addEventListener("keydown", (e) => {
       if (e.key === " " || e.key === "Enter") {
         e.preventDefault();

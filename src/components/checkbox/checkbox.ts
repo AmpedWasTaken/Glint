@@ -17,6 +17,8 @@ template.innerHTML = `
     .mark{width:12px;height:12px;border-radius:3px;background:transparent}
     :host([checked]) .box{background:var(--gl-primary);border-color:transparent}
     :host([checked]) .mark{background:var(--gl-primary-fg)}
+    :host([indeterminate]) .box{background:var(--gl-primary);border-color:transparent}
+    :host([indeterminate]) .mark{background:var(--gl-primary-fg);width:8px;height:2px;border-radius:1px}
     :host(:focus-visible) .box{outline:2px solid var(--gl-ring);outline-offset:2px}
     :host([disabled]){opacity:0.6}
     :host([disabled]) label{cursor:not-allowed}
@@ -32,7 +34,7 @@ template.innerHTML = `
 export class GlCheckbox extends HTMLElement {
   static tagName = "gl-checkbox";
   static get observedAttributes() {
-    return ["checked", "disabled", "name", "value"];
+    return ["checked", "disabled", "name", "value", "indeterminate"];
   }
 
   #input!: HTMLInputElement;
@@ -88,11 +90,17 @@ export class GlCheckbox extends HTMLElement {
   #sync() {
     if (!this.#input) return;
     const disabled = this.hasAttribute("disabled");
+    const indeterminate = this.hasAttribute("indeterminate");
     this.#input.disabled = disabled;
     this.#input.checked = this.checked;
+    this.#input.indeterminate = indeterminate;
     this.#input.name = this.getAttribute("name") ?? "";
     this.#input.value = this.getAttribute("value") ?? "on";
-    this.setAttribute("aria-checked", String(this.checked));
+    if (indeterminate) {
+      this.setAttribute("aria-checked", "mixed");
+    } else {
+      this.setAttribute("aria-checked", String(this.checked));
+    }
     this.setAttribute("aria-disabled", String(disabled));
   }
 }

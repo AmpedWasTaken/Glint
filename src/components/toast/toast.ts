@@ -25,6 +25,18 @@ toastTemplate.innerHTML = `
       opacity:0;
       animation:gl-toast-in var(--gl-motion-dur) var(--gl-motion-ease) forwards;
     }
+    :host([variant="success"]) .toast{
+      border-left:3px solid var(--gl-success);
+      background:color-mix(in srgb, var(--gl-success) 8%, var(--gl-panel));
+    }
+    :host([variant="warning"]) .toast{
+      border-left:3px solid #f59e0b;
+      background:color-mix(in srgb, #f59e0b 8%, var(--gl-panel));
+    }
+    :host([variant="destructive"]) .toast{
+      border-left:3px solid var(--gl-danger);
+      background:color-mix(in srgb, var(--gl-danger) 8%, var(--gl-panel));
+    }
     :host([data-exiting]) .toast{
       animation:gl-toast-out var(--gl-slide-out-dur) var(--gl-ease-out) forwards;
     }
@@ -69,7 +81,7 @@ toastTemplate.innerHTML = `
 export class GlToast extends HTMLElement {
   static tagName = "gl-toast";
   static get observedAttributes() {
-    return ["duration"];
+    return ["duration", "variant"];
   }
 
   #closeBtn!: HTMLButtonElement;
@@ -136,27 +148,35 @@ toasterTemplate.innerHTML = `
   <style>
     :host{
       position:fixed;
-      inset:auto 16px 16px auto;
       z-index:var(--gl-z-toast);
       display:grid;
       gap:var(--gl-space-2);
       pointer-events:none;
     }
+    :host([position="top-left"]){inset:16px auto auto 16px}
+    :host([position="top-right"]){inset:16px 16px auto auto}
+    :host([position="bottom-left"]){inset:auto auto 16px 16px}
+    :host([position="bottom-right"]){inset:auto 16px 16px auto}
+    :host(:not([position])){inset:auto 16px 16px auto}
   </style>
   <slot></slot>
 `;
 
 export class GlToaster extends HTMLElement {
   static tagName = "gl-toaster";
+  static get observedAttributes() {
+    return ["position"];
+  }
 
   connectedCallback() {
     if (!this.shadowRoot) this.attachShadow({ mode: "open" });
     this.shadowRoot!.appendChild(toasterTemplate.content.cloneNode(true));
   }
 
-  show(opts: { title?: string; description?: string; duration?: number } = {}) {
+  show(opts: { title?: string; description?: string; duration?: number; variant?: "default" | "success" | "warning" | "destructive" } = {}) {
     const t = document.createElement(GlToast.tagName) as GlToast;
     if (opts.duration) t.setAttribute("duration", String(opts.duration));
+    if (opts.variant) t.setAttribute("variant", opts.variant);
     if (opts.title) {
       const n = document.createElement("span");
       n.slot = "title";

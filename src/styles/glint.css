@@ -84,6 +84,22 @@
   --gl-slide-out-dur: var(--gl-dur-2);
   --gl-scale-in-dur: var(--gl-dur-2);
   --gl-scale-out-dur: var(--gl-dur-1);
+
+  --gl-code-keyword: #c792ea;
+  --gl-code-string: #c3e88d;
+  --gl-code-number: #f78c6c;
+  --gl-code-function: #82aaff;
+  --gl-code-comment: #546e7a;
+  --gl-code-operator: #89ddff;
+  --gl-code-punctuation: #eeffff;
+  --gl-code-tag: #f07178;
+  --gl-code-attr-name: #c792ea;
+  --gl-code-attr-value: #c3e88d;
+  --gl-code-property: #82aaff;
+  --gl-code-selector: #c792ea;
+  --gl-code-variable: #f07178;
+  --gl-code-constant: #ffcb6b;
+  --gl-code-regex: #c3e88d;
 }
 
 @keyframes gl-fade-in {
@@ -174,6 +190,22 @@
   --gl-app-grad-1: rgba(125, 211, 252, 0.14);
   --gl-app-grad-2: rgba(167, 139, 250, 0.12);
   --gl-app-grad-3: rgba(251, 113, 133, 0.1);
+
+  --gl-code-keyword: #c792ea;
+  --gl-code-string: #c3e88d;
+  --gl-code-number: #f78c6c;
+  --gl-code-function: #82aaff;
+  --gl-code-comment: #546e7a;
+  --gl-code-operator: #89ddff;
+  --gl-code-punctuation: #eeffff;
+  --gl-code-tag: #f07178;
+  --gl-code-attr-name: #c792ea;
+  --gl-code-attr-value: #c3e88d;
+  --gl-code-property: #82aaff;
+  --gl-code-selector: #c792ea;
+  --gl-code-variable: #f07178;
+  --gl-code-constant: #ffcb6b;
+  --gl-code-regex: #c3e88d;
 }
 
 @media (prefers-color-scheme: dark) {

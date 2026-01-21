@@ -38,6 +38,14 @@ template.innerHTML = `
     :host([error]) .message{color:var(--gl-danger)}
     :host([success]) .message{color:var(--gl-success)}
     :host(:not([error]):not([success])) .message{display:none}
+    .counter{
+      font-size:var(--gl-text-xs);
+      line-height:var(--gl-line-xs);
+      color:var(--gl-muted);
+      text-align:right;
+      margin-top:4px;
+    }
+    :host(:not([show-counter])) .counter{display:none}
   </style>
   <label part="label" class="wrap">
     <span part="label-text" class="label"><slot name="label"></slot></span>
@@ -48,6 +56,7 @@ template.innerHTML = `
       <slot name="suffix"></slot>
     </span>
     <span part="message" class="message" aria-live="polite"></span>
+    <span part="counter" class="counter" aria-live="polite"></span>
   </label>
 `;
 
@@ -69,12 +78,14 @@ export class GlInput extends HTMLElement {
       "minlength",
       "maxlength",
       "error",
-      "success"
+      "success",
+      "show-counter"
     ];
   }
 
   #input!: HTMLInputElement;
   #message!: HTMLSpanElement;
+  #counter!: HTMLSpanElement;
   #autoError = false;
   #hasInteracted = false;
 
@@ -115,6 +126,7 @@ export class GlInput extends HTMLElement {
 
     this.#input.addEventListener("input", () => {
       this.setAttribute("value", this.#input.value);
+      this.#updateCounter();
       if (this.#hasInteracted && this.#input.value.length > 0) {
         if (this.#input.checkValidity()) {
           if (this.#autoError) {
@@ -193,6 +205,22 @@ export class GlInput extends HTMLElement {
     } else {
       this.#input.removeAttribute("aria-invalid");
       if (this.#message) this.#message.textContent = "";
+    }
+    this.#updateCounter();
+  }
+
+  #updateCounter() {
+    if (!this.#counter || !this.hasAttribute("show-counter")) return;
+    const maxLen = this.getAttribute("maxlength");
+    if (maxLen) {
+      const len = this.#input.value.length;
+      const max = Number(maxLen);
+      this.#counter.textContent = `${len} / ${max}`;
+      if (len > max * 0.9) this.#counter.style.color = "var(--gl-danger)";
+      else this.#counter.style.color = "var(--gl-muted)";
+    } else {
+      this.#counter.textContent = `${this.#input.value.length}`;
+      this.#counter.style.color = "var(--gl-muted)";
     }
   }
 }
