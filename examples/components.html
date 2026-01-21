@@ -216,6 +216,111 @@
           </div>
         </gl-card>
 
+        <gl-card class="col-6" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Badge</div>
+            <div class="muted">Variants, sizes, motion</div>
+          </div>
+          <div class="row">
+            <gl-badge>Default</gl-badge>
+            <gl-badge variant="secondary">Secondary</gl-badge>
+            <gl-badge variant="outline">Outline</gl-badge>
+            <gl-badge variant="destructive">Destructive</gl-badge>
+            <gl-badge size="sm">Small</gl-badge>
+            <gl-badge size="lg" motion="snappy">Large</gl-badge>
+          </div>
+        </gl-card>
+
+        <gl-card class="col-6" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Progress & Spinner</div>
+            <div class="muted">Loading indicators</div>
+          </div>
+          <div class="stack">
+            <div>
+              <div class="muted" style="margin-bottom: 8px">Progress bar</div>
+              <gl-progress id="progressDemo" value="45" motion="snappy"></gl-progress>
+            </div>
+            <div class="row">
+              <gl-spinner></gl-spinner>
+              <gl-spinner size="sm"></gl-spinner>
+              <gl-spinner size="lg"></gl-spinner>
+              <gl-spinner variant="destructive"></gl-spinner>
+            </div>
+          </div>
+        </gl-card>
+
+        <gl-card class="col-6" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Divider</div>
+            <div class="muted">Horizontal and vertical</div>
+          </div>
+          <div class="stack">
+            <div>Content above</div>
+            <gl-divider></gl-divider>
+            <div>Content below</div>
+            <div style="display: flex; align-items: center; gap: 12px">
+              <span>Left</span>
+              <gl-divider orientation="vertical" style="height: 40px"></gl-divider>
+              <span>Right</span>
+            </div>
+          </div>
+        </gl-card>
+
+        <gl-card class="col-6" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Alert</div>
+            <div class="muted">Variants with close</div>
+          </div>
+          <div class="stack">
+            <gl-alert variant="default" motion="subtle">
+              <span slot="title">Info</span>
+              Default alert with information.
+            </gl-alert>
+            <gl-alert variant="success" motion="subtle">
+              <span slot="title">Success</span>
+              Operation completed successfully.
+            </gl-alert>
+            <gl-alert variant="warning" motion="subtle">
+              <span slot="title">Warning</span>
+              Please review this action.
+            </gl-alert>
+            <gl-alert variant="destructive" motion="subtle">
+              <span slot="title">Error</span>
+              Something went wrong.
+            </gl-alert>
+          </div>
+        </gl-card>
+
+        <gl-card class="col-12" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Motion System</div>
+            <div class="muted">
+              Set motion="none|subtle|snappy|bounce" on interactive components
+            </div>
+          </div>
+          <div class="stack">
+            <div class="muted">
+              Components support different animation styles. Try hovering or interacting with
+              elements that have motion attributes.
+            </div>
+            <div class="row">
+              <gl-button motion="none">None</gl-button>
+              <gl-button motion="subtle">Subtle</gl-button>
+              <gl-button motion="snappy">Snappy</gl-button>
+              <gl-button motion="bounce">Bounce</gl-button>
+            </div>
+            <div class="row">
+              <gl-card motion="subtle" style="padding: 16px; min-width: 120px">
+                <div>Card with subtle motion</div>
+              </gl-card>
+              <gl-card motion="snappy" style="padding: 16px; min-width: 120px">
+                <div>Card with snappy motion</div>
+              </gl-card>
+            </div>
+          </div>
+        </gl-card>
+
         <gl-card class="col-12">
           <div slot="header">
             <div style="font-weight: 600">Events</div>
@@ -225,6 +330,7 @@
             Buttons: <code>gl-press</code> · Inputs: <code>gl-change</code>/<code>gl-commit</code> ·
             Tabs: <code>gl-change</code> · Accordion item: <code>gl-toggle</code> ·
             Modal/sidebar/toast: <code>gl-open</code>/<code>gl-close</code>/<code>gl-dismiss</code>
+            · Alert: <code>gl-close</code>
           </div>
         </gl-card>
       </div>
@@ -258,6 +364,15 @@
         });
       document.getElementById("showToast").addEventListener("gl-press", showToast);
       document.getElementById("toastFromButtons").addEventListener("gl-press", showToast);
+
+      const progressDemo = document.getElementById("progressDemo");
+      if (progressDemo) {
+        let val = 45;
+        setInterval(() => {
+          val = val >= 100 ? 0 : val + 5;
+          progressDemo.setAttribute("value", String(val));
+        }, 500);
+      }
 
       document.addEventListener("gl-press", (e) => console.log("gl-press", e.target));
       document.addEventListener("gl-change", (e) => console.log("gl-change", e.detail, e.target));
