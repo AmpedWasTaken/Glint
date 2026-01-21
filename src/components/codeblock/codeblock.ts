@@ -8,12 +8,21 @@ export class GlCodeblock extends HTMLElement {
   #copyBtn?: HTMLButtonElement;
   #codeContent = "";
 
+  constructor() {
+    super();
+    const content = this.innerHTML.trim() || this.textContent?.trim() || "";
+    this.#codeContent = content;
+  }
+
   connectedCallback(): void {
     if (this.shadowRoot) return;
 
     const lang = this.getAttribute("lang") || "text";
     const showCopy = this.hasAttribute("copy");
-    this.#codeContent = this.innerHTML.trim() || this.textContent?.trim() || "";
+    
+    if (!this.#codeContent) {
+      this.#codeContent = this.innerHTML.trim() || this.textContent?.trim() || "";
+    }
 
     const template = document.createElement("template");
     template.innerHTML = `
@@ -137,7 +146,14 @@ export class GlCodeblock extends HTMLElement {
   }
 
   #highlightHTML(code: string): string {
-    return code
+    let cleaned = code;
+    cleaned = cleaned.replace(/<template[^>]*shadowrootmode[^>]*>[\s\S]*?<\/template>/gi, "");
+    cleaned = cleaned.replace(/<template[^>]*>[\s\S]*?<\/template>/gi, "");
+    cleaned = cleaned.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "");
+    cleaned = cleaned.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
+    cleaned = cleaned.replace(/\s+/g, " ").trim();
+    
+    return cleaned
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
