@@ -10,85 +10,35 @@ export class GlCodeblock extends HTMLElement {
 
   constructor() {
     super();
+    // Extract content immediately in constructor, before shadow DOM
+    this.#extractContent();
   }
 
   #extractContent(): void {
     if (this.#codeContent) return;
-    
-    // Try to find template tag in light DOM (before shadow DOM is attached)
-    // We need to query all templates and find the one that's not the shadow root template
-    const templates = this.querySelectorAll("template");
-    for (const template of templates) {
-      // Skip shadow root templates
-      if (template.hasAttribute("shadowrootmode")) continue;
-      
-      // Template content is stored in template.content (DocumentFragment)
-      // We need to serialize it to get the HTML string
-      if (template.content && template.content.childNodes.length > 0) {
-        const div = document.createElement("div");
-        const clone = template.content.cloneNode(true) as DocumentFragment;
-        div.appendChild(clone);
-        const serialized = div.innerHTML.trim();
-        if (serialized) {
-          this.#codeContent = serialized;
-          return;
-        }
-      }
-      
-      // Fallback: try innerHTML (some browsers might support this)
-      const innerHTML = template.innerHTML.trim();
-      if (innerHTML) {
-        this.#codeContent = innerHTML;
-        return;
-      }
-      
-      // Last resort: textContent
-      const textContent = template.textContent?.trim() || "";
-      if (textContent) {
-        this.#codeContent = textContent;
-        return;
-      }
-    }
-    
+
+    // Method 1: Check for data-code attribute (easiest for developers)
     if (this.hasAttribute("data-code")) {
       this.#codeContent = this.getAttribute("data-code") || "";
       return;
     }
+
+    // Method 2: Read innerHTML before shadow DOM is attached
+    // Clone the element to preserve its state
+    const clone = this.cloneNode(true) as HTMLElement;
     
-    // Try to get content from light DOM children (excluding template tags)
-    const children = Array.from(this.childNodes);
-    const contentParts: string[] = [];
-    for (const child of children) {
-      if (child.nodeType === Node.TEXT_NODE) {
-        const text = child.textContent?.trim();
-        if (text) contentParts.push(text);
-      } else if (child.nodeType === Node.ELEMENT_NODE) {
-        const el = child as Element;
-        // Skip shadow root templates
-        if (el.tagName === "TEMPLATE" && el.hasAttribute("shadowrootmode")) continue;
-        if (el.tagName === "TEMPLATE") {
-          // This is our content template - serialize its content
-          const templateEl = el as HTMLTemplateElement;
-          if (templateEl.content && templateEl.content.childNodes.length > 0) {
-            const div = document.createElement("div");
-            const clone = templateEl.content.cloneNode(true) as DocumentFragment;
-            div.appendChild(clone);
-            const serialized = div.innerHTML.trim();
-            if (serialized) {
-              this.#codeContent = serialized;
-              return;
-            }
-          }
-        } else if (el.outerHTML) {
-          contentParts.push(el.outerHTML);
-        }
-      }
-    }
-    if (contentParts.length > 0) {
-      this.#codeContent = contentParts.join("\n").trim();
+    // Remove any template tags (they're just markers)
+    const templates = clone.querySelectorAll("template");
+    templates.forEach((tpl) => tpl.remove());
+    
+    // Get the innerHTML of what's left
+    const innerHTML = clone.innerHTML.trim();
+    if (innerHTML) {
+      this.#codeContent = innerHTML;
       return;
     }
-    
+
+    // Method 3: Fallback to textContent
     this.#codeContent = this.textContent?.trim() || "";
   }
 
@@ -97,11 +47,10 @@ export class GlCodeblock extends HTMLElement {
 
     const lang = this.getAttribute("lang") || "text";
     const showCopy = this.hasAttribute("copy");
-    
-    this.#extractContent();
-    
+
+    // Ensure content is extracted
     if (!this.#codeContent) {
-      this.#codeContent = this.textContent?.trim() || "";
+      this.#extractContent();
     }
 
     const template = document.createElement("template");
@@ -304,4 +253,3 @@ export class GlCodeblock extends HTMLElement {
     }
   }
 }
-
