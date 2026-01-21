@@ -86,6 +86,7 @@ Most interactive components support `motion`:
 
 - `motion="subtle"` (default feel)
 - `motion="snappy"` (more expressive)
+- `motion="bounce"` (playful overshoot)
 - `motion="none"` (no animation)
 
 Examples:

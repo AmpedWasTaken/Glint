@@ -4,10 +4,11 @@ const template = document.createElement("template");
 template.innerHTML = `
   <style>
     :host{display:inline-block}
-    :host{--gl-motion-dur:var(--gl-dur-1);--gl-motion-ease:var(--gl-ease-spring)}
+    :host{--gl-motion-dur:var(--gl-dur-1);--gl-motion-ease:var(--gl-ease-spring);--gl-motion-amp:1}
     :host([motion="none"]){--gl-motion-dur:0ms}
-    :host([motion="snappy"]){--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease-spring)}
-    :host([motion="subtle"]){--gl-motion-dur:var(--gl-dur-1);--gl-motion-ease:var(--gl-ease)}
+    :host([motion="subtle"]){--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease-out);--gl-motion-amp:0.6}
+    :host([motion="snappy"]){--gl-motion-dur:var(--gl-dur-1);--gl-motion-ease:var(--gl-ease-spring);--gl-motion-amp:1}
+    :host([motion="bounce"]){--gl-motion-dur:var(--gl-dur-3);--gl-motion-ease:var(--gl-ease-bounce);--gl-motion-amp:1.25}
     button{
       all:unset;
       box-sizing:border-box;
@@ -33,8 +34,14 @@ template.innerHTML = `
         color var(--gl-motion-dur) var(--gl-motion-ease);
     }
     button:focus-visible{outline:2px solid var(--gl-ring);outline-offset:2px}
-    button:hover{transform:translateY(calc(-1px * var(--gl-motion)));box-shadow:var(--gl-shadow-md)}
-    button:active{transform:translateY(0) scale(calc(1 - (0.012 * var(--gl-motion))));box-shadow:var(--gl-shadow-sm)}
+    button:hover{
+      transform:translateY(calc(-1px * var(--gl-motion) * var(--gl-motion-amp)));
+      box-shadow:var(--gl-shadow-md)
+    }
+    button:active{
+      transform:translateY(0) scale(calc(1 - (0.012 * var(--gl-motion) * var(--gl-motion-amp))));
+      box-shadow:var(--gl-shadow-sm)
+    }
     button:disabled{opacity:0.55;cursor:not-allowed;transform:none;box-shadow:var(--gl-shadow-sm)}
 
     :host([variant="secondary"]) button{

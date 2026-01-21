@@ -44,14 +44,16 @@ tabTemplate.innerHTML = `
       position:relative;
     }
     :host([motion="none"]) button{transition:none}
-    :host([motion="subtle"]) button{transition:background var(--gl-dur-2) var(--gl-ease-out), color var(--gl-dur-2) var(--gl-ease-out), transform var(--gl-dur-2) var(--gl-ease-out)}
-    :host([motion="snappy"]) button{transition:background var(--gl-dur-1) var(--gl-ease-spring), color var(--gl-dur-1) var(--gl-ease-spring), transform var(--gl-dur-1) var(--gl-ease-spring)}
+    :host([motion="subtle"]) button{transition:background var(--gl-dur-3) var(--gl-ease-out), color var(--gl-dur-3) var(--gl-ease-out), transform var(--gl-dur-3) var(--gl-ease-out)}
+    :host([motion="snappy"]) button{transition:background var(--gl-dur-2) var(--gl-ease-spring), color var(--gl-dur-2) var(--gl-ease-spring), transform var(--gl-dur-2) var(--gl-ease-spring)}
+    :host([motion="bounce"]) button{transition:background var(--gl-dur-4) var(--gl-ease-bounce), color var(--gl-dur-4) var(--gl-ease-bounce), transform var(--gl-dur-4) var(--gl-ease-bounce)}
     :host(:not([motion])) button{transition:background var(--gl-dur-1) var(--gl-ease), color var(--gl-dur-1) var(--gl-ease)}
     :host([active]) button{
       background:color-mix(in srgb, var(--gl-primary) 12%, transparent);
       color:var(--gl-fg);
     }
-    :host([motion="snappy"][active]) button{transform:scale(1.02)}
+    :host([motion="snappy"][active]) button{transform:scale(1.03)}
+    :host([motion="bounce"][active]) button{transform:scale(1.05)}
     button:hover{background:var(--gl-hover)}
     button:focus-visible{outline:2px solid var(--gl-ring);outline-offset:2px}
   </style>

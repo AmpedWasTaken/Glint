@@ -4,10 +4,11 @@ const toastTemplate = document.createElement("template");
 toastTemplate.innerHTML = `
   <style>
     :host{display:block}
-    :host{--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease-spring)}
+    :host{--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease-spring);--gl-motion-amp:1}
     :host([motion="none"]){--gl-motion-dur:0ms}
-    :host([motion="snappy"]){--gl-motion-dur:var(--gl-dur-3);--gl-motion-ease:var(--gl-ease-spring)}
-    :host([motion="subtle"]){--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease)}
+    :host([motion="subtle"]){--gl-motion-dur:var(--gl-dur-3);--gl-motion-ease:var(--gl-ease-out);--gl-motion-amp:0.7}
+    :host([motion="snappy"]){--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease-spring);--gl-motion-amp:1}
+    :host([motion="bounce"]){--gl-motion-dur:var(--gl-dur-4);--gl-motion-ease:var(--gl-ease-bounce);--gl-motion-amp:1.15}
     .toast{
       background:var(--gl-panel);
       color:var(--gl-fg);
@@ -20,7 +21,7 @@ toastTemplate.innerHTML = `
       min-width:280px;
       max-width:min(420px, calc(100vw - 24px));
       pointer-events:auto;
-      transform:translateY(calc(var(--gl-enter-y) * var(--gl-motion))) scale(calc(1 - ((1 - var(--gl-enter-scale)) * var(--gl-motion))));
+      transform:translateY(calc(var(--gl-enter-y) * var(--gl-motion) * var(--gl-motion-amp))) scale(calc(1 - ((1 - var(--gl-enter-scale)) * var(--gl-motion) * var(--gl-motion-amp))));
       opacity:0;
       animation:gl-toast-in var(--gl-motion-dur) var(--gl-motion-ease) forwards;
     }

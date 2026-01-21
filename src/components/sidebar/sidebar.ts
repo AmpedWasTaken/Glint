@@ -4,10 +4,11 @@ const template = document.createElement("template");
 template.innerHTML = `
   <style>
     :host{display:contents}
-    :host{--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease-spring)}
+    :host{--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease-spring);--gl-motion-amp:1}
     :host([motion="none"]){--gl-motion-dur:0ms}
-    :host([motion="snappy"]){--gl-motion-dur:var(--gl-dur-3);--gl-motion-ease:var(--gl-ease-spring)}
-    :host([motion="subtle"]){--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease)}
+    :host([motion="subtle"]){--gl-motion-dur:var(--gl-dur-3);--gl-motion-ease:var(--gl-ease-out);--gl-motion-amp:0.7}
+    :host([motion="snappy"]){--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease-spring);--gl-motion-amp:1}
+    :host([motion="bounce"]){--gl-motion-dur:var(--gl-dur-4);--gl-motion-ease:var(--gl-ease-bounce);--gl-motion-amp:1.15}
     .overlay{
       position:fixed;
       inset:0;
@@ -28,7 +29,7 @@ template.innerHTML = `
       color:var(--gl-fg);
       border-right:1px solid var(--gl-border);
       box-shadow:var(--gl-shadow-md);
-      transform:translateX(calc(-18px * var(--gl-motion)));
+      transform:translateX(calc(-18px * var(--gl-motion) * var(--gl-motion-amp)));
       opacity:0;
       transition:opacity var(--gl-motion-dur) var(--gl-motion-ease), transform var(--gl-motion-dur) var(--gl-motion-ease);
       z-index:calc(var(--gl-z-modal) + 1);
@@ -46,7 +47,7 @@ template.innerHTML = `
       right:0;
       border-right:none;
       border-left:1px solid var(--gl-border);
-      transform:translateX(calc(18px * var(--gl-motion)));
+      transform:translateX(calc(18px * var(--gl-motion) * var(--gl-motion-amp)));
     }
 
     :host([surface="glass"]) .drawer{

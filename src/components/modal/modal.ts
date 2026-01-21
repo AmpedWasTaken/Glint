@@ -5,10 +5,11 @@ const template = document.createElement("template");
 template.innerHTML = `
   <style>
     :host{display:contents}
-    :host{--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease-spring)}
+    :host{--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease-spring);--gl-motion-amp:1}
     :host([motion="none"]){--gl-motion-dur:0ms}
-    :host([motion="snappy"]){--gl-motion-dur:var(--gl-dur-3);--gl-motion-ease:var(--gl-ease-spring)}
-    :host([motion="subtle"]){--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease)}
+    :host([motion="subtle"]){--gl-motion-dur:var(--gl-dur-3);--gl-motion-ease:var(--gl-ease-out);--gl-motion-amp:0.7}
+    :host([motion="snappy"]){--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease-spring);--gl-motion-amp:1}
+    :host([motion="bounce"]){--gl-motion-dur:var(--gl-dur-4);--gl-motion-ease:var(--gl-ease-bounce);--gl-motion-amp:1.15}
     .overlay{
       position:fixed;
       inset:0;
@@ -28,7 +29,7 @@ template.innerHTML = `
       border-radius:var(--gl-radius-lg);
       box-shadow:var(--gl-shadow-md);
       overflow:hidden;
-      transform:translateY(calc(var(--gl-enter-y) * var(--gl-motion))) scale(calc(1 - ((1 - var(--gl-enter-scale)) * var(--gl-motion))));
+      transform:translateY(calc(var(--gl-enter-y) * var(--gl-motion) * var(--gl-motion-amp))) scale(calc(1 - ((1 - var(--gl-enter-scale)) * var(--gl-motion) * var(--gl-motion-amp))));
       opacity:0;
       transition:opacity var(--gl-motion-dur) var(--gl-motion-ease), transform var(--gl-motion-dur) var(--gl-motion-ease);
       outline:none;
