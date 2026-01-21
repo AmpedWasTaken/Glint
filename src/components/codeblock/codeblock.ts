@@ -68,9 +68,10 @@ export class GlCodeblock extends HTMLElement {
         if (el.tagName === "TEMPLATE" && el.hasAttribute("shadowrootmode")) continue;
         if (el.tagName === "TEMPLATE") {
           // This is our content template - serialize its content
-          if (el.content && el.content.childNodes.length > 0) {
+          const templateEl = el as HTMLTemplateElement;
+          if (templateEl.content && templateEl.content.childNodes.length > 0) {
             const div = document.createElement("div");
-            const clone = el.content.cloneNode(true) as DocumentFragment;
+            const clone = templateEl.content.cloneNode(true) as DocumentFragment;
             div.appendChild(clone);
             const serialized = div.innerHTML.trim();
             if (serialized) {
