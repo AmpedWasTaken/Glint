@@ -17,13 +17,19 @@ template.innerHTML = `
       box-shadow:var(--gl-shadow-md);
       opacity:0;
       pointer-events:none;
-      transition:opacity var(--gl-dur-1) var(--gl-ease), transform var(--gl-dur-1) var(--gl-ease);
       white-space:nowrap;
       max-width:min(280px, 80vw);
       text-overflow:ellipsis;
       overflow:hidden;
     }
+    :host([motion="none"]) .tip{transition:none}
+    :host([motion="subtle"]) .tip{transition:opacity var(--gl-dur-2) var(--gl-ease-out), transform var(--gl-dur-2) var(--gl-ease-out)}
+    :host([motion="snappy"]) .tip{transition:opacity var(--gl-dur-1) var(--gl-ease-spring), transform var(--gl-dur-1) var(--gl-ease-spring)}
+    :host([motion="bounce"]) .tip{transition:opacity var(--gl-dur-2) var(--gl-ease-bounce), transform var(--gl-dur-2) var(--gl-ease-bounce)}
+    :host(:not([motion])) .tip{transition:opacity var(--gl-dur-1) var(--gl-ease), transform var(--gl-dur-1) var(--gl-ease)}
     :host([open]) .tip{opacity:1; transform:translate(-50%, -10px)}
+    :host([motion="snappy"][open]) .tip{transform:translate(-50%, -12px)}
+    :host([motion="bounce"][open]) .tip{transform:translate(-50%, -14px) scale(1.05)}
     .arrow{
       position:absolute;
       left:50%;

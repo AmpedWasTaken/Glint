@@ -10,22 +10,40 @@ itemTemplate.innerHTML = `
       background:var(--gl-panel);
       overflow:hidden;
       box-shadow:var(--gl-shadow-sm);
+      transition:box-shadow var(--gl-dur-1) var(--gl-ease), transform var(--gl-dur-1) var(--gl-ease);
     }
+    .item:hover{box-shadow:var(--gl-shadow-md);transform:translateY(-1px)}
     .header{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:var(--gl-space-3);
-      padding:12px 14px;
+      padding:14px 16px;
       cursor:pointer;
       user-select:none;
       font-size:var(--gl-text-md);
       line-height:var(--gl-line-md);
+      font-weight:500;
+      transition:background var(--gl-dur-1) var(--gl-ease);
     }
-    .chev{width:16px;height:16px;transition:transform var(--gl-dur-1) var(--gl-ease);opacity:0.8}
+    .header:hover{background:var(--gl-hover)}
+    .chev{width:18px;height:18px;transition:transform var(--gl-dur-2) var(--gl-ease-spring);opacity:0.7;flex-shrink:0}
     :host([open]) .chev{transform:rotate(180deg)}
-    .panel{padding:0 14px 14px; color:var(--gl-muted); font-size:var(--gl-text-md); line-height:var(--gl-line-md)}
-    :host(:not([open])) .panel{display:none}
+    .panel{
+      padding:0 16px 16px;
+      color:var(--gl-muted);
+      font-size:var(--gl-text-md);
+      line-height:var(--gl-line-md);
+      max-height:0;
+      overflow:hidden;
+      transition:max-height var(--gl-dur-3) var(--gl-ease-out), padding var(--gl-dur-2) var(--gl-ease), opacity var(--gl-dur-2) var(--gl-ease);
+      opacity:0;
+    }
+    :host([open]) .panel{
+      max-height:500px;
+      opacity:1;
+      padding-top:8px;
+    }
     .header:focus-visible{outline:2px solid var(--gl-ring); outline-offset:2px; border-radius:10px}
   </style>
   <div class="item" part="item">

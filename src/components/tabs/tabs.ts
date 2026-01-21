@@ -40,12 +40,19 @@ tabTemplate.innerHTML = `
       font-size:var(--gl-text-md);
       line-height:var(--gl-line-md);
       color:var(--gl-muted);
-      transition:background var(--gl-dur-1) var(--gl-ease), color var(--gl-dur-1) var(--gl-ease);
+      font-weight:500;
+      position:relative;
     }
+    :host([motion="none"]) button{transition:none}
+    :host([motion="subtle"]) button{transition:background var(--gl-dur-2) var(--gl-ease-out), color var(--gl-dur-2) var(--gl-ease-out), transform var(--gl-dur-2) var(--gl-ease-out)}
+    :host([motion="snappy"]) button{transition:background var(--gl-dur-1) var(--gl-ease-spring), color var(--gl-dur-1) var(--gl-ease-spring), transform var(--gl-dur-1) var(--gl-ease-spring)}
+    :host(:not([motion])) button{transition:background var(--gl-dur-1) var(--gl-ease), color var(--gl-dur-1) var(--gl-ease)}
     :host([active]) button{
       background:color-mix(in srgb, var(--gl-primary) 12%, transparent);
       color:var(--gl-fg);
     }
+    :host([motion="snappy"][active]) button{transform:scale(1.02)}
+    button:hover{background:var(--gl-hover)}
     button:focus-visible{outline:2px solid var(--gl-ring);outline-offset:2px}
   </style>
   <button part="tab" role="tab" type="button"><slot></slot></button>
@@ -55,7 +62,8 @@ const panelTemplate = document.createElement("template");
 panelTemplate.innerHTML = `
   <style>
     :host{display:block}
-    :host(:not([active])){display:none}
+    :host(:not([active])){display:none;opacity:0;max-height:0;overflow:hidden}
+    :host([active]){opacity:1;max-height:2000px;transition:opacity var(--gl-dur-2) var(--gl-ease-out), max-height var(--gl-dur-3) var(--gl-ease-out)}
   </style>
   <div part="panel" role="tabpanel"><slot></slot></div>
 `;
