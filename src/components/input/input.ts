@@ -88,6 +88,14 @@ export class GlInput extends HTMLElement {
     this.#input?.focus(options);
   }
 
+  checkValidity() {
+    return this.#input?.checkValidity() ?? true;
+  }
+
+  reportValidity() {
+    return this.#input?.reportValidity() ?? true;
+  }
+
   connectedCallback() {
     if (!this.shadowRoot) this.attachShadow({ mode: "open" });
     const root = this.shadowRoot as ShadowRoot;

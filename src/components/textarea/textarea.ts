@@ -90,6 +90,14 @@ export class GlTextarea extends HTMLElement {
     this.#textarea?.focus(options);
   }
 
+  checkValidity() {
+    return this.#textarea?.checkValidity() ?? true;
+  }
+
+  reportValidity() {
+    return this.#textarea?.reportValidity() ?? true;
+  }
+
   connectedCallback() {
     if (!this.shadowRoot) this.attachShadow({ mode: "open" });
     const root = this.shadowRoot as ShadowRoot;
