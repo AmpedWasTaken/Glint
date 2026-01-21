@@ -16,19 +16,32 @@ export class GlCodeblock extends HTMLElement {
     if (this.#codeContent) return;
     
     // Try to find template tag in light DOM (before shadow DOM is attached)
-    const template = this.querySelector("template");
-    if (template) {
-      // For template elements, we need to serialize the content fragment
-      // Clone the template content and serialize it
-      const clone = template.content.cloneNode(true) as DocumentFragment;
-      const div = document.createElement("div");
-      div.appendChild(clone);
-      const content = div.innerHTML.trim();
-      if (content) {
-        this.#codeContent = content;
+    // We need to query all templates and find the one that's not the shadow root template
+    const templates = this.querySelectorAll("template");
+    for (const template of templates) {
+      // Skip shadow root templates
+      if (template.hasAttribute("shadowrootmode")) continue;
+      
+      // Try innerHTML first (works for template elements in most browsers)
+      const innerHTML = template.innerHTML.trim();
+      if (innerHTML) {
+        this.#codeContent = innerHTML;
         return;
       }
-      // Fallback to textContent
+      
+      // Fallback: serialize template.content
+      if (template.content && template.content.childNodes.length > 0) {
+        const div = document.createElement("div");
+        const clone = template.content.cloneNode(true) as DocumentFragment;
+        div.appendChild(clone);
+        const serialized = div.innerHTML.trim();
+        if (serialized) {
+          this.#codeContent = serialized;
+          return;
+        }
+      }
+      
+      // Last resort: textContent
       const textContent = template.textContent?.trim() || "";
       if (textContent) {
         this.#codeContent = textContent;
@@ -48,9 +61,20 @@ export class GlCodeblock extends HTMLElement {
       if (child.nodeType === Node.TEXT_NODE) {
         const text = child.textContent?.trim();
         if (text) contentParts.push(text);
-      } else if (child.nodeType === Node.ELEMENT_NODE && (child as Element).tagName !== "TEMPLATE") {
+      } else if (child.nodeType === Node.ELEMENT_NODE) {
         const el = child as Element;
-        if (el.outerHTML) contentParts.push(el.outerHTML);
+        // Skip template tags and shadow root templates
+        if (el.tagName === "TEMPLATE" && el.hasAttribute("shadowrootmode")) continue;
+        if (el.tagName === "TEMPLATE") {
+          // This is our content template
+          const innerHTML = el.innerHTML.trim();
+          if (innerHTML) {
+            this.#codeContent = innerHTML;
+            return;
+          }
+        } else if (el.outerHTML) {
+          contentParts.push(el.outerHTML);
+        }
       }
     }
     if (contentParts.length > 0) {
