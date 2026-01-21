@@ -1,6 +1,11 @@
 import "./styles/glint.css";
 
+import { defineButton } from "./components/button/define.js";
+
+export { defineButton, GlButton } from "./components/button/define.js";
+
 export function defineGlint(): void {
+  defineButton();
 }
 
 declare global {
