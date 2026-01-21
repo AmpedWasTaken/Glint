@@ -168,7 +168,7 @@
             <a class="link" href="./components.html"
               ><gl-button motion="snappy">Open the gallery</gl-button></a
             >
-            <gl-button id="demoToast" variant="secondary" motion="snappy">Show toast</gl-button>
+            <gl-button trigger="toast" toast-title="Hello" toast-description="Hover to pause. Click close to dismiss." variant="secondary" motion="snappy">Show toast</gl-button>
             <gl-tooltip>
               <gl-button variant="ghost">What’s included?</gl-button>
               <span slot="content">Sidebar · Modal · Toast · Tabs · Accordion · Forms · More</span>
@@ -249,8 +249,8 @@
                 </gl-tab-panel>
               </gl-tabs>
               <div slot="footer" class="row">
-                <gl-button id="openModal" variant="secondary" motion="snappy">Open modal</gl-button>
-                <gl-button id="openSidebar" motion="snappy">Open sidebar</gl-button>
+                <gl-button trigger="modal:modal" variant="secondary" motion="snappy">Open modal</gl-button>
+                <gl-button trigger="sidebar:sidebar" motion="snappy">Open sidebar</gl-button>
               </div>
             </gl-card>
 
@@ -319,8 +319,8 @@
         </gl-input>
       </div>
       <div slot="footer" class="row" style="justify-content: flex-end">
-        <gl-button id="closeModal" variant="secondary">Cancel</gl-button>
-        <gl-button id="confirmModal" motion="snappy">Confirm</gl-button>
+        <gl-button trigger="close:modal" variant="secondary">Cancel</gl-button>
+        <gl-button trigger="toast" toast-title="Done" toast-description="Action confirmed." motion="snappy" id="confirmModal">Confirm</gl-button>
       </div>
     </gl-modal>
 
@@ -340,20 +340,9 @@
       document.getElementById("themeDark").addEventListener("gl-press", () => setTheme("dark"));
       document.getElementById("themeSystem").addEventListener("gl-press", () => setTheme("system"));
 
-      document.getElementById("openSidebar").addEventListener("gl-press", () => sidebar.show());
-      document.getElementById("openModal").addEventListener("gl-press", () => modal.show());
-      document.getElementById("closeModal").addEventListener("gl-press", () => modal.close("api"));
-      document.getElementById("confirmModal").addEventListener("gl-press", () => {
-        toaster.show({ title: "Done", description: "Action confirmed.", duration: 3200 });
+      document.getElementById("confirmModal")?.addEventListener("gl-press", () => {
         modal.close("api");
       });
-      document.getElementById("demoToast").addEventListener("gl-press", () =>
-        toaster.show({
-          title: "Hello",
-          description: "Hover to pause. Click close to dismiss.",
-          duration: 4000
-        })
-      );
 
       document.getElementById("homePager")?.addEventListener("gl-change", (e) => {
         document.getElementById("homePageLabel").textContent = String(e.detail.page);

@@ -82,7 +82,7 @@ template.innerHTML = `
 export class GlButton extends HTMLElement {
   static tagName = "gl-button";
   static get observedAttributes() {
-    return ["disabled", "type"];
+    return ["disabled", "type", "trigger", "toast-title", "toast-description"];
   }
 
   #btn!: HTMLButtonElement;
@@ -108,6 +108,7 @@ export class GlButton extends HTMLElement {
         return;
       }
       this.#createRipple(e);
+      this.#handleTrigger();
       emit(this, "gl-press");
     });
   }
@@ -122,6 +123,63 @@ export class GlButton extends HTMLElement {
     const type = this.getAttribute("type");
     this.#btn.type = type === "submit" || type === "reset" ? type : "button";
     this.toggleAttribute("aria-disabled", this.disabled);
+  }
+
+  #handleTrigger() {
+    const trigger = this.getAttribute("trigger");
+    if (!trigger) return;
+
+    const [action, targetId] = trigger.split(":");
+    const target = targetId ? document.getElementById(targetId) : null;
+
+    switch (action) {
+      case "modal":
+        if (target && target.tagName === "GL-MODAL") {
+          (target as any).show();
+        }
+        break;
+      case "sidebar":
+        if (target && target.tagName === "GL-SIDEBAR") {
+          (target as any).show();
+        }
+        break;
+      case "popover":
+        if (target && target.tagName === "GL-POPOVER") {
+          (target as any).show();
+        }
+        break;
+      case "dropdown":
+        if (target && target.tagName === "GL-DROPDOWN") {
+          (target as any).show();
+        }
+        break;
+      case "tooltip":
+        if (target && target.tagName === "GL-TOOLTIP") {
+          (target as any).open();
+        }
+        break;
+      case "close":
+        if (target) {
+          if (target.tagName === "GL-MODAL") {
+            (target as any).close("api");
+          } else if (target.tagName === "GL-SIDEBAR") {
+            (target as any).close("api");
+          } else if (target.tagName === "GL-POPOVER") {
+            (target as any).close("api");
+          } else if (target.tagName === "GL-DROPDOWN") {
+            (target as any).close("api");
+          }
+        }
+        break;
+      case "toast":
+        const toaster = document.querySelector("gl-toaster");
+        if (toaster) {
+          const title = this.getAttribute("toast-title") || "Notification";
+          const description = this.getAttribute("toast-description") || "";
+          (toaster as any).show({ title, description, duration: 4000 });
+        }
+        break;
+    }
   }
 
   #createRipple(e: MouseEvent) {

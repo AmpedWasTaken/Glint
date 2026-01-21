@@ -330,6 +330,40 @@
                 <gl-button motion="bounce">Bounce</gl-button>
               </div>
             </gl-card>
+          </div>
+
+          <div class="component">
+            <h2>Triggers</h2>
+            <p class="desc">Auto-wire buttons to open/close modals, sidebars, popovers, dropdowns, and show toasts.</p>
+            <gl-card motion="subtle" style="margin: 24px 0">
+              <div class="stack">
+                <div class="row">
+                  <gl-button trigger="modal:modalDemo" variant="secondary">Open modal</gl-button>
+                  <gl-button trigger="sidebar:sidebarDemo" variant="secondary">Open sidebar</gl-button>
+                  <gl-button trigger="toast" toast-title="Hello" toast-description="This is a toast notification">Show toast</gl-button>
+                </div>
+                <div class="muted" style="font-size: 12px">
+                  No JavaScript needed! Use <code>trigger="modal:id"</code>, <code>trigger="sidebar:id"</code>, <code>trigger="toast"</code> with <code>toast-title</code> and <code>toast-description</code> attributes.
+                </div>
+              </div>
+            </gl-card>
+            <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
+              <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
+                <span>HTML</span>
+                <button class="codeCopy" data-code='<gl-button trigger="modal:myModal">Open modal</gl-button>
+<gl-button trigger="sidebar:mySidebar">Open sidebar</gl-button>
+<gl-button trigger="popover:myPopover">Open popover</gl-button>
+<gl-button trigger="dropdown:myDropdown">Open dropdown</gl-button>
+<gl-button trigger="close:myModal">Close modal</gl-button>
+<gl-button trigger="toast" toast-title="Success" toast-description="Action completed">Show toast</gl-button>'>Copy</button>
+              </div>
+              <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-button trigger="modal:myModal"&gt;Open modal&lt;/gl-button&gt;
+&lt;gl-button trigger="sidebar:mySidebar"&gt;Open sidebar&lt;/gl-button&gt;
+&lt;gl-button trigger="popover:myPopover"&gt;Open popover&lt;/gl-button&gt;
+&lt;gl-button trigger="dropdown:myDropdown"&gt;Open dropdown&lt;/gl-button&gt;
+&lt;gl-button trigger="close:myModal"&gt;Close modal&lt;/gl-button&gt;
+&lt;gl-button trigger="toast" toast-title="Success" toast-description="Action completed"&gt;Show toast&lt;/gl-button&gt;</code></pre>
+            </gl-card>
             <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
               <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
@@ -380,6 +414,24 @@
                   <td><code>boolean</code></td>
                   <td><code>false</code></td>
                   <td>Disable the button</td>
+                </tr>
+                <tr>
+                  <td><code>trigger</code></td>
+                  <td><code>"modal:id" | "sidebar:id" | "popover:id" | "dropdown:id" | "tooltip:id" | "close:id" | "toast"</code></td>
+                  <td>-</td>
+                  <td>Auto-wire button to trigger component actions</td>
+                </tr>
+                <tr>
+                  <td><code>toast-title</code></td>
+                  <td><code>string</code></td>
+                  <td>-</td>
+                  <td>Title for toast notification (requires <code>trigger="toast"</code>)</td>
+                </tr>
+                <tr>
+                  <td><code>toast-description</code></td>
+                  <td><code>string</code></td>
+                  <td>-</td>
+                  <td>Description for toast notification (requires <code>trigger="toast"</code>)</td>
                 </tr>
               </tbody>
             </table>
@@ -901,7 +953,7 @@
             <h2>Modal</h2>
             <p class="desc">Dialog with focus trap and backdrop.</p>
             <gl-card motion="subtle" style="margin: 24px 0">
-              <gl-button id="openModalDemo" motion="snappy">Open modal</gl-button>
+              <gl-button trigger="modal:modalDemo" motion="snappy">Open modal</gl-button>
             </gl-card>
             <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
               <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
@@ -912,18 +964,11 @@
   </div>
   <div>Modal content</div>
   <div slot="footer">
-    <gl-button id="closeModal">Close</gl-button>
+    <gl-button trigger="close:modal">Close</gl-button>
   </div>
 </gl-modal>
 
-<script>
-  document.getElementById("openModal").addEventListener("gl-press", () => {
-    document.getElementById("modal").show();
-  });
-  document.getElementById("closeModal").addEventListener("gl-press", () => {
-    document.getElementById("modal").close();
-  });
-</script>'>Copy</button>
+<gl-button trigger="modal:modal">Open modal</gl-button>'>Copy</button>
               </div>
               <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-modal id="modal" label="Example modal"&gt;
   &lt;div slot="header"&gt;
@@ -1091,7 +1136,7 @@
             <h2>Sidebar</h2>
             <p class="desc">Slide-out panel with backdrop.</p>
             <gl-card motion="subtle" style="margin: 24px 0">
-              <gl-button id="openSidebarDemo" motion="snappy">Open sidebar</gl-button>
+              <gl-button trigger="sidebar:sidebarDemo" motion="snappy">Open sidebar</gl-button>
             </gl-card>
             <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
               <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
@@ -1101,11 +1146,7 @@
   <div>Sidebar content</div>
 </gl-sidebar>
 
-<script>
-  document.getElementById("openSidebar").addEventListener("gl-press", () => {
-    document.getElementById("sidebar").show();
-  });
-</script>'>Copy</button>
+<gl-button trigger="sidebar:sidebar">Open sidebar</gl-button>'>Copy</button>
               </div>
               <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-sidebar id="sidebar" side="right" surface="glass"&gt;
   &lt;span slot="title"&gt;Sidebar&lt;/span&gt;
@@ -1183,21 +1224,14 @@
             <h2>Toast</h2>
             <p class="desc">Notification toasts with auto-dismiss.</p>
             <gl-card motion="subtle" style="margin: 24px 0">
-              <gl-button id="showToastDemo" motion="snappy">Show toast</gl-button>
+              <gl-button trigger="toast" toast-title="Hello" toast-description="This toast auto-dismisses. Hover to pause." motion="snappy">Show toast</gl-button>
             </gl-card>
             <gl-card motion="subtle" style="margin: 24px 0; overflow: hidden">
               <div slot="header" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: var(--gl-muted)">
                 <span>HTML</span>
                 <button class="codeCopy" data-code='<gl-toaster id="toaster"></gl-toaster>
 
-<script>
-  const toaster = document.getElementById("toaster");
-  toaster.show({
-    title: "Hello",
-    description: "This toast auto-dismisses. Hover to pause.",
-    duration: 4000
-  });
-</script>'>Copy</button>
+<gl-button trigger="toast" toast-title="Hello" toast-description="This toast auto-dismisses. Hover to pause.">Show toast</gl-button>'>Copy</button>
               </div>
               <pre class="code" style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: var(--gl-fg); background: var(--gl-bg)"><code>&lt;gl-toaster id="toaster"&gt;&lt;/gl-toaster&gt;
 
@@ -1421,8 +1455,8 @@
         </gl-input>
       </div>
       <div slot="footer" class="row" style="justify-content: flex-end">
-        <gl-button id="closeModalDemo" variant="secondary">Close</gl-button>
-        <gl-button motion="snappy">Confirm</gl-button>
+        <gl-button trigger="close:modalDemo" variant="secondary">Close</gl-button>
+        <gl-button trigger="toast" toast-title="Confirmed" toast-description="Action completed successfully" motion="snappy">Confirm</gl-button>
       </div>
     </gl-modal>
 
@@ -1461,17 +1495,6 @@
         sidebarEl.classList.toggle("open");
       });
 
-      document.getElementById("openModalDemo").addEventListener("gl-press", () => modal.show());
-      document.getElementById("closeModalDemo").addEventListener("gl-press", () => modal.close("api"));
-      document.getElementById("openSidebarDemo").addEventListener("gl-press", () => sidebar.show());
-
-      document.getElementById("showToastDemo").addEventListener("gl-press", () =>
-        toaster.show({
-          title: "Hello",
-          description: "This toast auto-dismisses. Hover to pause.",
-          duration: 4000
-        })
-      );
 
       document.getElementById("sliderDemo")?.addEventListener("gl-change", (e) => {
         document.getElementById("sliderValue").textContent = String(e.detail.value);
