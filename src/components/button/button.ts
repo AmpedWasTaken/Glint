@@ -78,16 +78,18 @@ template.innerHTML = `
     :host([variant="icon"][size="sm"]) button{padding:8px}
     :host([variant="icon"][size="lg"]) button{padding:12px}
     .spinner{
+      display:none;
       width:16px;
       height:16px;
       border:2px solid currentColor;
       border-top-color:transparent;
       border-radius:50%;
       animation:gl-spin 600ms linear infinite;
-      opacity:0;
-      transition:opacity var(--gl-dur-1) var(--gl-ease);
     }
-    :host([loading]) .spinner{opacity:1}
+    :host([loading]) .spinner{
+      display:block;
+      opacity:1;
+    }
     :host([loading]) button{cursor:wait}
     :host([loading]) ::slotted(*) {opacity:0}
     @keyframes gl-spin{to{transform:rotate(360deg)}}
