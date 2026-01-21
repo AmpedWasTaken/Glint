@@ -26,13 +26,21 @@ export class GlCodeblock extends HTMLElement {
     // This is the most reliable - innerHTML contains the raw HTML string
     let innerHTML = this.innerHTML;
     
+    console.log("[GlCodeblock] #extractContent - Method 2", {
+      innerHTMLLength: innerHTML?.length || 0,
+      innerHTMLPreview: innerHTML?.substring(0, 100) || "",
+      childNodesCount: this.childNodes.length
+    });
+    
     // If innerHTML exists and has content
     if (innerHTML && innerHTML.trim().length > 0) {
       innerHTML = innerHTML.trim();
       
       // Remove shadow root templates if present
       if (innerHTML.includes("shadowrootmode")) {
+        const before = innerHTML.length;
         innerHTML = innerHTML.replace(/<template[^>]*shadowrootmode[^>]*>[\s\S]*?<\/template>/gi, "").trim();
+        console.log("[GlCodeblock] Removed shadow root templates", { before, after: innerHTML.length });
       }
       
       // Remove regular template tags but extract their content
@@ -45,6 +53,10 @@ export class GlCodeblock extends HTMLElement {
       
       if (innerHTML && innerHTML.length > 0) {
         this.#codeContent = innerHTML;
+        console.log("[GlCodeblock] #extractContent - Set content from innerHTML", {
+          contentLength: this.#codeContent.length,
+          contentPreview: this.#codeContent.substring(0, 100)
+        });
         return;
       }
     }
