@@ -14,6 +14,8 @@
   --gl-primary-fg: #ffffff;
   --gl-danger: #dc2626;
   --gl-danger-fg: #ffffff;
+  --gl-success: #16a34a;
+  --gl-success-fg: #ffffff;
   --gl-ring: rgba(37, 99, 235, 0.35);
 
   --gl-overlay: rgba(2, 6, 23, 0.55);
@@ -87,6 +89,8 @@
   --gl-primary-fg: #07101c;
   --gl-danger: #fb7185;
   --gl-danger-fg: #07101c;
+  --gl-success: #34d399;
+  --gl-success-fg: #07101c;
   --gl-ring: rgba(125, 211, 252, 0.35);
 
   --gl-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
@@ -119,6 +123,8 @@
     --gl-primary-fg: #07101c;
     --gl-danger: #fb7185;
     --gl-danger-fg: #07101c;
+    --gl-success: #34d399;
+    --gl-success-fg: #07101c;
     --gl-ring: rgba(125, 211, 252, 0.35);
     --gl-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
     --gl-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);

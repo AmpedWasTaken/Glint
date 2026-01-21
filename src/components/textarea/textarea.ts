@@ -10,7 +10,7 @@ template.innerHTML = `
     .desc{font-size:var(--gl-text-sm);line-height:var(--gl-line-sm);color:var(--gl-muted)}
     .field{
       display:flex;
-      align-items:center;
+      align-items:stretch;
       gap:var(--gl-space-2);
       background:var(--gl-panel);
       border:1px solid var(--gl-border);
@@ -22,18 +22,25 @@ template.innerHTML = `
     .field:focus-within{border-color:var(--gl-ring); box-shadow:0 0 0 4px var(--gl-ring)}
     :host([error]) .field{border-color:color-mix(in srgb, var(--gl-danger) 70%, var(--gl-border)); box-shadow:0 0 0 4px color-mix(in srgb, var(--gl-danger) 25%, transparent)}
     :host([success]) .field{border-color:color-mix(in srgb, var(--gl-success) 70%, var(--gl-border)); box-shadow:0 0 0 4px color-mix(in srgb, var(--gl-success) 25%, transparent)}
-    input{
+    textarea{
       all:unset;
       flex:1;
       font-size:var(--gl-text-md);
       line-height:var(--gl-line-md);
       min-width:0;
+      min-height:80px;
+      white-space:pre-wrap;
+      overflow:auto;
+      resize:vertical;
     }
-    input::placeholder{color:color-mix(in srgb, var(--gl-muted) 80%, transparent)}
+    :host([resize="none"]) textarea{resize:none}
+    :host([resize="both"]) textarea{resize:both}
+    :host([resize="horizontal"]) textarea{resize:horizontal}
+    :host([resize="vertical"]) textarea{resize:vertical}
+    textarea::placeholder{color:color-mix(in srgb, var(--gl-muted) 80%, transparent)}
     :host([disabled]){opacity:0.65}
     :host([disabled]) .field{cursor:not-allowed}
-    :host([disabled]) input{pointer-events:none}
-    ::slotted([slot="prefix"]), ::slotted([slot="suffix"]){display:inline-flex;align-items:center}
+    :host([disabled]) textarea{pointer-events:none}
     .message{font-size:var(--gl-text-sm);line-height:var(--gl-line-sm)}
     :host([error]) .message{color:var(--gl-danger)}
     :host([success]) .message{color:var(--gl-success)}
@@ -43,29 +50,24 @@ template.innerHTML = `
     <span part="label-text" class="label"><slot name="label"></slot></span>
     <span part="description" class="desc"><slot name="description"></slot></span>
     <span part="field" class="field">
-      <slot name="prefix"></slot>
-      <input part="input" />
-      <slot name="suffix"></slot>
+      <textarea part="textarea"></textarea>
     </span>
     <span part="message" class="message" aria-live="polite"></span>
   </label>
 `;
 
-export class GlInput extends HTMLElement {
-  static tagName = "gl-input";
+export class GlTextarea extends HTMLElement {
+  static tagName = "gl-textarea";
   static get observedAttributes() {
     return [
       "value",
       "placeholder",
       "disabled",
-      "type",
       "name",
       "autocomplete",
+      "rows",
+      "resize",
       "required",
-      "pattern",
-      "min",
-      "max",
-      "step",
       "minlength",
       "maxlength",
       "error",
@@ -73,44 +75,44 @@ export class GlInput extends HTMLElement {
     ];
   }
 
-  #input!: HTMLInputElement;
+  #textarea!: HTMLTextAreaElement;
   #message!: HTMLSpanElement;
   #autoError = false;
 
   get value() {
-    return this.#input?.value ?? this.getAttribute("value") ?? "";
+    return this.#textarea?.value ?? this.getAttribute("value") ?? "";
   }
   set value(v: string) {
     this.setAttribute("value", v);
   }
 
   override focus(options?: FocusOptions) {
-    this.#input?.focus(options);
+    this.#textarea?.focus(options);
   }
 
   connectedCallback() {
     if (!this.shadowRoot) this.attachShadow({ mode: "open" });
     const root = this.shadowRoot as ShadowRoot;
     if (root.childNodes.length === 0) root.appendChild(template.content.cloneNode(true));
-    this.#input = root.querySelector("input")!;
+    this.#textarea = root.querySelector("textarea")!;
     this.#message = root.querySelector(".message") as HTMLSpanElement;
     this.#sync();
 
-    this.#input.addEventListener("input", () => {
-      this.setAttribute("value", this.#input.value);
-      if (this.#autoError && this.#input.checkValidity()) {
+    this.#textarea.addEventListener("input", () => {
+      this.setAttribute("value", this.#textarea.value);
+      if (this.#autoError && this.#textarea.checkValidity()) {
         this.#autoError = false;
         this.removeAttribute("error");
       }
-      emit(this, "gl-change", { value: this.#input.value });
+      emit(this, "gl-change", { value: this.#textarea.value });
     });
-    this.#input.addEventListener("change", () => {
-      emit(this, "gl-commit", { value: this.#input.value });
+    this.#textarea.addEventListener("change", () => {
+      emit(this, "gl-commit", { value: this.#textarea.value });
     });
-    this.#input.addEventListener("invalid", () => {
+    this.#textarea.addEventListener("invalid", () => {
       if (this.hasAttribute("error") || this.hasAttribute("success")) return;
       this.#autoError = true;
-      this.setAttribute("error", this.#input.validationMessage || "Invalid value");
+      this.setAttribute("error", this.#textarea.validationMessage || "Invalid value");
     });
   }
 
@@ -119,43 +121,40 @@ export class GlInput extends HTMLElement {
   }
 
   #sync() {
-    if (!this.#input) return;
+    if (!this.#textarea) return;
     const value = this.getAttribute("value");
-    if (value !== null && this.#input.value !== value) this.#input.value = value;
-    this.#input.placeholder = this.getAttribute("placeholder") ?? "";
-    this.#input.disabled = this.hasAttribute("disabled");
-    this.#input.type = this.getAttribute("type") ?? "text";
-    this.#input.name = this.getAttribute("name") ?? "";
-    const ac = this.getAttribute("autocomplete");
-    if (ac !== null) this.#input.setAttribute("autocomplete", ac);
+    if (value !== null && this.#textarea.value !== value) this.#textarea.value = value;
+    this.#textarea.placeholder = this.getAttribute("placeholder") ?? "";
+    this.#textarea.disabled = this.hasAttribute("disabled");
+    this.#textarea.name = this.getAttribute("name") ?? "";
 
-    this.#input.required = this.hasAttribute("required");
-    const pattern = this.getAttribute("pattern");
-    if (pattern !== null) this.#input.pattern = pattern;
-    const min = this.getAttribute("min");
-    if (min !== null) this.#input.min = min;
-    const max = this.getAttribute("max");
-    if (max !== null) this.#input.max = max;
-    const step = this.getAttribute("step");
-    if (step !== null) this.#input.step = step;
+    const ac = this.getAttribute("autocomplete");
+    if (ac !== null) this.#textarea.setAttribute("autocomplete", ac);
+
+    const rows = this.getAttribute("rows");
+    if (rows !== null) this.#textarea.rows = Math.max(1, Number(rows) || 1);
+
+    this.#textarea.required = this.hasAttribute("required");
     const minLen = this.getAttribute("minlength");
-    if (minLen !== null) this.#input.minLength = Number(minLen);
+    if (minLen !== null) this.#textarea.minLength = Number(minLen);
     const maxLen = this.getAttribute("maxlength");
-    if (maxLen !== null) this.#input.maxLength = Number(maxLen);
+    if (maxLen !== null) this.#textarea.maxLength = Number(maxLen);
 
     const error = this.getAttribute("error");
     const success = this.getAttribute("success");
     if (error !== null) {
       this.removeAttribute("success");
-      this.#input.setAttribute("aria-invalid", "true");
+      this.#textarea.setAttribute("aria-invalid", "true");
       if (this.#message) this.#message.textContent = error || "Invalid value";
     } else if (success !== null) {
       this.removeAttribute("error");
-      this.#input.removeAttribute("aria-invalid");
+      this.#textarea.removeAttribute("aria-invalid");
       if (this.#message) this.#message.textContent = success || "Looks good";
     } else {
-      this.#input.removeAttribute("aria-invalid");
+      this.#textarea.removeAttribute("aria-invalid");
       if (this.#message) this.#message.textContent = "";
     }
   }
 }
+
+
