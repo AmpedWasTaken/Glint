@@ -27,11 +27,23 @@ template.innerHTML = `
       color:var(--gl-primary-fg);
       box-shadow:var(--gl-shadow-sm);
       border:1px solid transparent;
+      position:relative;
+      overflow:hidden;
       transition:transform var(--gl-motion-dur) var(--gl-motion-ease),
         box-shadow var(--gl-motion-dur) var(--gl-motion-ease),
         background var(--gl-motion-dur) var(--gl-motion-ease),
         border-color var(--gl-motion-dur) var(--gl-motion-ease),
         color var(--gl-motion-dur) var(--gl-motion-ease);
+    }
+    .ripple{
+      position:absolute;
+      border-radius:50%;
+      background:rgba(255,255,255,0.4);
+      width:20px;
+      height:20px;
+      pointer-events:none;
+      transform:scale(0);
+      animation:gl-ripple 600ms var(--gl-ease-out);
     }
     button:focus-visible{outline:2px solid var(--gl-ring);outline-offset:2px}
     button:hover{
@@ -95,6 +107,7 @@ export class GlButton extends HTMLElement {
         e.stopImmediatePropagation();
         return;
       }
+      this.#createRipple(e);
       emit(this, "gl-press");
     });
   }
@@ -109,5 +122,18 @@ export class GlButton extends HTMLElement {
     const type = this.getAttribute("type");
     this.#btn.type = type === "submit" || type === "reset" ? type : "button";
     this.toggleAttribute("aria-disabled", this.disabled);
+  }
+
+  #createRipple(e: MouseEvent) {
+    if (!this.#btn || this.hasAttribute("motion") && this.getAttribute("motion") === "none") return;
+    const rect = this.#btn.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const ripple = document.createElement("span");
+    ripple.className = "ripple";
+    ripple.style.left = `${x - 10}px`;
+    ripple.style.top = `${y - 10}px`;
+    this.#btn.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
   }
 }

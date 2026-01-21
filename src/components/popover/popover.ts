@@ -30,8 +30,16 @@ template.innerHTML = `
       transition:opacity var(--gl-popover-dur) var(--gl-popover-ease), transform var(--gl-popover-dur) var(--gl-popover-ease);
       outline:none;
     }
-    :host([open]) .panel{display:block;opacity:1;transform:translateY(0) scale(1)}
+    :host([open]) .panel{
+      display:block;
+      opacity:1;
+      transform:translateY(0) scale(1);
+      animation:gl-scale-in var(--gl-popover-dur) var(--gl-popover-ease) forwards;
+    }
     :host([motion="bounce"][open]) .panel{transform:translateY(0) scale(1.02)}
+    :host(:not([open])) .panel{
+      animation:gl-scale-out var(--gl-scale-out-dur) var(--gl-ease-out) forwards;
+    }
     :host([surface="glass"]) .panel{background:var(--gl-glass-bg);border-color:var(--gl-glass-border)}
     @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
       :host([surface="glass"]) .panel{

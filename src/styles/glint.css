@@ -77,6 +77,70 @@
   --gl-z-tooltip: 40;
   --gl-z-toast: 50;
   --gl-z-modal: 60;
+
+  --gl-fade-in-dur: var(--gl-dur-3);
+  --gl-fade-out-dur: var(--gl-dur-2);
+  --gl-slide-in-dur: var(--gl-dur-3);
+  --gl-slide-out-dur: var(--gl-dur-2);
+  --gl-scale-in-dur: var(--gl-dur-2);
+  --gl-scale-out-dur: var(--gl-dur-1);
+}
+
+@keyframes gl-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes gl-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes gl-slide-in-up {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes gl-slide-in-down {
+  from { transform: translateY(-12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes gl-slide-out-up {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-12px); opacity: 0; }
+}
+
+@keyframes gl-slide-out-down {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(12px); opacity: 0; }
+}
+
+@keyframes gl-scale-in {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes gl-scale-out {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(0.95); opacity: 0; }
+}
+
+@keyframes gl-ripple {
+  from { transform: scale(0); opacity: 0.6; }
+  to { transform: scale(4); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes gl-fade-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes gl-fade-out { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes gl-slide-in-up { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes gl-slide-in-down { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes gl-slide-out-up { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes gl-slide-out-down { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes gl-scale-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes gl-scale-out { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes gl-ripple { from { opacity: 0.4; } to { opacity: 0; } }
 }
 
 [data-glint-theme="dark"] {
@@ -236,5 +300,46 @@ a {
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+.gl-fade-in {
+  animation: gl-fade-in var(--gl-fade-in-dur) var(--gl-ease-out) forwards;
+}
+
+.gl-slide-in-up {
+  animation: gl-slide-in-up var(--gl-slide-in-dur) var(--gl-ease-out) forwards;
+}
+
+.gl-scale-in {
+  animation: gl-scale-in var(--gl-scale-in-dur) var(--gl-ease-spring) forwards;
+}
+
+.gl-stagger > * {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: gl-fade-in var(--gl-fade-in-dur) var(--gl-ease-out) forwards,
+    gl-slide-in-up var(--gl-slide-in-dur) var(--gl-ease-out) forwards;
+}
+
+.gl-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.gl-stagger > *:nth-child(2) { animation-delay: 50ms; }
+.gl-stagger > *:nth-child(3) { animation-delay: 100ms; }
+.gl-stagger > *:nth-child(4) { animation-delay: 150ms; }
+.gl-stagger > *:nth-child(5) { animation-delay: 200ms; }
+.gl-stagger > *:nth-child(6) { animation-delay: 250ms; }
+.gl-stagger > *:nth-child(7) { animation-delay: 300ms; }
+.gl-stagger > *:nth-child(8) { animation-delay: 350ms; }
+.gl-stagger > *:nth-child(9) { animation-delay: 400ms; }
+.gl-stagger > *:nth-child(10) { animation-delay: 450ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gl-fade-in,
+  .gl-slide-in-up,
+  .gl-scale-in,
+  .gl-stagger > * {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 }

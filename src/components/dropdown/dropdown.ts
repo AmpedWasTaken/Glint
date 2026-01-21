@@ -33,8 +33,12 @@ template.innerHTML = `
       display:block;
       opacity:1;
       transform:translateY(0) scale(1);
+      animation:gl-scale-in var(--gl-dropdown-dur) var(--gl-dropdown-ease) forwards;
     }
     :host([motion="bounce"][open]) .menu{transform:translateY(0) scale(1.02)}
+    :host(:not([open])) .menu{
+      animation:gl-scale-out var(--gl-scale-out-dur) var(--gl-ease-out) forwards;
+    }
     :host([side="right"]) .menu{left:auto;right:0}
     :host([side="top"]) .menu{top:auto;bottom:calc(100% + 6px);transform:translateY(calc(6px * var(--gl-motion) * var(--gl-dropdown-amp))) scale(0.98)}
     :host([side="top"][open]) .menu{transform:translateY(0) scale(1)}

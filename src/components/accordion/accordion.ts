@@ -36,13 +36,15 @@ itemTemplate.innerHTML = `
       line-height:var(--gl-line-md);
       max-height:0;
       overflow:hidden;
-      transition:max-height var(--gl-dur-3) var(--gl-ease-out), padding var(--gl-dur-2) var(--gl-ease), opacity var(--gl-dur-2) var(--gl-ease);
+      transition:max-height var(--gl-dur-4) var(--gl-ease-out), padding var(--gl-dur-2) var(--gl-ease), opacity var(--gl-dur-3) var(--gl-ease-out), transform var(--gl-dur-3) var(--gl-ease-out);
       opacity:0;
+      transform:translateY(-4px);
     }
     :host([open]) .panel{
       max-height:500px;
       opacity:1;
       padding-top:8px;
+      transform:translateY(0);
     }
     .header:focus-visible{outline:2px solid var(--gl-ring); outline-offset:2px; border-radius:10px}
   </style>

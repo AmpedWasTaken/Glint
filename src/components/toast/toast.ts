@@ -25,6 +25,9 @@ toastTemplate.innerHTML = `
       opacity:0;
       animation:gl-toast-in var(--gl-motion-dur) var(--gl-motion-ease) forwards;
     }
+    :host([data-exiting]) .toast{
+      animation:gl-toast-out var(--gl-slide-out-dur) var(--gl-ease-out) forwards;
+    }
     .top{display:flex; align-items:flex-start; justify-content:space-between; gap:var(--gl-space-3)}
     .title{font-weight:600; font-size:var(--gl-text-md); line-height:var(--gl-line-md)}
     .desc{color:var(--gl-muted); font-size:var(--gl-text-md); line-height:var(--gl-line-md)}
@@ -41,6 +44,10 @@ toastTemplate.innerHTML = `
 
     @keyframes gl-toast-in{
       to{opacity:1; transform:translateY(0) scale(1)}
+    }
+    @keyframes gl-toast-out{
+      from{opacity:1; transform:translateY(0) scale(1)}
+      to{opacity:0; transform:translateY(12px) scale(0.95)}
     }
   </style>
   <div class="toast" part="toast" role="status" aria-live="polite">
@@ -98,8 +105,9 @@ export class GlToast extends HTMLElement {
 
   dismiss(reason: "timeout" | "close" | "api" = "api") {
     this.#clear();
+    this.setAttribute("data-exiting", "");
     emit(this, "gl-dismiss", { reason });
-    this.remove();
+    setTimeout(() => this.remove(), 200);
   }
 
   #clear() {

@@ -10,7 +10,16 @@ template.innerHTML = `
       border-radius:var(--gl-radius);
       box-shadow:var(--gl-shadow-sm);
       overflow:hidden;
+      opacity:0;
+      transform:translateY(8px);
+      animation:gl-fade-in var(--gl-fade-in-dur) var(--gl-ease-out) forwards,
+        gl-slide-in-up var(--gl-slide-in-dur) var(--gl-ease-out) forwards;
       transition:box-shadow var(--gl-dur-2) var(--gl-ease), transform var(--gl-dur-2) var(--gl-ease), border-color var(--gl-dur-1) var(--gl-ease);
+    }
+    :host([motion="none"]) .card{
+      animation:none;
+      opacity:1;
+      transform:none;
     }
     :host([motion="subtle"]:hover) .card{box-shadow:var(--gl-shadow-md);transform:translateY(-2px)}
     :host([motion="snappy"]:hover) .card{box-shadow:var(--gl-shadow-lg);transform:translateY(-4px) scale(1.01)}

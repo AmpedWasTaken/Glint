@@ -19,8 +19,16 @@ template.innerHTML = `
       align-items:center;
       justify-content:center;
       padding:var(--gl-space-5);
+      opacity:0;
+      transition:opacity var(--gl-motion-dur) var(--gl-motion-ease);
     }
-    :host([open]) .overlay{display:flex}
+    :host([open]) .overlay{
+      display:flex;
+      animation:gl-fade-in var(--gl-motion-dur) var(--gl-motion-ease) forwards;
+    }
+    :host(:not([open])) .overlay{
+      animation:gl-fade-out var(--gl-fade-out-dur) var(--gl-ease-out) forwards;
+    }
     .dialog{
       width:min(560px, 100%);
       background:var(--gl-panel);
@@ -34,7 +42,14 @@ template.innerHTML = `
       transition:opacity var(--gl-motion-dur) var(--gl-motion-ease), transform var(--gl-motion-dur) var(--gl-motion-ease);
       outline:none;
     }
-    :host([open]) .dialog{opacity:1; transform:translateY(0)}
+    :host([open]) .dialog{
+      opacity:1;
+      transform:translateY(0) scale(1);
+      animation:gl-scale-in var(--gl-motion-dur) var(--gl-motion-ease) forwards;
+    }
+    :host(:not([open])) .dialog{
+      animation:gl-scale-out var(--gl-scale-out-dur) var(--gl-ease-out) forwards;
+    }
     .header{padding:var(--gl-space-4) var(--gl-space-4) 0}
     .body{padding:var(--gl-space-4)}
     .footer{padding:0 var(--gl-space-4) var(--gl-space-4); display:flex; justify-content:flex-end; gap:var(--gl-space-2)}
