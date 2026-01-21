@@ -95,6 +95,32 @@
       .hidden {
         display: none !important;
       }
+      gl-dropdown .item {
+        display: block;
+        width: 100%;
+        padding: 8px 12px;
+        border: none;
+        background: transparent;
+        color: var(--gl-fg);
+        text-align: left;
+        cursor: pointer;
+        border-radius: 8px;
+        font-size: var(--gl-text-md);
+        line-height: var(--gl-line-md);
+        transition: background var(--gl-dur-1) var(--gl-ease);
+      }
+      gl-dropdown .item:hover {
+        background: var(--gl-hover);
+      }
+      gl-dropdown .item:focus-visible {
+        outline: 2px solid var(--gl-ring);
+        outline-offset: 2px;
+      }
+      gl-dropdown .divider {
+        height: 1px;
+        background: var(--gl-border);
+        margin: 6px 0;
+      }
       @media (max-width: 900px) {
         .grid {
           column-count: 1;
@@ -356,6 +382,124 @@
           </div>
         </gl-card>
 
+        <gl-card data-tags="avatar profile" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Avatar</div>
+            <div class="muted">Image, initials, status, sizes</div>
+          </div>
+          <div class="row" style="align-items: center; gap: 16px">
+            <gl-avatar name="John Doe" size="sm" status="online"></gl-avatar>
+            <gl-avatar name="Jane Smith" size="md" status="away" motion="snappy"></gl-avatar>
+            <gl-avatar name="Alex Johnson" size="lg" status="busy" motion="bounce"></gl-avatar>
+            <gl-avatar name="Sam Wilson" size="xl" status="offline"></gl-avatar>
+            <gl-avatar src="https://i.pravatar.cc/150?img=12" alt="User" size="lg" status="online" motion="snappy"></gl-avatar>
+          </div>
+        </gl-card>
+
+        <gl-card data-tags="switch toggle input" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Switch</div>
+            <div class="muted">Toggle with motion variations</div>
+          </div>
+          <div class="stack">
+            <div class="row" style="align-items: center; gap: 12px">
+              <gl-switch id="switch1" checked motion="none"></gl-switch>
+              <span class="muted">motion="none"</span>
+            </div>
+            <div class="row" style="align-items: center; gap: 12px">
+              <gl-switch id="switch2" checked motion="subtle"></gl-switch>
+              <span class="muted">motion="subtle"</span>
+            </div>
+            <div class="row" style="align-items: center; gap: 12px">
+              <gl-switch id="switch3" checked motion="snappy"></gl-switch>
+              <span class="muted">motion="snappy"</span>
+            </div>
+            <div class="row" style="align-items: center; gap: 12px">
+              <gl-switch id="switch4" checked motion="bounce"></gl-switch>
+              <span class="muted">motion="bounce"</span>
+            </div>
+            <div class="row" style="align-items: center; gap: 12px">
+              <gl-switch size="sm" checked></gl-switch>
+              <gl-switch checked></gl-switch>
+              <gl-switch size="lg" checked></gl-switch>
+            </div>
+          </div>
+        </gl-card>
+
+        <gl-card data-tags="dropdown menu navigation" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Dropdown</div>
+            <div class="muted">Menu with animations, focus trap</div>
+          </div>
+          <div class="row" style="flex-wrap: wrap; gap: 12px">
+            <gl-dropdown id="dropdown1" motion="subtle">
+              <gl-button slot="trigger" variant="secondary">Menu</gl-button>
+              <button class="item" data-value="edit">Edit</button>
+              <button class="item" data-value="duplicate">Duplicate</button>
+              <div class="divider"></div>
+              <button class="item" data-value="delete">Delete</button>
+            </gl-dropdown>
+            <gl-dropdown id="dropdown2" motion="snappy" side="right">
+              <gl-button slot="trigger" variant="secondary">Right</gl-button>
+              <button class="item" data-value="option1">Option 1</button>
+              <button class="item" data-value="option2">Option 2</button>
+            </gl-dropdown>
+            <gl-dropdown id="dropdown3" motion="bounce">
+              <gl-button slot="trigger" variant="secondary">Bounce</gl-button>
+              <button class="item" data-value="item1">Item 1</button>
+              <button class="item" data-value="item2">Item 2</button>
+            </gl-dropdown>
+          </div>
+        </gl-card>
+
+        <gl-card data-tags="skeleton loading feedback" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Skeleton</div>
+            <div class="muted">Loading states with variants</div>
+          </div>
+          <div class="stack">
+            <div class="row" style="align-items: center; gap: 12px">
+              <gl-skeleton width="40px" height="40px" shape="circle" variant="shimmer"></gl-skeleton>
+              <div style="flex: 1">
+                <gl-skeleton width="60%" height="16px" variant="shimmer" style="margin-bottom: 8px"></gl-skeleton>
+                <gl-skeleton width="40%" height="12px" variant="shimmer"></gl-skeleton>
+              </div>
+            </div>
+            <div class="row" style="gap: 8px">
+              <gl-skeleton width="80px" height="32px" variant="pulse"></gl-skeleton>
+              <gl-skeleton width="100px" height="32px" variant="wave"></gl-skeleton>
+              <gl-skeleton width="120px" height="32px" variant="shimmer"></gl-skeleton>
+            </div>
+            <gl-skeleton width="100%" height="200px" variant="wave"></gl-skeleton>
+          </div>
+        </gl-card>
+
+        <gl-card data-tags="slider range input" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Slider</div>
+            <div class="muted">Range input with motion</div>
+          </div>
+          <div class="stack">
+            <div>
+              <div class="muted" style="margin-bottom: 8px">Value: <span id="sliderValue1">50</span></div>
+              <gl-slider id="slider1" value="50" min="0" max="100" step="1" motion="subtle"></gl-slider>
+            </div>
+            <div>
+              <div class="muted" style="margin-bottom: 8px">Value: <span id="sliderValue2">75</span></div>
+              <gl-slider id="slider2" value="75" min="0" max="100" step="5" motion="snappy"></gl-slider>
+            </div>
+            <div>
+              <div class="muted" style="margin-bottom: 8px">Value: <span id="sliderValue3">25</span></div>
+              <gl-slider id="slider3" value="25" min="0" max="100" step="1" motion="bounce"></gl-slider>
+            </div>
+            <div class="row" style="gap: 16px">
+              <gl-slider value="40" size="sm" motion="snappy" style="flex: 1"></gl-slider>
+              <gl-slider value="60" motion="snappy" style="flex: 1"></gl-slider>
+              <gl-slider value="80" size="lg" motion="snappy" style="flex: 1"></gl-slider>
+            </div>
+          </div>
+        </gl-card>
+
         <gl-card data-tags="card effects glass" class="full" surface="glass" motion="subtle">
           <div slot="header">
             <div
@@ -406,8 +550,8 @@
             Buttons: <code>gl-press</code> · Inputs: <code>gl-change</code>/<code>gl-commit</code> ·
             Tabs: <code>gl-change</code> · Accordion item: <code>gl-toggle</code> ·
             Modal/sidebar/toast: <code>gl-open</code>/<code>gl-close</code>/<code>gl-dismiss</code>
-            · Alert:
-            <code>gl-close</code>
+            · Alert: <code>gl-close</code> · Switch: <code>gl-change</code> · Dropdown: <code>gl-select</code> ·
+            Slider: <code>gl-change</code>
           </div>
         </gl-card>
       </div>
@@ -436,6 +580,28 @@
       });
 
       document.getElementById("openSidebar").addEventListener("gl-press", () => sidebar.show());
+
+      document.getElementById("switch1")?.addEventListener("gl-change", (e) => console.log("Switch 1:", e.detail));
+      document.getElementById("switch2")?.addEventListener("gl-change", (e) => console.log("Switch 2:", e.detail));
+      document.getElementById("switch3")?.addEventListener("gl-change", (e) => console.log("Switch 3:", e.detail));
+      document.getElementById("switch4")?.addEventListener("gl-change", (e) => console.log("Switch 4:", e.detail));
+
+      document.getElementById("dropdown1")?.addEventListener("gl-select", (e) => {
+        console.log("Dropdown 1:", e.detail);
+        toaster.show({ title: "Selected", description: e.detail.value, duration: 2000 });
+      });
+      document.getElementById("dropdown2")?.addEventListener("gl-select", (e) => console.log("Dropdown 2:", e.detail));
+      document.getElementById("dropdown3")?.addEventListener("gl-select", (e) => console.log("Dropdown 3:", e.detail));
+
+      document.getElementById("slider1")?.addEventListener("gl-change", (e) => {
+        document.getElementById("sliderValue1").textContent = String(e.detail.value);
+      });
+      document.getElementById("slider2")?.addEventListener("gl-change", (e) => {
+        document.getElementById("sliderValue2").textContent = String(e.detail.value);
+      });
+      document.getElementById("slider3")?.addEventListener("gl-change", (e) => {
+        document.getElementById("sliderValue3").textContent = String(e.detail.value);
+      });
 
       const showToast = () =>
         toaster.show({

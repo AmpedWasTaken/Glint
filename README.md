@@ -249,6 +249,104 @@ Events:
 
 - `gl-change`
 
+### Switch
+
+```html
+<gl-switch checked motion="snappy"></gl-switch>
+```
+
+Attributes:
+
+- `checked` — toggle state
+- `disabled` — disable interaction
+- `size` — `sm`, `md` (default), `lg`
+- `motion` — `none`, `subtle`, `snappy`, `bounce`
+
+Events:
+
+- `gl-change` — `{ checked: boolean }`
+
+### Slider
+
+```html
+<gl-slider value="50" min="0" max="100" step="1" motion="snappy"></gl-slider>
+```
+
+Attributes:
+
+- `value` — current value (number)
+- `min` — minimum value (default: `0`)
+- `max` — maximum value (default: `100`)
+- `step` — step size (default: `1`)
+- `disabled` — disable interaction
+- `size` — `sm`, `md` (default), `lg`
+- `motion` — `none`, `subtle`, `snappy`, `bounce`
+
+Events:
+
+- `gl-change` — `{ value: number }`
+
+### Avatar
+
+```html
+<gl-avatar name="John Doe" size="lg" status="online"></gl-avatar>
+<gl-avatar src="https://example.com/avatar.jpg" alt="User" size="md"></gl-avatar>
+```
+
+Attributes:
+
+- `name` — name for initials (if no `src`)
+- `src` — image URL
+- `alt` — image alt text
+- `size` — `sm`, `md` (default), `lg`, `xl`
+- `status` — `online`, `away`, `busy`, `offline`
+- `motion` — `none`, `subtle`, `snappy`, `bounce`
+
+### Dropdown
+
+```html
+<gl-dropdown motion="snappy">
+  <gl-button slot="trigger">Menu</gl-button>
+  <button class="item" data-value="edit">Edit</button>
+  <button class="item" data-value="delete">Delete</button>
+  <div class="divider"></div>
+  <button class="item" data-value="more">More</button>
+</gl-dropdown>
+```
+
+Attributes:
+
+- `open` — control visibility
+- `side` — `left` (default), `right`, `top`
+- `motion` — `none`, `subtle`, `snappy`, `bounce`
+
+Methods:
+
+- `show()` — open dropdown
+- `close(reason)` — close dropdown
+- `toggle()` — toggle open state
+
+Events:
+
+- `gl-select` — `{ value: string, index: number }`
+- `gl-close` — `{ reason: string }`
+
+Note: Use `.item` class for menu items and `.divider` for separators.
+
+### Skeleton
+
+```html
+<gl-skeleton width="100%" height="20px" variant="shimmer"></gl-skeleton>
+<gl-skeleton width="40px" height="40px" shape="circle" variant="pulse"></gl-skeleton>
+```
+
+Attributes:
+
+- `width` — CSS width (default: `100%`)
+- `height` — CSS height (default: `20px`)
+- `variant` — `shimmer` (default), `pulse`, `wave`, `none`
+- `shape` — `rect` (default), `circle`, `text`
+
 ### Tooltip
 
 ```html
