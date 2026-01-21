@@ -10,8 +10,6 @@ export class GlCodeblock extends HTMLElement {
 
   constructor() {
     super();
-    const content = this.innerHTML.trim() || this.textContent?.trim() || "";
-    this.#codeContent = content;
   }
 
   connectedCallback(): void {
@@ -21,7 +19,13 @@ export class GlCodeblock extends HTMLElement {
     const showCopy = this.hasAttribute("copy");
     
     if (!this.#codeContent) {
-      this.#codeContent = this.innerHTML.trim() || this.textContent?.trim() || "";
+      let raw = this.innerHTML.trim() || this.textContent?.trim() || "";
+      raw = raw.replace(/<template[^>]*shadowrootmode[^>]*>[\s\S]*?<\/template>/gi, "");
+      raw = raw.replace(/<template[^>]*>[\s\S]*?<\/template>/gi, "");
+      raw = raw.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "");
+      raw = raw.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
+      raw = raw.replace(/\s+/g, " ").trim();
+      this.#codeContent = raw;
     }
 
     const template = document.createElement("template");
