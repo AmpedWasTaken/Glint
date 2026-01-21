@@ -241,6 +241,13 @@ export class GlCodeblock extends HTMLElement {
     }
 
     // Highlight and display the code
+    console.log("[GlCodeblock] About to highlight", {
+      id: this.id || "no-id",
+      codeContentLength: this.#codeContent.length,
+      codeContentPreview: this.#codeContent.substring(0, 100),
+      lang
+    });
+    
     this.#highlight(this.#codeContent, lang);
     
     // Debug: Check if code was set
