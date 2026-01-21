@@ -28,6 +28,7 @@ template.innerHTML = `
       padding: var(--gl-space-3) var(--gl-space-5);
       background: var(--gl-panel);
       border-bottom: 1px solid var(--gl-border);
+      border-radius: var(--gl-radius);
       transition: background var(--gl-motion-dur) var(--gl-motion-ease),
         border-color var(--gl-motion-dur) var(--gl-motion-ease),
         box-shadow var(--gl-motion-dur) var(--gl-motion-ease),
@@ -36,6 +37,7 @@ template.innerHTML = `
     :host([variant="glass"]) .topbar {
       background: var(--gl-glass-bg);
       border-color: var(--gl-glass-border);
+      border-radius: var(--gl-radius);
       backdrop-filter: blur(var(--gl-glass-blur)) saturate(var(--gl-glass-saturation));
       -webkit-backdrop-filter: blur(var(--gl-glass-blur)) saturate(var(--gl-glass-saturation));
     }
