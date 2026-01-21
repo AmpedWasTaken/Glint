@@ -206,10 +206,47 @@ Card effects:
 </gl-input>
 ```
 
+Validation states:
+
+```html
+<gl-input required placeholder="Email"></gl-input>
+<gl-input error="This field is required"></gl-input>
+<gl-input success="Looks good"></gl-input>
+```
+
+Methods:
+
+- `checkValidity()`
+- `reportValidity()`
+
 Events:
 
 - `gl-change` (on input)
 - `gl-commit` (on change)
+
+### Textarea
+
+```html
+<gl-textarea rows="4" placeholder="Write a message">
+  <span slot="label">Message</span>
+</gl-textarea>
+```
+
+Attributes:
+
+- `rows` (default: browser default)
+- `resize` — `vertical` (default), `horizontal`, `both`, `none`
+- `error` / `success` — validation messages and styling
+
+Methods:
+
+- `checkValidity()`
+- `reportValidity()`
+
+Events:
+
+- `gl-change`
+- `gl-commit`
 
 ### Select
 
@@ -356,6 +393,40 @@ Attributes:
 </gl-tooltip>
 ```
 
+### Popover
+
+```html
+<gl-popover motion="snappy" surface="glass">
+  <gl-button slot="trigger" variant="secondary">Open</gl-button>
+  <div slot="content" style="display: grid; gap: 10px">
+    <div style="font-weight: 600">Popover title</div>
+    <div style="color: var(--gl-muted)">Rich content + positioning.</div>
+  </div>
+</gl-popover>
+```
+
+Attributes:
+
+- `open` — control visibility
+- `disabled`
+- `side` — `bottom` (default), `top`, `left`, `right`
+- `align` — `start` (default), `center`, `end`
+- `offset` — number (px)
+- `trap` — trap focus inside when open
+- `motion` — `none`, `subtle`, `snappy`, `bounce`
+- `surface="glass"` — glass panel
+
+Methods:
+
+- `show()`
+- `close(reason)`
+- `toggle()`
+
+Events:
+
+- `gl-open`
+- `gl-close` — `{ reason: string }`
+
 ### Accordion
 
 ```html
@@ -396,6 +467,39 @@ Events:
 Events:
 
 - `gl-change` (on `gl-tabs`)
+
+### Breadcrumb
+
+```html
+<gl-breadcrumb separator="/">
+  <gl-breadcrumb-item href="/">Home</gl-breadcrumb-item>
+  <gl-breadcrumb-item href="/docs">Docs</gl-breadcrumb-item>
+  <gl-breadcrumb-item current>Components</gl-breadcrumb-item>
+</gl-breadcrumb>
+```
+
+Attributes:
+
+- `separator` — text between items (default: `/`)
+- `label` — aria-label for the nav
+
+### Pagination
+
+```html
+<gl-pagination page="1" pages="12"></gl-pagination>
+```
+
+Attributes:
+
+- `page` — current page
+- `pages` — total pages
+- `sibling` — pages around the current page (default: `1`)
+- `boundary` — always-visible pages at the edges (default: `1`)
+- `label` — aria-label for the nav
+
+Events:
+
+- `gl-change` — `{ page: number, pages: number }`
 
 ## Local development
 

@@ -226,16 +226,20 @@
           </div>
         </gl-card>
 
-        <gl-card data-tags="input select checkbox radio inputs" motion="subtle">
+        <gl-card data-tags="input textarea select checkbox radio inputs validation" motion="subtle">
           <div slot="header">
             <div style="font-weight: 600">Form controls</div>
-            <div class="muted">Input, select, checkbox, radio</div>
+            <div class="muted">Input, textarea, select, checkbox, radio + validation states</div>
           </div>
           <div class="stack">
-            <gl-input id="email" placeholder="you@company.com">
+            <gl-input id="email" placeholder="you@company.com" required>
               <span slot="label">Email</span>
-              <span slot="description">Events: gl-change + gl-commit</span>
+              <span slot="description">Try Validate to see native validity + auto error.</span>
             </gl-input>
+            <gl-textarea id="message" rows="4" placeholder="Tell us what you need…" minlength="10">
+              <span slot="label">Message</span>
+              <span slot="description">Min 10 characters.</span>
+            </gl-textarea>
             <gl-select
               id="team"
               value="design"
@@ -247,6 +251,16 @@
               <gl-checkbox id="remember" checked>Remember me</gl-checkbox>
               <gl-radio name="plan" value="starter" checked>Starter</gl-radio>
               <gl-radio name="plan" value="pro">Pro</gl-radio>
+            </div>
+            <div class="row">
+              <gl-button id="validateForm" variant="secondary" motion="snappy">Validate</gl-button>
+              <gl-button
+                id="setSuccess"
+                variant="ghost"
+                motion="subtle"
+                title="Sets a success state on the email field"
+                >Set success</gl-button
+              >
             </div>
           </div>
         </gl-card>
@@ -303,6 +317,60 @@
           <div slot="footer" class="row">
             <gl-button id="openModal" variant="secondary" motion="snappy">Open modal</gl-button>
             <gl-button id="showToast" motion="snappy">Show toast</gl-button>
+          </div>
+        </gl-card>
+
+        <gl-card data-tags="popover overlay tooltip" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Popover</div>
+            <div class="muted">Rich content popup with positioning</div>
+          </div>
+          <div class="row" style="flex-wrap: wrap; gap: 12px">
+            <gl-popover motion="subtle" surface="glass">
+              <gl-button slot="trigger" variant="secondary">Bottom / start</gl-button>
+              <div slot="content" style="display: grid; gap: 10px">
+                <div style="font-weight: 600">Popover title</div>
+                <div class="muted">Content can be anything.</div>
+                <div class="row">
+                  <gl-button id="popoverToast" motion="snappy">Action</gl-button>
+                  <gl-button variant="ghost">Secondary</gl-button>
+                </div>
+              </div>
+            </gl-popover>
+            <gl-popover motion="snappy" side="top" align="center">
+              <gl-button slot="trigger" variant="secondary">Top / center</gl-button>
+              <div slot="content" class="muted">Quick info up top.</div>
+            </gl-popover>
+            <gl-popover motion="bounce" side="right" align="center" trap surface="glass">
+              <gl-button slot="trigger" variant="secondary">Right + trap</gl-button>
+              <div slot="content" style="display: grid; gap: 10px">
+                <div style="font-weight: 600">Focusable content</div>
+                <gl-input placeholder="Type here">
+                  <span slot="label">Input</span>
+                </gl-input>
+                <div class="row" style="justify-content: flex-end">
+                  <gl-button variant="secondary">Close</gl-button>
+                </div>
+              </div>
+            </gl-popover>
+          </div>
+        </gl-card>
+
+        <gl-card data-tags="breadcrumb pagination navigation" motion="subtle">
+          <div slot="header">
+            <div style="font-weight: 600">Breadcrumb + Pagination</div>
+            <div class="muted">Navigation primitives</div>
+          </div>
+          <div class="stack">
+            <gl-breadcrumb separator="›">
+              <gl-breadcrumb-item href="./index.html">Home</gl-breadcrumb-item>
+              <gl-breadcrumb-item href="./components.html">Components</gl-breadcrumb-item>
+              <gl-breadcrumb-item current>Navigation</gl-breadcrumb-item>
+            </gl-breadcrumb>
+            <div class="row" style="justify-content: space-between; align-items: center">
+              <div class="muted">Page: <span id="pageLabel">3</span></div>
+              <gl-pagination id="pager" page="3" pages="12"></gl-pagination>
+            </div>
           </div>
         </gl-card>
 
@@ -601,6 +669,26 @@
       });
       document.getElementById("slider3")?.addEventListener("gl-change", (e) => {
         document.getElementById("sliderValue3").textContent = String(e.detail.value);
+      });
+
+      document.getElementById("validateForm")?.addEventListener("gl-press", () => {
+        const email = document.getElementById("email");
+        const message = document.getElementById("message");
+        const ok = email?.reportValidity?.() && message?.reportValidity?.();
+        if (ok) {
+          toaster.show({ title: "Valid", description: "Looks good.", duration: 2000 });
+        }
+      });
+      document.getElementById("setSuccess")?.addEventListener("gl-press", () => {
+        document.getElementById("email")?.setAttribute("success", "Nice — valid email format");
+      });
+
+      document.getElementById("popoverToast")?.addEventListener("gl-press", () => {
+        toaster.show({ title: "Popover action", description: "Action triggered.", duration: 2000 });
+      });
+
+      document.getElementById("pager")?.addEventListener("gl-change", (e) => {
+        document.getElementById("pageLabel").textContent = String(e.detail.page);
       });
 
       const showToast = () =>
