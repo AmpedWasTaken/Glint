@@ -1,6 +1,8 @@
 <div align="center">
 
-# ✨ Glint
+<img src="https://github.com/AmpedWasTaken/Glint/blob/main/images/logo.png?raw=true" alt="Glint Logo" width="48" height="48" />
+
+# Glint
 
 **Modern, minimal UI components built with Web Components + Shadow DOM**
 
