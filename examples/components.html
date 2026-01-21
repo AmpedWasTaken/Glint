@@ -75,7 +75,7 @@
 
     <gl-toaster id="toaster"></gl-toaster>
 
-    <gl-sidebar id="sidebar" motion="snappy">
+    <gl-sidebar id="sidebar" motion="snappy" side="right" surface="glass">
       <span slot="title">Navigation</span>
       <div class="stack">
         <a href="./index.html" class="muted link">Home</a>
@@ -292,7 +292,7 @@
           </div>
         </gl-card>
 
-        <gl-card class="col-12" motion="subtle">
+        <gl-card class="col-12" motion="subtle" surface="glass">
           <div slot="header">
             <div style="font-weight: 600">Motion System</div>
             <div class="muted">
@@ -311,11 +311,18 @@
               <gl-button motion="bounce">Bounce</gl-button>
             </div>
             <div class="row">
-              <gl-card motion="subtle" style="padding: 16px; min-width: 120px">
-                <div>Card with subtle motion</div>
+              <gl-card motion="subtle" effect="tilt" style="padding: 16px; min-width: 160px">
+                <div style="font-weight: 600">Tilt</div>
+                <div class="muted">motion="subtle"</div>
               </gl-card>
-              <gl-card motion="snappy" style="padding: 16px; min-width: 120px">
-                <div>Card with snappy motion</div>
+              <gl-card
+                motion="snappy"
+                effect="tilt"
+                surface="glass"
+                style="padding: 16px; min-width: 160px"
+              >
+                <div style="font-weight: 600">Tilt + Glass</div>
+                <div class="muted">motion="snappy"</div>
               </gl-card>
             </div>
           </div>

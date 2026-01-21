@@ -99,6 +99,21 @@ Examples:
 
 Glint also respects `prefers-reduced-motion`.
 
+## Effects + Surfaces
+
+Some components support extra “feel” controls:
+
+- **`surface="glass"`**: glassmorphism look (blur + translucent surface)
+- **`effect="tilt"`**: 3D hover tilt (on `gl-card`, respects reduced motion)
+- **`side="right"`**: right-aligned sidebar drawer (on `gl-sidebar`)
+
+Examples:
+
+```html
+<gl-card surface="glass" effect="tilt">...</gl-card>
+<gl-sidebar side="right" surface="glass" motion="snappy">...</gl-sidebar>
+```
+
 ## Components
 
 ### Button
@@ -130,6 +145,27 @@ Events:
     <gl-button>Save</gl-button>
   </div>
 </gl-card>
+```
+
+Card effects:
+
+```html
+<gl-card effect="tilt" surface="glass" motion="snappy">
+  <div slot="header">
+    <div style="font-weight: 600">Tilt + Glass</div>
+    <div style="color: var(--gl-muted)">Pointer-based 3D hover</div>
+  </div>
+  Content
+</gl-card>
+```
+
+### Sidebar
+
+```html
+<gl-sidebar side="right" surface="glass" motion="snappy">
+  <span slot="title">Menu</span>
+  ...
+</gl-sidebar>
 ```
 
 ### Input
