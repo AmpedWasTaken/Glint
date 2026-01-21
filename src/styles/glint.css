@@ -22,6 +22,10 @@
   --gl-hover: rgba(2, 6, 23, 0.06);
   --gl-active: rgba(2, 6, 23, 0.1);
 
+  --gl-glass-bg: color-mix(in srgb, var(--gl-panel) 70%, transparent);
+  --gl-glass-border: color-mix(in srgb, var(--gl-border) 75%, transparent);
+  --gl-glass-blur: 18px;
+
   --gl-radius-sm: 10px;
   --gl-radius: 12px;
   --gl-radius-lg: 16px;
@@ -88,6 +92,10 @@
   --gl-overlay: rgba(0, 0, 0, 0.6);
   --gl-hover: rgba(226, 232, 240, 0.08);
   --gl-active: rgba(226, 232, 240, 0.12);
+
+  --gl-glass-bg: color-mix(in srgb, var(--gl-panel) 55%, transparent);
+  --gl-glass-border: color-mix(in srgb, var(--gl-border) 85%, transparent);
+  --gl-glass-blur: 22px;
 }
 
 @media (prefers-color-scheme: dark) {
