@@ -194,9 +194,8 @@ export class GlCodeblock extends HTMLElement {
 
   async #copy(): Promise<void> {
     if (!this.#copyBtn) return;
-    const code = this.textContent?.trim() || "";
     try {
-      await navigator.clipboard.writeText(code);
+      await navigator.clipboard.writeText(this.#codeContent);
       this.#copyBtn.textContent = "Copied!";
       this.#copyBtn.classList.add("copied");
       emit(this, "gl-copy", { code });
