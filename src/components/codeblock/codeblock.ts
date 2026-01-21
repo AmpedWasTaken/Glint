@@ -10,8 +10,6 @@ export class GlCodeblock extends HTMLElement {
 
   constructor() {
     super();
-    // Extract content immediately in constructor, before shadow DOM
-    this.#extractContent();
   }
 
   #extractContent(): void {
@@ -23,52 +21,77 @@ export class GlCodeblock extends HTMLElement {
       return;
     }
 
-    // Method 2: Read innerHTML before shadow DOM is attached
-    // Clone the element to preserve its state
-    const clone = this.cloneNode(true) as HTMLElement;
+    // Method 2: Read content directly from childNodes before shadow DOM
+    // This is the most reliable way to get content
+    const contentParts: string[] = [];
     
-    // Remove any template tags and shadow root templates (they're just markers)
-    const templates = clone.querySelectorAll("template");
-    templates.forEach((tpl) => {
-      // Skip shadow root templates
-      if (!tpl.hasAttribute("shadowrootmode")) {
-        // Extract content from template and replace it
-        if (tpl.content && tpl.content.childNodes.length > 0) {
-          const div = document.createElement("div");
-          div.appendChild(tpl.content.cloneNode(true));
-          const parent = tpl.parentNode;
-          if (parent) {
-            const textNode = document.createTextNode(div.innerHTML);
-            parent.replaceChild(textNode, tpl);
+    for (const child of Array.from(this.childNodes)) {
+      if (child.nodeType === Node.TEXT_NODE) {
+        const text = child.textContent?.trim();
+        if (text) contentParts.push(text);
+      } else if (child.nodeType === Node.ELEMENT_NODE) {
+        const el = child as Element;
+        // Skip template tags with shadowrootmode (shadow DOM templates)
+        if (el.tagName === "TEMPLATE" && el.hasAttribute("shadowrootmode")) {
+          continue;
+        }
+        // Extract content from regular template tags
+        if (el.tagName === "TEMPLATE") {
+          const templateEl = el as HTMLTemplateElement;
+          if (templateEl.content && templateEl.content.childNodes.length > 0) {
+            const div = document.createElement("div");
+            div.appendChild(templateEl.content.cloneNode(true));
+            const serialized = div.innerHTML.trim();
+            if (serialized) {
+              contentParts.push(serialized);
+              continue;
+            }
+          }
+          // Fallback: try textContent of template
+          const textContent = templateEl.textContent?.trim();
+          if (textContent) {
+            contentParts.push(textContent);
+            continue;
           }
         } else {
-          tpl.remove();
+          // Regular element - use outerHTML to preserve structure
+          contentParts.push(el.outerHTML);
         }
-      } else {
-        tpl.remove();
       }
-    });
-    
-    // Get the innerHTML of what's left (supports multiline)
-    const innerHTML = clone.innerHTML.trim();
-    if (innerHTML) {
-      this.#codeContent = innerHTML;
+    }
+
+    if (contentParts.length > 0) {
+      this.#codeContent = contentParts.join("\n").trim();
       return;
     }
 
-    // Method 3: Fallback to textContent (supports multiline)
+    // Method 3: Fallback - try innerHTML directly (might work if children are already parsed)
+    const innerHTML = this.innerHTML.trim();
+    if (innerHTML && !innerHTML.includes("shadowrootmode")) {
+      // Remove any shadow root templates from innerHTML string
+      const cleaned = innerHTML.replace(/<template[^>]*shadowrootmode[^>]*>[\s\S]*?<\/template>/gi, "");
+      if (cleaned.trim()) {
+        this.#codeContent = cleaned.trim();
+        return;
+      }
+    }
+
+    // Method 4: Last resort - textContent
     this.#codeContent = this.textContent?.trim() || "";
   }
 
   connectedCallback(): void {
     if (this.shadowRoot) return;
 
+    // Extract content BEFORE attaching shadow DOM
+    this.#extractContent();
+
     const lang = this.getAttribute("lang") || "text";
     const showCopy = this.hasAttribute("copy");
 
-    // Ensure content is extracted
+    // Debug: log if content is empty
     if (!this.#codeContent) {
-      this.#extractContent();
+      console.warn("GlCodeblock: No content extracted", this);
     }
 
     const template = document.createElement("template");
@@ -173,6 +196,7 @@ export class GlCodeblock extends HTMLElement {
       this.#copyBtn.addEventListener("click", () => this.#copy());
     }
 
+    // Highlight and display the code
     this.#highlight(this.#codeContent, lang);
   }
 
