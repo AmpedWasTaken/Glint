@@ -1,0 +1,41 @@
+:root {
+  color-scheme: light dark;
+
+  --gl-font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+    Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+  --gl-bg: #ffffff;
+  --gl-fg: #0f172a;
+  --gl-muted: #64748b;
+  --gl-border: rgba(15, 23, 42, 0.14);
+  --gl-ring: rgba(59, 130, 246, 0.35);
+
+  --gl-radius: 12px;
+  --gl-shadow-sm: 0 1px 2px rgba(2, 6, 23, 0.08);
+  --gl-shadow-md: 0 10px 25px rgba(2, 6, 23, 0.14);
+
+  --gl-space-1: 4px;
+  --gl-space-2: 8px;
+  --gl-space-3: 12px;
+  --gl-space-4: 16px;
+  --gl-space-5: 24px;
+}
+
+[data-glint-theme="dark"] {
+  --gl-bg: #0b1220;
+  --gl-fg: #e5e7eb;
+  --gl-muted: #94a3b8;
+  --gl-border: rgba(226, 232, 240, 0.16);
+  --gl-ring: rgba(147, 197, 253, 0.35);
+
+  --gl-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --gl-shadow-md: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+body {
+  font-family: var(--gl-font-sans);
+  color: var(--gl-fg);
+  background: var(--gl-bg);
+}
+
+
