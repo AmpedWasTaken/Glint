@@ -260,91 +260,68 @@ export class GlCodeblock extends HTMLElement {
   }
 
   #highlightCSS(code: string): string {
-    // First escape HTML
+    // Escape HTML first
     let result = code
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
     
-    // Then apply syntax highlighting (order matters - avoid already-highlighted parts)
-    // Comments first
-    result = result.replace(/(\/\*[\s\S]*?\*\/)/g, (match) => {
-      if (match.includes('<span')) return match;
-      return `<span class="comment">${match}</span>`;
+    // Use a simpler approach: process line by line to avoid regex conflicts
+    const lines = result.split("\n");
+    const highlightedLines = lines.map((line) => {
+      // Skip if already has spans (shouldn't happen, but safety check)
+      if (line.includes('<span')) return line;
+      
+      let highlighted = line;
+      
+      // Comments (multiline handled separately)
+      highlighted = highlighted.replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="comment">$1</span>');
+      
+      // Strings
+      highlighted = highlighted.replace(/(["'][^"']*["'])/g, '<span class="string">$1</span>');
+      
+      // Numbers (but not inside strings - simple check)
+      if (!highlighted.includes('<span class="string">')) {
+        highlighted = highlighted.replace(/(\d+\.?\d*)/g, '<span class="number">$1</span>');
+      }
+      
+      // Selectors: word followed by {
+      highlighted = highlighted.replace(/([\w-]+)(\s*)(\{)/g, '<span class="selector">$1</span>$2<span class="punctuation">$3</span>');
+      
+      // Properties: word followed by :
+      highlighted = highlighted.replace(/([\w-]+)(\s*)(:)/g, '<span class="property">$1</span>$2<span class="operator">$3</span>');
+      
+      return highlighted;
     });
     
-    // Strings
-    result = result.replace(/(["'][^"']*["'])/g, (match) => {
-      if (match.includes('<span')) return match;
-      return `<span class="string">${match}</span>`;
-    });
-    
-    // Numbers
-    result = result.replace(/(\d+\.?\d*)/g, (match) => {
-      if (match.includes('<span')) return match;
-      return `<span class="number">${match}</span>`;
-    });
-    
-    // Selectors (before properties to avoid conflicts)
-    result = result.replace(/([\w-]+)(\s*)(\{)/g, (match, selector, space, brace) => {
-      if (match.includes('<span')) return match;
-      return `<span class="selector">${selector}</span>${space}<span class="punctuation">${brace}</span>`;
-    });
-    
-    // Properties (avoid already highlighted)
-    result = result.replace(/([\w-]+)(\s*)(:)/g, (match, prop, space, colon) => {
-      if (match.includes('<span')) return match;
-      return `<span class="property">${prop}</span>${space}<span class="operator">${colon}</span>`;
-    });
-    
-    // Values with semicolons
-    result = result.replace(/(:)(\s*)([^;]+)(;)/g, (match, colon, space, value, semi) => {
-      if (match.includes('<span class="string">') || match.includes('<span class="number">')) return match;
-      return `<span class="operator">${colon}</span>${space}<span class="string">${value}</span><span class="punctuation">${semi}</span>`;
-    });
-    
-    return result;
+    return highlightedLines.join("\n");
   }
 
   #highlightJS(code: string): string {
-    // First escape HTML
+    // Escape HTML first
     let result = code
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
     
-    // Then apply syntax highlighting (order matters - comments first, then strings, then others)
-    const comments = /(\/\/.*$|\/\*[\s\S]*?\*\/)/gm;
-    const strings = /(["'`])(?:(?=(\\?))\2.)*?\1/g;
-    const keywords = /\b(const|let|var|function|if|else|for|while|return|class|extends|import|export|from|default|async|await|try|catch|throw|new|this|super|static|public|private|protected|interface|type|enum|namespace|declare|as|of|in|typeof|instanceof|true|false|null|undefined|void)\b/g;
-    const numbers = /\b\d+\.?\d*\b/g;
-    const functions = /\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g;
+    // Process in order: comments, strings, numbers, keywords, functions
+    // Use simpler regex patterns to avoid conflicts
     
-    // Apply highlighting in order (avoiding already-highlighted parts)
-    result = result.replace(comments, (match) => {
-      if (match.includes('<span')) return match; // Already highlighted
-      return `<span class="comment">${match}</span>`;
-    });
+    // Comments first
+    result = result.replace(/(\/\/.*$|\/\*[\s\S]*?\*\/)/gm, '<span class="comment">$1</span>');
     
-    result = result.replace(strings, (match) => {
-      if (match.includes('<span')) return match; // Already highlighted
-      return `<span class="string">${match}</span>`;
-    });
+    // Strings (simple pattern)
+    result = result.replace(/(["'`][^"'`]*["'`])/g, '<span class="string">$1</span>');
     
-    result = result.replace(numbers, (match) => {
-      if (match.includes('<span')) return match; // Already highlighted
-      return `<span class="number">${match}</span>`;
-    });
+    // Numbers
+    result = result.replace(/\b(\d+\.?\d*)\b/g, '<span class="number">$1</span>');
     
-    result = result.replace(keywords, (match) => {
-      if (match.includes('<span')) return match; // Already highlighted
-      return `<span class="keyword">${match}</span>`;
-    });
+    // Keywords
+    const keywordPattern = /\b(const|let|var|function|if|else|for|while|return|class|extends|import|export|from|default|async|await|try|catch|throw|new|this|super|static|public|private|protected|interface|type|enum|namespace|declare|as|of|in|typeof|instanceof|true|false|null|undefined|void)\b/g;
+    result = result.replace(keywordPattern, '<span class="keyword">$1</span>');
     
-    result = result.replace(functions, (match, name) => {
-      if (match.includes('<span')) return match; // Already highlighted
-      return `<span class="function">${name}</span> `;
-    });
+    // Functions: identifier followed by (
+    result = result.replace(/\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g, '<span class="function">$1</span>');
     
     return result;
   }
