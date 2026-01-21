@@ -21,8 +21,29 @@ export class GlCodeblock extends HTMLElement {
       return;
     }
 
-    // Method 2: Read content directly from childNodes before shadow DOM
-    // This is the most reliable way to get content
+    // Method 2: Read innerHTML directly before shadow DOM is attached
+    // This is the most reliable - innerHTML contains the raw HTML string
+    let innerHTML = this.innerHTML.trim();
+    
+    // Remove shadow root templates if present
+    if (innerHTML.includes("shadowrootmode")) {
+      innerHTML = innerHTML.replace(/<template[^>]*shadowrootmode[^>]*>[\s\S]*?<\/template>/gi, "").trim();
+    }
+    
+    // Remove regular template tags but extract their content
+    if (innerHTML.includes("<template")) {
+      // Replace template tags with their content
+      innerHTML = innerHTML.replace(/<template[^>]*>([\s\S]*?)<\/template>/gi, (match, content) => {
+        return content.trim();
+      }).trim();
+    }
+    
+    if (innerHTML) {
+      this.#codeContent = innerHTML;
+      return;
+    }
+
+    // Method 3: Fallback - read from childNodes and serialize
     const contentParts: string[] = [];
     
     for (const child of Array.from(this.childNodes)) {
@@ -31,7 +52,7 @@ export class GlCodeblock extends HTMLElement {
         if (text) contentParts.push(text);
       } else if (child.nodeType === Node.ELEMENT_NODE) {
         const el = child as Element;
-        // Skip template tags with shadowrootmode (shadow DOM templates)
+        // Skip shadow root templates
         if (el.tagName === "TEMPLATE" && el.hasAttribute("shadowrootmode")) {
           continue;
         }
@@ -65,17 +86,6 @@ export class GlCodeblock extends HTMLElement {
       return;
     }
 
-    // Method 3: Fallback - try innerHTML directly (might work if children are already parsed)
-    const innerHTML = this.innerHTML.trim();
-    if (innerHTML && !innerHTML.includes("shadowrootmode")) {
-      // Remove any shadow root templates from innerHTML string
-      const cleaned = innerHTML.replace(/<template[^>]*shadowrootmode[^>]*>[\s\S]*?<\/template>/gi, "");
-      if (cleaned.trim()) {
-        this.#codeContent = cleaned.trim();
-        return;
-      }
-    }
-
     // Method 4: Last resort - textContent
     this.#codeContent = this.textContent?.trim() || "";
   }
@@ -88,11 +98,6 @@ export class GlCodeblock extends HTMLElement {
 
     const lang = this.getAttribute("lang") || "text";
     const showCopy = this.hasAttribute("copy");
-
-    // Debug: log if content is empty
-    if (!this.#codeContent) {
-      console.warn("GlCodeblock: No content extracted", this);
-    }
 
     const template = document.createElement("template");
     template.innerHTML = `
