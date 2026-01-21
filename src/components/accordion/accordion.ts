@@ -86,7 +86,9 @@ export class GlAccordionItem extends HTMLElement {
 
     const root = this.closest(GlAccordion.tagName) as GlAccordion | null;
     if (root && !root.multiple && next) {
-      for (const item of Array.from(root.querySelectorAll<GlAccordionItem>(GlAccordionItem.tagName))) {
+      for (const item of Array.from(
+        root.querySelectorAll<GlAccordionItem>(GlAccordionItem.tagName)
+      )) {
         if (item !== this) item.open = false;
       }
     }
@@ -129,5 +131,3 @@ export class GlAccordion extends HTMLElement {
     this.shadowRoot!.appendChild(accTemplate.content.cloneNode(true));
   }
 }
-
-

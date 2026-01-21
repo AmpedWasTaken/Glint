@@ -107,5 +107,3 @@ export class GlTooltip extends HTMLElement {
     else this.#trigger?.removeAttribute("aria-describedby");
   }
 }
-
-

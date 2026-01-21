@@ -7,5 +7,3 @@ export function defineInput(): void {
 }
 
 export { GlInput };
-
-

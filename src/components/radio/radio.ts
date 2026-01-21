@@ -83,7 +83,9 @@ export class GlRadio extends HTMLElement {
   #select() {
     const name = this.getAttribute("name");
     if (name) {
-      for (const el of Array.from(document.querySelectorAll<GlRadio>(`${GlRadio.tagName}[name="${CSS.escape(name)}"]`))) {
+      for (const el of Array.from(
+        document.querySelectorAll<GlRadio>(`${GlRadio.tagName}[name="${CSS.escape(name)}"]`)
+      )) {
         if (el !== this) el.checked = false;
       }
     }
@@ -102,5 +104,3 @@ export class GlRadio extends HTMLElement {
     this.setAttribute("aria-disabled", String(disabled));
   }
 }
-
-

@@ -22,7 +22,8 @@ export function rovingKeydown(
 
   if (nextKeys.includes(e.key)) {
     e.preventDefault();
-    const next = idx === items.length - 1 ? (loop ? items[0] : items[items.length - 1]) : items[idx + 1];
+    const next =
+      idx === items.length - 1 ? (loop ? items[0] : items[items.length - 1]) : items[idx + 1];
     next?.focus();
     return;
   }
@@ -37,5 +38,3 @@ export function rovingKeydown(
     items[items.length - 1]?.focus();
   }
 }
-
-

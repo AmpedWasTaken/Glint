@@ -128,5 +128,3 @@ export class GlSidebar extends HTMLElement {
     if (open) queueMicrotask(() => this.#drawer.focus());
   }
 }
-
-

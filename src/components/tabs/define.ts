@@ -9,5 +9,3 @@ export function defineTabs(): void {
 }
 
 export { GlTabs, GlTab, GlTabPanel };
-
-

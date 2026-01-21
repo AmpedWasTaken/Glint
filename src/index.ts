@@ -53,5 +53,3 @@ if (typeof window !== "undefined") {
   window.Glint = window.Glint ?? { define: defineGlint };
   defineGlint();
 }
-
-

@@ -154,5 +154,3 @@ export class GlToaster extends HTMLElement {
     return t;
   }
 }
-
-

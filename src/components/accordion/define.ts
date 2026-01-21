@@ -8,5 +8,3 @@ export function defineAccordion(): void {
 }
 
 export { GlAccordion, GlAccordionItem };
-
-

@@ -94,5 +94,3 @@ export class GlInput extends HTMLElement {
     if (ac !== null) this.#input.setAttribute("autocomplete", ac);
   }
 }
-
-

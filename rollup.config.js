@@ -55,5 +55,3 @@ const dtsBuild = {
 };
 
 export default [jsBuild, dtsBuild];
-
-

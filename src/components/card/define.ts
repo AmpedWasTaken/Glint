@@ -7,5 +7,3 @@ export function defineCard(): void {
 }
 
 export { GlCard };
-
-

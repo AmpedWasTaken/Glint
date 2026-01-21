@@ -112,5 +112,3 @@ export class GlModal extends HTMLElement {
     }
   }
 }
-
-

@@ -1,8 +1,9 @@
 :root {
   color-scheme: light dark;
 
-  --gl-font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
-    Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  --gl-font-sans:
+    ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+    "Apple Color Emoji", "Segoe UI Emoji";
 
   --gl-bg: #ffffff;
   --gl-panel: #ffffff;
@@ -116,5 +117,3 @@ a {
   outline: 2px solid var(--gl-ring);
   outline-offset: 2px;
 }
-
-

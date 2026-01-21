@@ -2,10 +2,10 @@ const FOCUSABLE = [
   "a[href]",
   "area[href]",
   "button:not([disabled])",
-  "input:not([disabled]):not([type=\"hidden\"])",
+  'input:not([disabled]):not([type="hidden"])',
   "select:not([disabled])",
   "textarea:not([disabled])",
-  "[tabindex]:not([tabindex=\"-1\"])"
+  '[tabindex]:not([tabindex="-1"])'
 ].join(",");
 
 export function getFocusable(root: ParentNode): HTMLElement[] {
@@ -34,7 +34,13 @@ export function createFocusTrap(container: HTMLElement): FocusTrap {
 
     const current = document.activeElement as HTMLElement | null;
     const idx = current ? focusables.indexOf(current) : -1;
-    const nextIdx = e.shiftKey ? (idx <= 0 ? focusables.length - 1 : idx - 1) : (idx === -1 || idx === focusables.length - 1 ? 0 : idx + 1);
+    const nextIdx = e.shiftKey
+      ? idx <= 0
+        ? focusables.length - 1
+        : idx - 1
+      : idx === -1 || idx === focusables.length - 1
+        ? 0
+        : idx + 1;
 
     e.preventDefault();
     focusables[nextIdx]?.focus();
@@ -61,5 +67,3 @@ export function createFocusTrap(container: HTMLElement): FocusTrap {
     }
   };
 }
-
-

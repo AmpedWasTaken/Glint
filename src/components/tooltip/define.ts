@@ -7,5 +7,3 @@ export function defineTooltip(): void {
 }
 
 export { GlTooltip };
-
-

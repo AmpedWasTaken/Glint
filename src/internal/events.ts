@@ -13,5 +13,3 @@ export function emit<T>(
   el.dispatchEvent(ev);
   return ev;
 }
-
-

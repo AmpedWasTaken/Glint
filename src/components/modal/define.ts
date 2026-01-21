@@ -7,5 +7,3 @@ export function defineModal(): void {
 }
 
 export { GlModal };
-
-

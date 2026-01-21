@@ -32,5 +32,3 @@ export class GlCard extends HTMLElement {
     this.shadowRoot!.appendChild(template.content.cloneNode(true));
   }
 }
-
-

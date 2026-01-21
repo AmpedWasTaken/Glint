@@ -7,5 +7,3 @@ export function defineSelect(): void {
 }
 
 export { GlSelect };
-
-

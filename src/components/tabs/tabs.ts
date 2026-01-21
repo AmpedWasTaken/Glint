@@ -86,7 +86,12 @@ export class GlTab extends HTMLElement {
       const root = this.closest(GlTabs.tagName) as GlTabs | null;
       if (!root) return;
       const tabs = root.tabs;
-      rovingKeydown(e, tabs.map((t) => t.#btn), this.#btn, { vertical: false });
+      rovingKeydown(
+        e,
+        tabs.map((t) => t.#btn),
+        this.#btn,
+        { vertical: false }
+      );
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         if (!this.hasAttribute("disabled")) root.select(this.value);
@@ -188,7 +193,11 @@ export class GlTabs extends HTMLElement {
   }
 
   #sync() {
-    const current = this.value || this.tabs.find((t) => t.hasAttribute("active"))?.value || this.tabs[0]?.value || "";
+    const current =
+      this.value ||
+      this.tabs.find((t) => t.hasAttribute("active"))?.value ||
+      this.tabs[0]?.value ||
+      "";
     if (current && this.value !== current) this.value = current;
 
     const tabs = this.tabs;
@@ -205,5 +214,3 @@ export class GlTabs extends HTMLElement {
     }
   }
 }
-
-

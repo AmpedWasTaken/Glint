@@ -7,5 +7,3 @@ export function defineRadio(): void {
 }
 
 export { GlRadio };
-
-

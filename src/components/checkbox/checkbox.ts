@@ -96,5 +96,3 @@ export class GlCheckbox extends HTMLElement {
     this.setAttribute("aria-disabled", String(disabled));
   }
 }
-
-

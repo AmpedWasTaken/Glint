@@ -7,5 +7,3 @@ export function defineCheckbox(): void {
 }
 
 export { GlCheckbox };
-
-

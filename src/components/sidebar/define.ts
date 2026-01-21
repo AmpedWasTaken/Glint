@@ -7,5 +7,3 @@ export function defineSidebar(): void {
 }
 
 export { GlSidebar };
-
-

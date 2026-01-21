@@ -7,5 +7,3 @@ export function defineButton(): void {
 }
 
 export { GlButton };
-
-

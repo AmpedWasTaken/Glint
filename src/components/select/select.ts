@@ -66,7 +66,11 @@ export class GlSelect extends HTMLElement {
     const optionsAttr = this.getAttribute("options");
     if (optionsAttr) {
       try {
-        const parsed = JSON.parse(optionsAttr) as Array<{ value: string; label: string; disabled?: boolean }>;
+        const parsed = JSON.parse(optionsAttr) as Array<{
+          value: string;
+          label: string;
+          disabled?: boolean;
+        }>;
         for (const opt of parsed) {
           const o = document.createElement("option");
           o.value = opt.value;
@@ -99,5 +103,3 @@ export class GlSelect extends HTMLElement {
     if (v !== null) this.#select.value = v;
   }
 }
-
-

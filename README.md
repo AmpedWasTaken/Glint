@@ -68,6 +68,7 @@ Glint uses CSS custom properties. Set theme on any container (usually `html` or 
 ```
 
 Supported values:
+
 - `data-glint-theme="light"`
 - `data-glint-theme="dark"`
 - `data-glint-theme="system"` (uses `prefers-color-scheme`)
@@ -95,6 +96,7 @@ Override tokens anywhere:
 ```
 
 Events:
+
 - `gl-press`
 
 ### Card
@@ -123,6 +125,7 @@ Events:
 ```
 
 Events:
+
 - `gl-change` (on input)
 - `gl-commit` (on change)
 
@@ -140,6 +143,7 @@ Events:
 ```
 
 Events:
+
 - `gl-change`
 
 ### Checkbox
@@ -149,6 +153,7 @@ Events:
 ```
 
 Events:
+
 - `gl-change`
 
 ### Radio
@@ -159,6 +164,7 @@ Events:
 ```
 
 Events:
+
 - `gl-change`
 
 ### Tooltip
@@ -192,6 +198,7 @@ For multiple open panels:
 ```
 
 Events:
+
 - `gl-toggle` (on `gl-accordion-item`)
 
 ### Tabs
@@ -207,6 +214,7 @@ Events:
 ```
 
 Events:
+
 - `gl-change` (on `gl-tabs`)
 
 ## Local development
@@ -223,6 +231,7 @@ npm run build
 ```
 
 Outputs:
+
 - `dist/glint.js` (browser bundle)
 - `dist/index.mjs` (ESM)
 - `dist/index.cjs` (CommonJS)

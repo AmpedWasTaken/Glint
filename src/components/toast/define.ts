@@ -8,5 +8,3 @@ export function defineToast(): void {
 }
 
 export { GlToast, GlToaster };
-
-

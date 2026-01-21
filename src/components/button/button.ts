@@ -101,5 +101,3 @@ export class GlButton extends HTMLElement {
     this.toggleAttribute("aria-disabled", this.disabled);
   }
 }
-
-

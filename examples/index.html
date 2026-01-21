@@ -219,8 +219,8 @@
           </div>
           <div class="muted">
             Buttons: <code>gl-press</code> · Inputs: <code>gl-change</code>/<code>gl-commit</code> ·
-            Tabs: <code>gl-change</code> · Accordion item: <code>gl-toggle</code> · Modal/sidebar/toast:
-            <code>gl-open</code>/<code>gl-close</code>/<code>gl-dismiss</code>
+            Tabs: <code>gl-change</code> · Accordion item: <code>gl-toggle</code> ·
+            Modal/sidebar/toast: <code>gl-open</code>/<code>gl-close</code>/<code>gl-dismiss</code>
           </div>
         </gl-card>
       </div>
@@ -246,7 +246,11 @@
 
       document.getElementById("openSidebar").addEventListener("gl-press", () => sidebar.show());
       document.getElementById("showToast").addEventListener("gl-press", () =>
-        toaster.show({ title: "Hello", description: "This toast auto-dismisses. Hover to pause.", duration: 4000 })
+        toaster.show({
+          title: "Hello",
+          description: "This toast auto-dismisses. Hover to pause.",
+          duration: 4000
+        })
       );
 
       document.addEventListener("gl-press", (e) => console.log("gl-press", e.target));
@@ -258,5 +262,3 @@
     </script>
   </body>
 </html>
-
-
