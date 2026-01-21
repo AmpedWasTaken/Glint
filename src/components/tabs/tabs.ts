@@ -1,5 +1,5 @@
-import { rovingKeydown } from "../../internal/roving.js";
 import { emit } from "../../internal/events.js";
+import { rovingKeydown } from "../../internal/roving.js";
 
 const tabsTemplate = document.createElement("template");
 tabsTemplate.innerHTML = `
