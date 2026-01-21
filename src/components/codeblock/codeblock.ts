@@ -15,10 +15,25 @@ export class GlCodeblock extends HTMLElement {
   #extractContent(): void {
     if (this.#codeContent) return;
     
+    // Try to find template tag in light DOM (before shadow DOM is attached)
     const template = this.querySelector("template");
     if (template) {
-      this.#codeContent = template.innerHTML.trim();
-      return;
+      // For template elements, we need to serialize the content fragment
+      // Clone the template content and serialize it
+      const clone = template.content.cloneNode(true) as DocumentFragment;
+      const div = document.createElement("div");
+      div.appendChild(clone);
+      const content = div.innerHTML.trim();
+      if (content) {
+        this.#codeContent = content;
+        return;
+      }
+      // Fallback to textContent
+      const textContent = template.textContent?.trim() || "";
+      if (textContent) {
+        this.#codeContent = textContent;
+        return;
+      }
     }
     
     if (this.hasAttribute("data-code")) {
@@ -26,8 +41,20 @@ export class GlCodeblock extends HTMLElement {
       return;
     }
     
-    if ("getInnerHTML" in this && typeof (this as any).getInnerHTML === "function") {
-      this.#codeContent = (this as any).getInnerHTML({ includeShadowRoots: false }).trim();
+    // Try to get content from light DOM children (excluding template tags)
+    const children = Array.from(this.childNodes);
+    const contentParts: string[] = [];
+    for (const child of children) {
+      if (child.nodeType === Node.TEXT_NODE) {
+        const text = child.textContent?.trim();
+        if (text) contentParts.push(text);
+      } else if (child.nodeType === Node.ELEMENT_NODE && (child as Element).tagName !== "TEMPLATE") {
+        const el = child as Element;
+        if (el.outerHTML) contentParts.push(el.outerHTML);
+      }
+    }
+    if (contentParts.length > 0) {
+      this.#codeContent = contentParts.join("\n").trim();
       return;
     }
     
