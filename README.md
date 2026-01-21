@@ -1,45 +1,59 @@
-<p align="center">
-  <img src="https://i.postimg.cc/Nf5mThW2/Chat-GPT-Image-Jan-21-2026-10-06-54-AM-(1).png" alt="Glint" width="180" />
-</p>
+<div align="center">
 
-<p align="center">
-  Modern, minimal UI components built with Web Components + Shadow DOM.
-  <br />
-  Inspired by shadcn/ui structure, API, and UX — shipped as one JS file and one CSS file.
-</p>
+# ✨ Glint
 
-## Install
+**Modern, minimal UI components built with Web Components + Shadow DOM**
+
+[![npm version](https://img.shields.io/npm/v/@glint-ui/glint?style=for-the-badge&color=693B93)](https://www.npmjs.com/package/@glint-ui/glint)
+[![License](https://img.shields.io/npm/l/@glint-ui/glint?style=for-the-badge&color=693B93)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue?style=for-the-badge)](https://www.typescriptlang.org/)
+[![Zero Dependencies](https://img.shields.io/badge/Dependencies-0-brightgreen?style=for-the-badge)](package.json)
+
+**One CSS file. One JS file. Zero dependencies.**
+
+[Documentation](#-documentation) • [Components](#-components) • [Examples](#-examples) • [Installation](#-installation)
+
+</div>
+
+---
+
+## 🚀 Why Glint?
+
+**Glint** is a modern, lightweight UI component library built with **Web Components** and **Shadow DOM**. Inspired by shadcn/ui's elegant API and UX, Glint ships as a single JavaScript file and CSS file—no build step required.
+
+### ✨ Key Features
+
+- 🎯 **Zero Dependencies** - One CSS file, one JS file. No build step required.
+- ♿ **Fully Accessible** - Built with ARIA attributes, keyboard navigation, and focus management.
+- 🌙 **Dark Mode Ready** - System preference detection and manual theme switching out of the box.
+- 🎨 **Highly Customizable** - CSS custom properties for easy theming and customization.
+- 🎭 **Motion Options** - Subtle, snappy, or bounce animations. Respects `prefers-reduced-motion`.
+- 🔒 **Shadow DOM** - Styles are encapsulated. No CSS conflicts. Works alongside any stylesheet.
+- 📦 **Tree Shakeable** - Import only what you need. ESM and CommonJS support.
+- 🚀 **Framework Agnostic** - Works with React, Vue, Angular, Svelte, or vanilla JavaScript.
+- ⚙️ **TypeScript Ready** - Full TypeScript support with comprehensive type definitions.
+- 🎪 **30+ Components** - Buttons, forms, navigation, overlays, feedback, and more.
+
+---
+
+## 📦 Installation
 
 ### npm
 
 ```bash
-npm i @glint-ui/glint
+npm install @glint-ui/glint
 ```
 
-### CDN / plain HTML
-
-Build once, then link the output:
+### CDN / Plain HTML
 
 ```html
-<link rel="stylesheet" href="./dist/glint.css" />
-<script src="./dist/glint.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glint-ui/glint/dist/glint.css" />
+<script src="https://cdn.jsdelivr.net/npm/@glint-ui/glint/dist/glint.js"></script>
 ```
-
-Glint auto-defines custom elements when loaded in the browser. If you want manual control:
-
-```html
-<script src="./dist/glint.js"></script>
-<script>
-  // window.Glint.define()
-  Glint.define();
-</script>
-```
-
-## Usage
 
 ### ESM
 
-```ts
+```typescript
 import "@glint-ui/glint/glint.css";
 import { defineGlint } from "@glint-ui/glint";
 
@@ -48,508 +62,300 @@ defineGlint();
 
 ### CommonJS
 
-```js
+```javascript
 require("@glint-ui/glint/glint.css");
 const { defineGlint } = require("@glint-ui/glint");
 
 defineGlint();
 ```
 
-## Theme + Dark mode
+---
 
-Glint uses CSS custom properties. Set theme on any container (usually `html` or `body`):
+## 🎯 Quick Start
 
 ```html
-<html class="glint" data-glint-theme="light">
-  ...
+<!DOCTYPE html>
+<html lang="en" class="glint" data-glint-theme="system">
+<head>
+  <link rel="stylesheet" href="./dist/glint.css" />
+</head>
+<body>
+  <gl-button motion="snappy">Click me</gl-button>
+  <gl-input placeholder="Enter your email">
+    <span slot="label">Email</span>
+  </gl-input>
+  <gl-card surface="glass" effect="tilt">
+    <div slot="header">
+      <div style="font-weight: 600">Card Title</div>
+    </div>
+    Card content goes here
+  </gl-card>
+
+  <script src="./dist/glint.js"></script>
+</body>
 </html>
 ```
 
-Supported values:
+---
 
-- `data-glint-theme="light"`
-- `data-glint-theme="dark"`
-- `data-glint-theme="system"` (uses `prefers-color-scheme`)
+## 🎨 Theming & Customization
 
-Override tokens anywhere:
+Glint uses CSS custom properties for easy theming. Set theme on any container:
+
+```html
+<html class="glint" data-glint-theme="dark">
+```
+
+Supported themes:
+- `data-glint-theme="light"` - Light mode
+- `data-glint-theme="dark"` - Dark mode
+- `data-glint-theme="system"` - Follows system preference
+
+Override design tokens:
 
 ```css
 :root {
-  --gl-radius: 14px;
-  --gl-primary: #7c3aed;
+  --gl-primary: #693B93;
+  --gl-radius: 16px;
+  --gl-space-4: 20px;
 }
 ```
 
-## Motion
+---
 
-Most interactive components support `motion`:
+## 🎭 Motion & Animations
 
-- `motion="subtle"` (default feel)
-- `motion="snappy"` (more expressive)
-- `motion="bounce"` (playful overshoot)
-- `motion="none"` (no animation)
-
-Examples:
+Most components support customizable motion:
 
 ```html
+<gl-button motion="subtle">Subtle</gl-button>
 <gl-button motion="snappy">Snappy</gl-button>
-<gl-modal motion="subtle" open>...</gl-modal>
-<gl-toast motion="none">...</gl-toast>
-<gl-sidebar motion="snappy">...</gl-sidebar>
+<gl-button motion="bounce">Bounce</gl-button>
+<gl-button motion="none">No animation</gl-button>
 ```
 
-Glint also respects `prefers-reduced-motion`.
+Glint automatically respects `prefers-reduced-motion` for accessibility.
 
-### Enhanced Animations
+---
 
-Components now feature advanced animations:
+## 🎪 Components
 
-- **Entry/Exit**: Modal, Toast, Sidebar, Dropdown, Popover have smooth fade-in/out with overlay transitions
-- **Ripple Effect**: Buttons show a ripple animation on click (disabled with `motion="none"`)
-- **Scale-in**: Badges and Alerts scale in when mounted
-- **Slide-in**: Cards and Alerts slide up with fade-in on mount
-- **Smooth Transitions**: Accordion panels expand/collapse with smooth height transitions
-- **Sliding Indicator**: Tabs feature an animated sliding underline indicator
-- **Stagger Animations**: Use `.gl-stagger` class on containers to animate children sequentially
+### Form Controls
+- **Button** - Multiple variants, sizes, and motion options
+- **Input** - Text input with validation states
+- **Textarea** - Multi-line text input
+- **Select** - Dropdown select with options
+- **Checkbox** - Selection checkbox
+- **Radio** - Radio button groups
+- **Switch** - Toggle switch
+- **Slider** - Range input with keyboard support
 
-Animation utilities:
+### Layout & Navigation
+- **Card** - Container with header, body, footer slots
+- **Navbar** - Navigation bar with brand, nav links, and actions
+- **Topbar** - Top bar with left, center, right slots
+- **Tabs** - Tabbed interface with keyboard navigation
+- **Accordion** - Collapsible content panels
+- **Breadcrumb** - Navigation trail
+- **Pagination** - Page navigation controls
 
-```css
-.gl-fade-in      /* Fade in animation */
-.gl-slide-in-up  /* Slide up with fade */
-.gl-scale-in     /* Scale in animation */
-.gl-stagger      /* Stagger children animations */
-```
+### Overlays & Modals
+- **Modal** - Dialog with focus trap and backdrop
+- **Sidebar** - Slide-out panel
+- **Popover** - Positioned popup with rich content
+- **Tooltip** - Hover/focus tooltip
+- **Dropdown** - Menu dropdown
 
-## Effects + Surfaces
+### Feedback & Display
+- **Alert** - Alert messages with variants
+- **Toast** - Notification toasts with auto-dismiss
+- **Progress** - Progress bar with animation
+- **Spinner** - Loading spinner
+- **Badge** - Status indicator
+- **Avatar** - User avatar with status
+- **Skeleton** - Loading placeholders
+- **Divider** - Horizontal and vertical dividers
 
-Some components support extra “feel” controls:
+### Code & Data
+- **Codeblock** - Syntax-highlighted code blocks with copy
+- **Table** - Data tables with variants
 
-- **`surface="glass"`**: glassmorphism look (blur + translucent surface)
-- **`effect="tilt"`**: 3D hover tilt (on `gl-card`, respects reduced motion)
-- **`side="right"`**: right-aligned sidebar drawer (on `gl-sidebar`)
+---
 
-Examples:
+## 📚 Documentation
+
+### Full Component Documentation
+
+Visit our [component gallery](examples/components.html) for complete documentation, examples, and API reference.
+
+### Key Concepts
+
+#### Effects & Surfaces
 
 ```html
+<!-- Glassmorphism effect -->
+<gl-card surface="glass">...</gl-card>
+
+<!-- 3D tilt effect on hover -->
+<gl-card effect="tilt" motion="snappy">...</gl-card>
+
+<!-- Both effects -->
 <gl-card surface="glass" effect="tilt">...</gl-card>
-<gl-sidebar side="right" surface="glass" motion="snappy">...</gl-sidebar>
 ```
 
-## Text effects (gradients)
+#### Component Triggers
 
-Glint ships with a small utility class for gradient text:
+Auto-wire buttons to open/close components without JavaScript:
 
 ```html
-<h1 class="gl-gradient-text">Glint</h1>
-<h1 class="gl-gradient-text" data-animate="true">Animated</h1>
+<gl-button trigger="modal:myModal">Open Modal</gl-button>
+<gl-button trigger="sidebar:mySidebar">Open Sidebar</gl-button>
+<gl-button trigger="toast" toast-title="Success!" toast-description="Action completed">Show Toast</gl-button>
+<gl-button trigger="close:myModal">Close</gl-button>
 ```
 
-Customize the gradient stops (up to 4), angle, and speed:
+#### Gradient Text
 
 ```html
-<h1
-  class="gl-gradient-text"
-  data-animate="true"
-  style="
-    --gl-grad-1: #7dd3fc;
-    --gl-grad-2: #a78bfa;
-    --gl-grad-3: #fb7185;
-    --gl-grad-4: #34d399;
-    --gl-grad-angle: 120deg;
-    --gl-grad-speed: 5s;
-  "
->
-  Glint
-</h1>
+<h1 class="gl-gradient-text" data-animate="true">Animated Gradient</h1>
 ```
 
-## Components
+---
 
-### Button
+## 🌟 Use Cases
 
-```html
-<gl-button>Primary</gl-button>
-<gl-button variant="secondary">Secondary</gl-button>
-<gl-button variant="ghost">Ghost</gl-button>
-<gl-button variant="destructive">Delete</gl-button>
-<gl-button size="sm">Small</gl-button>
-<gl-button size="lg">Large</gl-button>
+- **Dashboard Applications** - Build powerful admin panels with comprehensive components
+- **Form Heavy Applications** - Create beautiful, accessible forms with validation
+- **Marketing Websites** - Stunning landing pages with glassmorphism and animations
+- **Web Applications** - Framework-agnostic components for any stack
+- **Design Systems** - Customizable foundation for your design system
+
+---
+
+## 🔧 Framework Integration
+
+### React
+
+```tsx
+import { useEffect } from 'react';
+import '@glint-ui/glint/glint.css';
+import { defineGlint } from '@glint-ui/glint';
+
+function App() {
+  useEffect(() => {
+    defineGlint();
+  }, []);
+
+  return <gl-button>Click me</gl-button>;
+}
 ```
 
-Events:
+### Vue
 
-- `gl-press`
+```vue
+<template>
+  <gl-button>Click me</gl-button>
+</template>
 
-### Card
+<script setup>
+import '@glint-ui/glint/glint.css';
+import { defineGlint } from '@glint-ui/glint';
 
-```html
-<gl-card>
-  <div slot="header">
-    <div slot="title">Card title</div>
-    <div slot="description">Card description</div>
-  </div>
-  Card body content
-  <div slot="footer">
-    <gl-button variant="secondary">Cancel</gl-button>
-    <gl-button>Save</gl-button>
-  </div>
-</gl-card>
+defineGlint();
+</script>
 ```
 
-Card effects:
+### Angular
 
-```html
-<gl-card effect="tilt" surface="glass" motion="snappy">
-  <div slot="header">
-    <div style="font-weight: 600">Tilt + Glass</div>
-    <div style="color: var(--gl-muted)">Pointer-based 3D hover</div>
-  </div>
-  Content
-</gl-card>
+```typescript
+import { Component, OnInit } from '@angular/core';
+import '@glint-ui/glint/glint.css';
+import { defineGlint } from '@glint-ui/glint';
+
+@Component({
+  selector: 'app-root',
+  template: '<gl-button>Click me</gl-button>'
+})
+export class AppComponent implements OnInit {
+  ngOnInit() {
+    defineGlint();
+  }
+}
 ```
 
-### Sidebar
+---
 
-```html
-<gl-sidebar side="right" surface="glass" motion="snappy">
-  <span slot="title">Menu</span>
-  ...
-</gl-sidebar>
-```
-
-### Input
-
-```html
-<gl-input placeholder="Email">
-  <span slot="label">Email</span>
-  <span slot="description">We’ll never share it.</span>
-</gl-input>
-```
-
-Validation states:
-
-```html
-<gl-input required placeholder="Email"></gl-input>
-<gl-input error="This field is required"></gl-input>
-<gl-input success="Looks good"></gl-input>
-```
-
-Methods:
-
-- `checkValidity()`
-- `reportValidity()`
-
-Events:
-
-- `gl-change` (on input)
-- `gl-commit` (on change)
-
-### Textarea
-
-```html
-<gl-textarea rows="4" placeholder="Write a message">
-  <span slot="label">Message</span>
-</gl-textarea>
-```
-
-Attributes:
-
-- `rows` (default: browser default)
-- `resize` — `vertical` (default), `horizontal`, `both`, `none`
-- `error` / `success` — validation messages and styling
-
-Methods:
-
-- `checkValidity()`
-- `reportValidity()`
-
-Events:
-
-- `gl-change`
-- `gl-commit`
-
-### Select
-
-`options` may be provided as a JSON attribute:
-
-```html
-<gl-select
-  value="design"
-  options='[{"value":"design","label":"Design"},{"value":"engineering","label":"Engineering"}]'
->
-  <span slot="label">Team</span>
-</gl-select>
-```
-
-Events:
-
-- `gl-change`
-
-### Checkbox
-
-```html
-<gl-checkbox checked>Remember me</gl-checkbox>
-```
-
-Events:
-
-- `gl-change`
-
-### Radio
-
-```html
-<gl-radio name="plan" value="starter" checked>Starter</gl-radio>
-<gl-radio name="plan" value="pro">Pro</gl-radio>
-```
-
-Events:
-
-- `gl-change`
-
-### Switch
-
-```html
-<gl-switch checked motion="snappy"></gl-switch>
-```
-
-Attributes:
-
-- `checked` — toggle state
-- `disabled` — disable interaction
-- `size` — `sm`, `md` (default), `lg`
-- `motion` — `none`, `subtle`, `snappy`, `bounce`
-
-Events:
-
-- `gl-change` — `{ checked: boolean }`
-
-### Slider
-
-```html
-<gl-slider value="50" min="0" max="100" step="1" motion="snappy"></gl-slider>
-```
-
-Attributes:
-
-- `value` — current value (number)
-- `min` — minimum value (default: `0`)
-- `max` — maximum value (default: `100`)
-- `step` — step size (default: `1`)
-- `disabled` — disable interaction
-- `size` — `sm`, `md` (default), `lg`
-- `motion` — `none`, `subtle`, `snappy`, `bounce`
-
-Events:
-
-- `gl-change` — `{ value: number }`
-
-### Avatar
-
-```html
-<gl-avatar name="John Doe" size="lg" status="online"></gl-avatar>
-<gl-avatar src="https://example.com/avatar.jpg" alt="User" size="md"></gl-avatar>
-```
-
-Attributes:
-
-- `name` — name for initials (if no `src`)
-- `src` — image URL
-- `alt` — image alt text
-- `size` — `sm`, `md` (default), `lg`, `xl`
-- `status` — `online`, `away`, `busy`, `offline`
-- `motion` — `none`, `subtle`, `snappy`, `bounce`
-
-### Dropdown
-
-```html
-<gl-dropdown motion="snappy">
-  <gl-button slot="trigger">Menu</gl-button>
-  <button class="item" data-value="edit">Edit</button>
-  <button class="item" data-value="delete">Delete</button>
-  <div class="divider"></div>
-  <button class="item" data-value="more">More</button>
-</gl-dropdown>
-```
-
-Attributes:
-
-- `open` — control visibility
-- `side` — `left` (default), `right`, `top`
-- `motion` — `none`, `subtle`, `snappy`, `bounce`
-
-Methods:
-
-- `show()` — open dropdown
-- `close(reason)` — close dropdown
-- `toggle()` — toggle open state
-
-Events:
-
-- `gl-select` — `{ value: string, index: number }`
-- `gl-close` — `{ reason: string }`
-
-Note: Use `.item` class for menu items and `.divider` for separators.
-
-### Skeleton
-
-```html
-<gl-skeleton width="100%" height="20px" variant="shimmer"></gl-skeleton>
-<gl-skeleton width="40px" height="40px" shape="circle" variant="pulse"></gl-skeleton>
-```
-
-Attributes:
-
-- `width` — CSS width (default: `100%`)
-- `height` — CSS height (default: `20px`)
-- `variant` — `shimmer` (default), `pulse`, `wave`, `none`
-- `shape` — `rect` (default), `circle`, `text`
-
-### Tooltip
-
-```html
-<gl-tooltip>
-  <gl-button variant="secondary">Hover</gl-button>
-  <span slot="content">Helpful info</span>
-</gl-tooltip>
-```
-
-### Popover
-
-```html
-<gl-popover motion="snappy" surface="glass">
-  <gl-button slot="trigger" variant="secondary">Open</gl-button>
-  <div slot="content" style="display: grid; gap: 10px">
-    <div style="font-weight: 600">Popover title</div>
-    <div style="color: var(--gl-muted)">Rich content + positioning.</div>
-  </div>
-</gl-popover>
-```
-
-Attributes:
-
-- `open` — control visibility
-- `disabled`
-- `side` — `bottom` (default), `top`, `left`, `right`
-- `align` — `start` (default), `center`, `end`
-- `offset` — number (px)
-- `trap` — trap focus inside when open
-- `motion` — `none`, `subtle`, `snappy`, `bounce`
-- `surface="glass"` — glass panel
-
-Methods:
-
-- `show()`
-- `close(reason)`
-- `toggle()`
-
-Events:
-
-- `gl-open`
-- `gl-close` — `{ reason: string }`
-
-### Accordion
-
-```html
-<gl-accordion>
-  <gl-accordion-item open>
-    <span slot="title">What is Glint?</span>
-    Minimal Web Components UI library.
-  </gl-accordion-item>
-  <gl-accordion-item>
-    <span slot="title">Does it support keyboard?</span>
-    Yes.
-  </gl-accordion-item>
-</gl-accordion>
-```
-
-For multiple open panels:
-
-```html
-<gl-accordion multiple>...</gl-accordion>
-```
-
-Events:
-
-- `gl-toggle` (on `gl-accordion-item`)
-
-### Tabs
-
-```html
-<gl-tabs value="account">
-  <gl-tab slot="tabs" value="account">Account</gl-tab>
-  <gl-tab slot="tabs" value="security">Security</gl-tab>
-
-  <gl-tab-panel slot="panels" value="account">Account panel</gl-tab-panel>
-  <gl-tab-panel slot="panels" value="security">Security panel</gl-tab-panel>
-</gl-tabs>
-```
-
-Events:
-
-- `gl-change` (on `gl-tabs`)
-
-### Breadcrumb
-
-```html
-<gl-breadcrumb separator="/">
-  <gl-breadcrumb-item href="/">Home</gl-breadcrumb-item>
-  <gl-breadcrumb-item href="/docs">Docs</gl-breadcrumb-item>
-  <gl-breadcrumb-item current>Components</gl-breadcrumb-item>
-</gl-breadcrumb>
-```
-
-Attributes:
-
-- `separator` — text between items (default: `/`)
-- `label` — aria-label for the nav
-
-### Pagination
-
-```html
-<gl-pagination page="1" pages="12"></gl-pagination>
-```
-
-Attributes:
-
-- `page` — current page
-- `pages` — total pages
-- `sibling` — pages around the current page (default: `1`)
-- `boundary` — always-visible pages at the edges (default: `1`)
-- `label` — aria-label for the nav
-
-Events:
-
-- `gl-change` — `{ page: number, pages: number }`
-
-## Local development
+## 🛠️ Development
 
 ```bash
-npm i
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-```
 
-## Examples
-
-After `npm run build`, open:
-
-- `examples/index.html` (homepage)
-- `examples/components.html` (component gallery)
-
-Build:
-
-```bash
+# Build for production
 npm run build
+
+# Lint code
+npm run lint
+
+# Format code
+npm run format:write
 ```
 
-Outputs:
+### Examples
 
-- `dist/glint.js` (browser bundle)
-- `dist/index.mjs` (ESM)
-- `dist/index.cjs` (CommonJS)
-- `dist/glint.css`
-- `dist/index.d.ts`
+After building, open:
+- `examples/index.html` - Marketing homepage
+- `examples/components.html` - Component gallery and documentation
 
-## License
+---
 
-MIT
+## 📊 Browser Support
+
+Glint works in all modern browsers that support:
+- Web Components (Custom Elements v1)
+- Shadow DOM v1
+- CSS Custom Properties
+
+**Supported browsers:**
+- Chrome/Edge 67+
+- Firefox 63+
+- Safari 10.1+
+- Opera 54+
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- Inspired by [shadcn/ui](https://ui.shadcn.com/) structure, API, and UX
+- Built with modern web standards and best practices
+
+---
+
+<div align="center">
+
+**Made with ❤️ by [Amped](https://github.com/glint-ui)**
+
+[⭐ Star on GitHub](https://github.com/glint-ui/glint) • [📖 Documentation](examples/components.html) • [🐛 Report Bug](https://github.com/glint-ui/glint/issues) • [💡 Request Feature](https://github.com/glint-ui/glint/issues)
+
+</div>
