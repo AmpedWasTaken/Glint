@@ -6,13 +6,14 @@ export class GlCodeblock extends HTMLElement {
   #pre?: HTMLPreElement;
   #code?: HTMLElement;
   #copyBtn?: HTMLButtonElement;
+  #codeContent = "";
 
   connectedCallback(): void {
     if (this.shadowRoot) return;
 
     const lang = this.getAttribute("lang") || "text";
     const showCopy = this.hasAttribute("copy");
-    const code = this.textContent?.trim() || "";
+    this.#codeContent = this.innerHTML.trim() || this.textContent?.trim() || "";
 
     const template = document.createElement("template");
     template.innerHTML = `
@@ -116,7 +117,7 @@ export class GlCodeblock extends HTMLElement {
       this.#copyBtn.addEventListener("click", () => this.#copy());
     }
 
-    this.#highlight(code, lang);
+    this.#highlight(this.#codeContent, lang);
   }
 
   #highlight(code: string, lang: string): void {
