@@ -278,10 +278,12 @@
                 <gl-button variant="destructive">Destructive</gl-button>
               </div>
             </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle"><gl-button>Primary</gl-button>
+            <gl-codeblock lang="html" copy motion="subtle">
+              <template><gl-button>Primary</gl-button>
 <gl-button variant="secondary">Secondary</gl-button>
 <gl-button variant="ghost">Ghost</gl-button>
-<gl-button variant="destructive">Destructive</gl-button></gl-codeblock>
+<gl-button variant="destructive">Destructive</gl-button></template>
+            </gl-codeblock>
           </div>
 
           <div class="component">
@@ -294,9 +296,11 @@
                 <gl-button size="lg">Large</gl-button>
               </div>
             </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle"><gl-button size="sm">Small</gl-button>
+            <gl-codeblock lang="html" copy motion="subtle">
+              <template><gl-button size="sm">Small</gl-button>
 <gl-button>Default</gl-button>
-<gl-button size="lg">Large</gl-button></gl-codeblock>
+<gl-button size="lg">Large</gl-button></template>
+            </gl-codeblock>
           </div>
 
           <div class="component">
@@ -344,10 +348,12 @@
 &lt;gl-button trigger="close:myModal"&gt;Close modal&lt;/gl-button&gt;
 &lt;gl-button trigger="toast" toast-title="Success" toast-description="Action completed"&gt;Show toast&lt;/gl-button&gt;</code></pre>
             </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle"><gl-button motion="none">None</gl-button>
+            <gl-codeblock lang="html" copy motion="subtle">
+              <template><gl-button motion="none">None</gl-button>
 <gl-button motion="subtle">Subtle</gl-button>
 <gl-button motion="snappy">Snappy</gl-button>
-<gl-button motion="bounce">Bounce</gl-button></gl-codeblock>
+<gl-button motion="bounce">Bounce</gl-button></template>
+            </gl-codeblock>
           </div>
 
           <div class="props">
@@ -1540,7 +1546,8 @@ button.addEventListener('gl-press', () => {
                 </tbody>
               </gl-table>
             </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle"><gl-table variant="striped" motion="subtle">
+            <gl-codeblock lang="html" copy motion="subtle">
+              <template><gl-table variant="striped" motion="subtle">
   <thead>
     <tr>
       <th>Name</th>
@@ -1555,7 +1562,8 @@ button.addEventListener('gl-press', () => {
       <td><gl-badge>Active</gl-badge></td>
     </tr>
   </tbody>
-</gl-table></gl-codeblock>
+</gl-table></template>
+            </gl-codeblock>
             <div class="props">
               <h3>Attributes</h3>
               <table class="propsTable">
@@ -1604,10 +1612,12 @@ button.addEventListener('gl-press', () => {
                 </div>
               </div>
             </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle"><gl-link href="/page">Default link</gl-link>
+            <gl-codeblock lang="html" copy motion="subtle">
+              <template><gl-link href="/page">Default link</gl-link>
 <gl-link href="/page" variant="muted">Muted link</gl-link>
 <gl-link href="/page" variant="destructive">Destructive link</gl-link>
-<gl-link href="/page" variant="ghost">Ghost link</gl-link></gl-codeblock>
+<gl-link href="/page" variant="ghost">Ghost link</gl-link></template>
+            </gl-codeblock>
             <div class="props">
               <h3>Attributes</h3>
               <table class="propsTable">
