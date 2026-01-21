@@ -4,6 +4,10 @@ const template = document.createElement("template");
 template.innerHTML = `
   <style>
     :host{display:inline-block}
+    :host{--gl-motion-dur:var(--gl-dur-1);--gl-motion-ease:var(--gl-ease-spring)}
+    :host([motion="none"]){--gl-motion-dur:0ms}
+    :host([motion="snappy"]){--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease-spring)}
+    :host([motion="subtle"]){--gl-motion-dur:var(--gl-dur-1);--gl-motion-ease:var(--gl-ease)}
     button{
       all:unset;
       box-sizing:border-box;
@@ -22,15 +26,15 @@ template.innerHTML = `
       color:var(--gl-primary-fg);
       box-shadow:var(--gl-shadow-sm);
       border:1px solid transparent;
-      transition:transform var(--gl-dur-1) var(--gl-ease),
-        box-shadow var(--gl-dur-1) var(--gl-ease),
-        background var(--gl-dur-1) var(--gl-ease),
-        border-color var(--gl-dur-1) var(--gl-ease),
-        color var(--gl-dur-1) var(--gl-ease);
+      transition:transform var(--gl-motion-dur) var(--gl-motion-ease),
+        box-shadow var(--gl-motion-dur) var(--gl-motion-ease),
+        background var(--gl-motion-dur) var(--gl-motion-ease),
+        border-color var(--gl-motion-dur) var(--gl-motion-ease),
+        color var(--gl-motion-dur) var(--gl-motion-ease);
     }
     button:focus-visible{outline:2px solid var(--gl-ring);outline-offset:2px}
-    button:hover{transform:translateY(-1px);box-shadow:var(--gl-shadow-md)}
-    button:active{transform:translateY(0);box-shadow:var(--gl-shadow-sm)}
+    button:hover{transform:translateY(calc(-1px * var(--gl-motion)));box-shadow:var(--gl-shadow-md)}
+    button:active{transform:translateY(0) scale(calc(1 - (0.012 * var(--gl-motion))));box-shadow:var(--gl-shadow-sm)}
     button:disabled{opacity:0.55;cursor:not-allowed;transform:none;box-shadow:var(--gl-shadow-sm)}
 
     :host([variant="secondary"]) button{
@@ -43,8 +47,7 @@ template.innerHTML = `
       color:var(--gl-fg);
       box-shadow:none;
     }
-    :host([variant="ghost"]) button:hover{background:rgba(2,6,23,0.06)}
-    [data-glint-theme="dark"] :host([variant="ghost"]) button:hover{background:rgba(226,232,240,0.08)}
+    :host([variant="ghost"]) button:hover{background:var(--gl-hover)}
     :host([variant="destructive"]) button{
       background:var(--gl-danger);
       color:var(--gl-danger-fg);

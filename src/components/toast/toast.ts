@@ -4,6 +4,10 @@ const toastTemplate = document.createElement("template");
 toastTemplate.innerHTML = `
   <style>
     :host{display:block}
+    :host{--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease-spring)}
+    :host([motion="none"]){--gl-motion-dur:0ms}
+    :host([motion="snappy"]){--gl-motion-dur:var(--gl-dur-3);--gl-motion-ease:var(--gl-ease-spring)}
+    :host([motion="subtle"]){--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease)}
     .toast{
       background:var(--gl-panel);
       color:var(--gl-fg);
@@ -16,6 +20,9 @@ toastTemplate.innerHTML = `
       min-width:280px;
       max-width:min(420px, calc(100vw - 24px));
       pointer-events:auto;
+      transform:translateY(calc(var(--gl-enter-y) * var(--gl-motion))) scale(calc(1 - ((1 - var(--gl-enter-scale)) * var(--gl-motion))));
+      opacity:0;
+      animation:gl-toast-in var(--gl-motion-dur) var(--gl-motion-ease) forwards;
     }
     .top{display:flex; align-items:flex-start; justify-content:space-between; gap:var(--gl-space-3)}
     .title{font-weight:600; font-size:var(--gl-text-md); line-height:var(--gl-line-md)}
@@ -29,8 +36,11 @@ toastTemplate.innerHTML = `
       color:var(--gl-muted);
     }
     .close:focus-visible{outline:2px solid var(--gl-ring); outline-offset:2px}
-    .close:hover{background:rgba(2,6,23,0.06)}
-    [data-glint-theme="dark"] .close:hover{background:rgba(226,232,240,0.08)}
+    .close:hover{background:var(--gl-hover)}
+
+    @keyframes gl-toast-in{
+      to{opacity:1; transform:translateY(0) scale(1)}
+    }
   </style>
   <div class="toast" part="toast" role="status" aria-live="polite">
     <div class="top">

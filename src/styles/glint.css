@@ -16,6 +16,12 @@
   --gl-danger-fg: #ffffff;
   --gl-ring: rgba(37, 99, 235, 0.35);
 
+  --gl-overlay: rgba(2, 6, 23, 0.55);
+  --gl-surface-1: color-mix(in srgb, var(--gl-panel) 92%, var(--gl-bg));
+  --gl-surface-2: color-mix(in srgb, var(--gl-panel) 86%, var(--gl-bg));
+  --gl-hover: rgba(2, 6, 23, 0.06);
+  --gl-active: rgba(2, 6, 23, 0.1);
+
   --gl-radius-sm: 10px;
   --gl-radius: 12px;
   --gl-radius-lg: 16px;
@@ -40,6 +46,12 @@
   --gl-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   --gl-dur-1: 120ms;
   --gl-dur-2: 180ms;
+  --gl-dur-3: 240ms;
+
+  --gl-motion: 1;
+  --gl-ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --gl-enter-y: 6px;
+  --gl-enter-scale: 0.985;
 
   --gl-z-tooltip: 40;
   --gl-z-toast: 50;
@@ -49,33 +61,50 @@
 [data-glint-theme="dark"] {
   --gl-bg: #0b1220;
   --gl-panel: #0f172a;
-  --gl-fg: #e5e7eb;
-  --gl-muted: #94a3b8;
-  --gl-border: rgba(226, 232, 240, 0.16);
-  --gl-primary: #60a5fa;
-  --gl-primary-fg: #0b1220;
-  --gl-danger: #f87171;
-  --gl-danger-fg: #0b1220;
-  --gl-ring: rgba(96, 165, 250, 0.35);
+  --gl-fg: #e6eaf2;
+  --gl-muted: #9aa7bd;
+  --gl-border: rgba(226, 232, 240, 0.14);
+  --gl-primary: #7dd3fc;
+  --gl-primary-fg: #07101c;
+  --gl-danger: #fb7185;
+  --gl-danger-fg: #07101c;
+  --gl-ring: rgba(125, 211, 252, 0.35);
 
   --gl-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
   --gl-shadow-md: 0 16px 40px rgba(0, 0, 0, 0.5);
+
+  --gl-overlay: rgba(0, 0, 0, 0.6);
+  --gl-hover: rgba(226, 232, 240, 0.08);
+  --gl-active: rgba(226, 232, 240, 0.12);
 }
 
 @media (prefers-color-scheme: dark) {
   [data-glint-theme="system"] {
     --gl-bg: #0b1220;
     --gl-panel: #0f172a;
-    --gl-fg: #e5e7eb;
-    --gl-muted: #94a3b8;
-    --gl-border: rgba(226, 232, 240, 0.16);
-    --gl-primary: #60a5fa;
-    --gl-primary-fg: #0b1220;
-    --gl-danger: #f87171;
-    --gl-danger-fg: #0b1220;
-    --gl-ring: rgba(96, 165, 250, 0.35);
+    --gl-fg: #e6eaf2;
+    --gl-muted: #9aa7bd;
+    --gl-border: rgba(226, 232, 240, 0.14);
+    --gl-primary: #7dd3fc;
+    --gl-primary-fg: #07101c;
+    --gl-danger: #fb7185;
+    --gl-danger-fg: #07101c;
+    --gl-ring: rgba(125, 211, 252, 0.35);
     --gl-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
     --gl-shadow-md: 0 16px 40px rgba(0, 0, 0, 0.5);
+
+    --gl-overlay: rgba(0, 0, 0, 0.6);
+    --gl-hover: rgba(226, 232, 240, 0.08);
+    --gl-active: rgba(226, 232, 240, 0.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --gl-motion: 0;
+    --gl-dur-1: 0ms;
+    --gl-dur-2: 0ms;
+    --gl-dur-3: 0ms;
   }
 }
 

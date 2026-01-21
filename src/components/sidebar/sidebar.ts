@@ -4,10 +4,14 @@ const template = document.createElement("template");
 template.innerHTML = `
   <style>
     :host{display:contents}
+    :host{--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease-spring)}
+    :host([motion="none"]){--gl-motion-dur:0ms}
+    :host([motion="snappy"]){--gl-motion-dur:var(--gl-dur-3);--gl-motion-ease:var(--gl-ease-spring)}
+    :host([motion="subtle"]){--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease)}
     .overlay{
       position:fixed;
       inset:0;
-      background:rgba(2,6,23,0.35);
+      background:color-mix(in srgb, var(--gl-overlay) 65%, transparent);
       z-index:var(--gl-z-modal);
       display:none;
     }
@@ -22,9 +26,9 @@ template.innerHTML = `
       color:var(--gl-fg);
       border-right:1px solid var(--gl-border);
       box-shadow:var(--gl-shadow-md);
-      transform:translateX(-8px);
+      transform:translateX(calc(-12px * var(--gl-motion)));
       opacity:0;
-      transition:opacity var(--gl-dur-2) var(--gl-ease), transform var(--gl-dur-2) var(--gl-ease);
+      transition:opacity var(--gl-motion-dur) var(--gl-motion-ease), transform var(--gl-motion-dur) var(--gl-motion-ease);
       z-index:calc(var(--gl-z-modal) + 1);
       display:none;
       overflow:auto;
@@ -51,8 +55,7 @@ template.innerHTML = `
       color:var(--gl-muted);
     }
     .close:focus-visible{outline:2px solid var(--gl-ring); outline-offset:2px}
-    .close:hover{background:rgba(2,6,23,0.06)}
-    [data-glint-theme="dark"] .close:hover{background:rgba(226,232,240,0.08)}
+    .close:hover{background:var(--gl-hover)}
     .content{padding:var(--gl-space-4)}
   </style>
   <div class="overlay" part="overlay"></div>

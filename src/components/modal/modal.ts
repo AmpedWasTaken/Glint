@@ -5,10 +5,14 @@ const template = document.createElement("template");
 template.innerHTML = `
   <style>
     :host{display:contents}
+    :host{--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease-spring)}
+    :host([motion="none"]){--gl-motion-dur:0ms}
+    :host([motion="snappy"]){--gl-motion-dur:var(--gl-dur-3);--gl-motion-ease:var(--gl-ease-spring)}
+    :host([motion="subtle"]){--gl-motion-dur:var(--gl-dur-2);--gl-motion-ease:var(--gl-ease)}
     .overlay{
       position:fixed;
       inset:0;
-      background:rgba(2,6,23,0.55);
+      background:var(--gl-overlay);
       z-index:var(--gl-z-modal);
       display:none;
       align-items:center;
@@ -24,9 +28,9 @@ template.innerHTML = `
       border-radius:var(--gl-radius-lg);
       box-shadow:var(--gl-shadow-md);
       overflow:hidden;
-      transform:translateY(6px);
+      transform:translateY(calc(var(--gl-enter-y) * var(--gl-motion))) scale(calc(1 - ((1 - var(--gl-enter-scale)) * var(--gl-motion))));
       opacity:0;
-      transition:opacity var(--gl-dur-2) var(--gl-ease), transform var(--gl-dur-2) var(--gl-ease);
+      transition:opacity var(--gl-motion-dur) var(--gl-motion-ease), transform var(--gl-motion-dur) var(--gl-motion-ease);
       outline:none;
     }
     :host([open]) .dialog{opacity:1; transform:translateY(0)}
