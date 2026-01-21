@@ -1419,25 +1419,39 @@
             <p class="desc">Syntax-highlighted code blocks with copy functionality.</p>
             <gl-card motion="subtle" style="margin: 24px 0">
               <div class="stack">
-                <gl-codeblock lang="html" copy motion="subtle"><gl-button>Click me</gl-button>
+                <gl-codeblock lang="html" copy motion="subtle">
+                  <template><gl-button>Click me</gl-button>
 <gl-card>
   <div slot="header">Title</div>
   Content here
-</gl-card></gl-codeblock>
-                <gl-codeblock lang="js" copy motion="subtle">const button = document.querySelector('gl-button');
+</gl-card></template>
+                </gl-codeblock>
+                <gl-codeblock lang="js" copy motion="subtle">
+                  <template>const button = document.querySelector('gl-button');
 button.addEventListener('gl-press', () => {
   console.log('Button clicked!');
-});</gl-codeblock>
-                <gl-codeblock lang="css" copy motion="subtle">.my-class {
+});</template>
+                </gl-codeblock>
+                <gl-codeblock lang="css" copy motion="subtle">
+                  <template>.my-class {
   color: var(--gl-primary);
   padding: var(--gl-space-4);
   border-radius: var(--gl-radius);
-}</gl-codeblock>
+}</template>
+                </gl-codeblock>
               </div>
             </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle"><gl-codeblock lang="html" copy motion="subtle"><gl-button>Click me</gl-button></gl-codeblock>
-<gl-codeblock lang="js" copy>const button = document.querySelector('gl-button');</gl-codeblock>
-<gl-codeblock lang="css">.my-class { color: var(--gl-primary); }</gl-codeblock></gl-codeblock>
+            <gl-codeblock lang="html" copy motion="subtle">
+              <template><gl-codeblock lang="html" copy motion="subtle">
+  <template><gl-button>Click me</gl-button></template>
+</gl-codeblock>
+<gl-codeblock lang="js" copy>
+  <template>const button = document.querySelector('gl-button');</template>
+</gl-codeblock>
+<gl-codeblock lang="css">
+  <template>.my-class { color: var(--gl-primary); }</template>
+</gl-codeblock></template>
+            </gl-codeblock>
             <div class="props">
               <h3>Attributes</h3>
               <table class="propsTable">
