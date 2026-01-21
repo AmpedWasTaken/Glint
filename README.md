@@ -1,8 +1,11 @@
 <div align="center">
 
-<img src="https://github.com/AmpedWasTaken/Glint/blob/main/images/logo.png?raw=true" alt="Glint Logo" width="48" height="48" />
-
-# Glint
+<table>
+  <tr>
+    <td><img src="https://github.com/AmpedWasTaken/Glint/blob/main/images/logo.png?raw=true" alt="Glint Logo" width="48" height="48" /></td>
+    <td><h1 style="margin: 0;">Glint</h1></td>
+  </tr>
+</table>
 
 **Modern, minimal UI components built with Web Components + Shadow DOM**
 
