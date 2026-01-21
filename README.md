@@ -1,7 +1,7 @@
 # Glint
 
 <p align="center">
-  <img src="https://i.ibb.co/Fbv2JygS/Chat-GPT-Image-Jan-21-2026-10-06-54-AM.png" alt="Glint" width="180" />
+  <img src="https://i.postimg.cc/Nf5mThW2/Chat-GPT-Image-Jan-21-2026-10-06-54-AM-(1).png" alt="Glint" width="180" />
 </p>
 
 <p align="center">
