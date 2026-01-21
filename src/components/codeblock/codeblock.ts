@@ -168,14 +168,7 @@ export class GlCodeblock extends HTMLElement {
   }
 
   #highlightHTML(code: string): string {
-    let cleaned = code;
-    cleaned = cleaned.replace(/<template[^>]*shadowrootmode[^>]*>[\s\S]*?<\/template>/gi, "");
-    cleaned = cleaned.replace(/<template[^>]*>[\s\S]*?<\/template>/gi, "");
-    cleaned = cleaned.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "");
-    cleaned = cleaned.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
-    cleaned = cleaned.replace(/\s+/g, " ").trim();
-    
-    return cleaned
+    return code
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
