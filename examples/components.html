@@ -209,6 +209,37 @@
   </head>
   <body class="glint-bg">
     <script src="../dist/glint.js"></script>
+    <script>
+      // Debug codeblocks in components.html
+      setTimeout(() => {
+        console.log("=== Components.html Codeblock Debug ===");
+        const codeblocks = document.querySelectorAll('gl-codeblock');
+        console.log(`Found ${codeblocks.length} codeblock(s) in components.html`);
+        
+        codeblocks.forEach((cb, index) => {
+          const id = cb.id || `codeblock-${index}`;
+          console.log(`\n[${id}]`);
+          console.log("  - innerHTML length:", cb.innerHTML.length);
+          console.log("  - innerHTML preview:", cb.innerHTML.substring(0, 150));
+          console.log("  - textContent:", cb.textContent?.substring(0, 100));
+          console.log("  - childNodes count:", cb.childNodes.length);
+          console.log("  - has data-code:", cb.hasAttribute("data-code"));
+          
+          if (cb.shadowRoot) {
+            const codeEl = cb.shadowRoot.querySelector("code");
+            if (codeEl) {
+              console.log("  - shadowRoot code.innerHTML length:", codeEl.innerHTML.length);
+              console.log("  - shadowRoot code.innerHTML preview:", codeEl.innerHTML.substring(0, 150));
+              console.log("  - shadowRoot code.textContent:", codeEl.textContent?.substring(0, 100));
+            } else {
+              console.log("  - shadowRoot code element: NOT FOUND");
+            }
+          } else {
+            console.log("  - shadowRoot: NOT ATTACHED");
+          }
+        });
+      }, 2000);
+    </script>
 
     <gl-toaster id="toaster"></gl-toaster>
 
