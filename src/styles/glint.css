@@ -121,11 +121,22 @@
     --gl-danger-fg: #07101c;
     --gl-ring: rgba(125, 211, 252, 0.35);
     --gl-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
-    --gl-shadow-md: 0 16px 40px rgba(0, 0, 0, 0.5);
+    --gl-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --gl-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.45);
+    --gl-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.5);
 
     --gl-overlay: rgba(0, 0, 0, 0.6);
     --gl-hover: rgba(226, 232, 240, 0.08);
     --gl-active: rgba(226, 232, 240, 0.12);
+
+    --gl-glass-bg: rgba(15, 23, 42, 0.56);
+    --gl-glass-border: rgba(226, 232, 240, 0.14);
+    --gl-glass-blur: 22px;
+    --gl-glass-saturation: 1.25;
+
+    --gl-app-grad-1: rgba(125, 211, 252, 0.14);
+    --gl-app-grad-2: rgba(167, 139, 250, 0.12);
+    --gl-app-grad-3: rgba(251, 113, 133, 0.1);
   }
 }
 
