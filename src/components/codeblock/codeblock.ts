@@ -22,14 +22,8 @@ export class GlCodeblock extends HTMLElement {
       // Skip shadow root templates
       if (template.hasAttribute("shadowrootmode")) continue;
       
-      // Try innerHTML first (works for template elements in most browsers)
-      const innerHTML = template.innerHTML.trim();
-      if (innerHTML) {
-        this.#codeContent = innerHTML;
-        return;
-      }
-      
-      // Fallback: serialize template.content
+      // Template content is stored in template.content (DocumentFragment)
+      // We need to serialize it to get the HTML string
       if (template.content && template.content.childNodes.length > 0) {
         const div = document.createElement("div");
         const clone = template.content.cloneNode(true) as DocumentFragment;
@@ -39,6 +33,13 @@ export class GlCodeblock extends HTMLElement {
           this.#codeContent = serialized;
           return;
         }
+      }
+      
+      // Fallback: try innerHTML (some browsers might support this)
+      const innerHTML = template.innerHTML.trim();
+      if (innerHTML) {
+        this.#codeContent = innerHTML;
+        return;
       }
       
       // Last resort: textContent
@@ -63,14 +64,19 @@ export class GlCodeblock extends HTMLElement {
         if (text) contentParts.push(text);
       } else if (child.nodeType === Node.ELEMENT_NODE) {
         const el = child as Element;
-        // Skip template tags and shadow root templates
+        // Skip shadow root templates
         if (el.tagName === "TEMPLATE" && el.hasAttribute("shadowrootmode")) continue;
         if (el.tagName === "TEMPLATE") {
-          // This is our content template
-          const innerHTML = el.innerHTML.trim();
-          if (innerHTML) {
-            this.#codeContent = innerHTML;
-            return;
+          // This is our content template - serialize its content
+          if (el.content && el.content.childNodes.length > 0) {
+            const div = document.createElement("div");
+            const clone = el.content.cloneNode(true) as DocumentFragment;
+            div.appendChild(clone);
+            const serialized = div.innerHTML.trim();
+            if (serialized) {
+              this.#codeContent = serialized;
+              return;
+            }
           }
         } else if (el.outerHTML) {
           contentParts.push(el.outerHTML);
