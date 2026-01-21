@@ -24,24 +24,29 @@ export class GlCodeblock extends HTMLElement {
 
     // Method 2: Read innerHTML directly before shadow DOM is attached
     // This is the most reliable - innerHTML contains the raw HTML string
-    let innerHTML = this.innerHTML.trim();
+    let innerHTML = this.innerHTML;
     
-    // Remove shadow root templates if present
-    if (innerHTML.includes("shadowrootmode")) {
-      innerHTML = innerHTML.replace(/<template[^>]*shadowrootmode[^>]*>[\s\S]*?<\/template>/gi, "").trim();
-    }
-    
-    // Remove regular template tags but extract their content
-    if (innerHTML.includes("<template")) {
-      // Replace template tags with their content
-      innerHTML = innerHTML.replace(/<template[^>]*>([\s\S]*?)<\/template>/gi, (match, content) => {
-        return content.trim();
-      }).trim();
-    }
-    
-    if (innerHTML) {
-      this.#codeContent = innerHTML;
-      return;
+    // If innerHTML exists and has content
+    if (innerHTML && innerHTML.trim().length > 0) {
+      innerHTML = innerHTML.trim();
+      
+      // Remove shadow root templates if present
+      if (innerHTML.includes("shadowrootmode")) {
+        innerHTML = innerHTML.replace(/<template[^>]*shadowrootmode[^>]*>[\s\S]*?<\/template>/gi, "").trim();
+      }
+      
+      // Remove regular template tags but extract their content
+      if (innerHTML.includes("<template")) {
+        // Replace template tags with their content
+        innerHTML = innerHTML.replace(/<template[^>]*>([\s\S]*?)<\/template>/gi, (match, content) => {
+          return content.trim();
+        }).trim();
+      }
+      
+      if (innerHTML && innerHTML.length > 0) {
+        this.#codeContent = innerHTML;
+        return;
+      }
     }
 
     // Method 3: Fallback - read from childNodes and serialize
@@ -94,7 +99,9 @@ export class GlCodeblock extends HTMLElement {
   connectedCallback(): void {
     if (this.shadowRoot) return;
 
-    // Extract content BEFORE attaching shadow DOM
+    // Force re-extraction in connectedCallback (element is now in DOM)
+    // Reset content first to ensure we try again
+    this.#codeContent = "";
     this.#extractContent();
     
     // Debug logging
@@ -106,6 +113,15 @@ export class GlCodeblock extends HTMLElement {
       extractedContent: this.#codeContent.substring(0, 100),
       extractedLength: this.#codeContent.length
     });
+    
+    // If still no content, log warning
+    if (!this.#codeContent || this.#codeContent.trim().length === 0) {
+      console.warn("[GlCodeblock] No content extracted!", {
+        id: this.id || "no-id",
+        innerHTML: this.innerHTML,
+        hasDataCode: this.hasAttribute("data-code")
+      });
+    }
 
     const lang = this.getAttribute("lang") || "text";
     const showCopy = this.hasAttribute("copy");
