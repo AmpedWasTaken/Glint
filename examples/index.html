@@ -253,6 +253,40 @@
                 <gl-button id="openSidebar" motion="snappy">Open sidebar</gl-button>
               </div>
             </gl-card>
+
+            <gl-card class="span-12" surface="glass" motion="subtle">
+              <div slot="header">
+                <div style="font-weight: 600">New components</div>
+                <div class="muted">Textarea · Popover · Breadcrumb · Pagination · Switch · Slider</div>
+              </div>
+              <div style="display: grid; gap: 12px">
+                <gl-breadcrumb separator="›">
+                  <gl-breadcrumb-item href="./index.html">Home</gl-breadcrumb-item>
+                  <gl-breadcrumb-item href="./components.html">Components</gl-breadcrumb-item>
+                  <gl-breadcrumb-item current>New</gl-breadcrumb-item>
+                </gl-breadcrumb>
+                <div class="row" style="align-items: center; justify-content: space-between">
+                  <div class="muted">Page: <span id="homePageLabel">1</span></div>
+                  <gl-pagination id="homePager" page="1" pages="12"></gl-pagination>
+                </div>
+                <div class="row" style="align-items: center; gap: 12px">
+                  <gl-switch id="homeSwitch" checked motion="snappy"></gl-switch>
+                  <div class="muted">Enable something</div>
+                  <div style="flex: 1"></div>
+                  <gl-popover motion="snappy" surface="glass">
+                    <gl-button slot="trigger" variant="secondary">Open popover</gl-button>
+                    <div slot="content" style="display: grid; gap: 10px">
+                      <div style="font-weight: 600">Popover</div>
+                      <div class="muted">Rich content, aligned to the trigger.</div>
+                    </div>
+                  </gl-popover>
+                </div>
+                <gl-textarea rows="3" placeholder="Write a note…">
+                  <span slot="label">Textarea</span>
+                </gl-textarea>
+                <gl-slider id="homeSlider" value="35" motion="snappy"></gl-slider>
+              </div>
+            </gl-card>
           </div>
         </gl-card>
       </div>
@@ -320,6 +354,10 @@
           duration: 4000
         })
       );
+
+      document.getElementById("homePager")?.addEventListener("gl-change", (e) => {
+        document.getElementById("homePageLabel").textContent = String(e.detail.page);
+      });
 
       const copy = async (text) => {
         try {
