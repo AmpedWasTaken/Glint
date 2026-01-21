@@ -10,13 +10,11 @@ export class GlCodeblock extends HTMLElement {
 
   constructor() {
     super();
-    // Try to extract content immediately in constructor
-    // This happens before connectedCallback, so child components haven't upgraded yet
-    this.#extractContent();
   }
 
   #extractContent(): void {
-    if (this.#codeContent) return;
+    // Don't return early if content is empty string - we need to try again
+    if (this.#codeContent && this.#codeContent.trim().length > 0) return;
 
     // Method 1: Check for data-code attribute (supports multiline)
     if (this.hasAttribute("data-code")) {
