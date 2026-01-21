@@ -14,17 +14,11 @@ template.innerHTML = `
       align-items:flex-start;
       gap:var(--gl-space-3);
       box-shadow:var(--gl-shadow-sm);
+      opacity:1;
+      transform:none;
       transition:box-shadow var(--gl-dur-1) var(--gl-ease), transform var(--gl-dur-1) var(--gl-ease);
     }
-    :host(:not([motion="none"])) .alert{
-      opacity:0;
-      transform:translateX(-12px) scale(0.98);
-      animation:gl-alert-enter var(--gl-slide-in-dur) var(--gl-ease-out) forwards;
-    }
-    @keyframes gl-alert-enter{
-      0%{transform:translateX(-12px) scale(0.98);opacity:0}
-      100%{transform:translateX(0) scale(1);opacity:1}
-    }
+    :host([data-enter]) .alert{opacity:0;transform:translateX(-12px) scale(0.98)}
     :host([motion="subtle"]:hover) .alert{box-shadow:var(--gl-shadow-md);transform:translateY(-1px)}
     :host([motion="snappy"]:hover) .alert{box-shadow:var(--gl-shadow-md);transform:translateY(-2px) scale(1.01)}
     .icon{width:20px;height:20px;flex-shrink:0;opacity:0.8}
@@ -83,11 +77,20 @@ export class GlAlert extends HTMLElement {
 
   connectedCallback() {
     if (!this.shadowRoot) this.attachShadow({ mode: "open" });
-    this.shadowRoot!.appendChild(template.content.cloneNode(true));
+    const root = this.shadowRoot as ShadowRoot;
+    if (root.childNodes.length === 0) root.appendChild(template.content.cloneNode(true));
     this.#closeBtn = this.shadowRoot!.querySelector(".close") as HTMLButtonElement;
     this.#closeBtn.addEventListener("click", () => {
       emit(this, "gl-close");
       this.remove();
     });
+
+    const animate = this.getAttribute("motion") !== "none";
+    if (animate) {
+      this.setAttribute("data-enter", "");
+      requestAnimationFrame(() => this.removeAttribute("data-enter"));
+    } else {
+      this.removeAttribute("data-enter");
+    }
   }
 }

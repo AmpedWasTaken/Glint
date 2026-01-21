@@ -10,21 +10,17 @@ template.innerHTML = `
       border-radius:var(--gl-radius);
       box-shadow:var(--gl-shadow-sm);
       overflow:hidden;
-      transition:box-shadow var(--gl-dur-2) var(--gl-ease), transform var(--gl-dur-2) var(--gl-ease), border-color var(--gl-dur-1) var(--gl-ease);
+      opacity:1;
+      transform:none;
+      transition:
+        opacity var(--gl-dur-3) var(--gl-ease-out),
+        transform var(--gl-dur-3) var(--gl-ease-out),
+        box-shadow var(--gl-dur-2) var(--gl-ease),
+        border-color var(--gl-dur-1) var(--gl-ease);
     }
-    :host(:not([motion="none"])) .card{
+    :host([data-enter]) .card{
       opacity:0;
       transform:translateY(8px);
-      animation:gl-card-fade-in var(--gl-fade-in-dur) var(--gl-ease-out) forwards,
-        gl-card-slide-in var(--gl-slide-in-dur) var(--gl-ease-out) forwards;
-    }
-    @keyframes gl-card-fade-in{
-      0%{opacity:0}
-      100%{opacity:1}
-    }
-    @keyframes gl-card-slide-in{
-      0%{transform:translateY(8px);opacity:0}
-      100%{transform:translateY(0);opacity:1}
     }
     :host([motion="subtle"]:hover) .card{box-shadow:var(--gl-shadow-md);transform:translateY(-2px)}
     :host([motion="snappy"]:hover) .card{box-shadow:var(--gl-shadow-lg);transform:translateY(-4px) scale(1.01)}
@@ -84,6 +80,14 @@ export class GlCard extends HTMLElement {
     }
     this.#card = this.shadowRoot!.querySelector(".card") as HTMLElement;
     this.#wireTilt();
+
+    const animate = this.getAttribute("motion") !== "none";
+    if (animate) {
+      this.setAttribute("data-enter", "");
+      requestAnimationFrame(() => this.removeAttribute("data-enter"));
+    } else {
+      this.removeAttribute("data-enter");
+    }
   }
 
   attributeChangedCallback() {

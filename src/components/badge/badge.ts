@@ -15,17 +15,14 @@ template.innerHTML = `
       color:var(--gl-primary-fg);
       box-shadow:var(--gl-shadow-sm);
       border:1px solid transparent;
-      transition:transform var(--gl-dur-1) var(--gl-ease), box-shadow var(--gl-dur-1) var(--gl-ease);
+      opacity:1;
+      transform:none;
+      transition:
+        opacity var(--gl-dur-2) var(--gl-ease-out),
+        transform var(--gl-dur-2) var(--gl-ease-out),
+        box-shadow var(--gl-dur-1) var(--gl-ease);
     }
-    :host(:not([motion="none"])) .badge{
-      opacity:0;
-      transform:scale(0.8);
-      animation:gl-badge-scale-in var(--gl-scale-in-dur) var(--gl-ease-spring) forwards;
-    }
-    @keyframes gl-badge-scale-in{
-      0%{transform:scale(0.8);opacity:0}
-      100%{transform:scale(1);opacity:1}
-    }
+    :host([data-enter]) .badge{opacity:0;transform:scale(0.8)}
     :host([motion="subtle"]:hover) .badge{transform:translateY(-1px);box-shadow:var(--gl-shadow-md)}
     :host([motion="snappy"]:hover) .badge{transform:translateY(-2px) scale(1.05);box-shadow:var(--gl-shadow-md)}
     :host([variant="secondary"]) .badge{
@@ -53,6 +50,15 @@ export class GlBadge extends HTMLElement {
 
   connectedCallback() {
     if (!this.shadowRoot) this.attachShadow({ mode: "open" });
-    this.shadowRoot!.appendChild(template.content.cloneNode(true));
+    const root = this.shadowRoot as ShadowRoot;
+    if (root.childNodes.length === 0) root.appendChild(template.content.cloneNode(true));
+
+    const animate = this.getAttribute("motion") !== "none";
+    if (animate) {
+      this.setAttribute("data-enter", "");
+      requestAnimationFrame(() => this.removeAttribute("data-enter"));
+    } else {
+      this.removeAttribute("data-enter");
+    }
   }
 }
