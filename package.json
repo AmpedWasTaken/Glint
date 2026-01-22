@@ -1,13 +1,30 @@
 {
-  "name": "@glint-ui/glint",
-  "version": "0.1.0",
+  "name": "@amped17/glint-ui",
+  "version": "0.1.1",
   "description": "Glint — modern, minimal Web Components UI library",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/glint-ui/glint.git"
+    "url": "git+https://github.com/AmpedWasTaken/Glint.git"
   },
   "author": "Amped",
+  "keywords": [
+    "web-components",
+    "ui-library",
+    "components",
+    "shadow-dom",
+    "custom-elements",
+    "ui",
+    "design-system",
+    "framework-agnostic",
+    "typescript",
+    "zero-dependencies",
+    "glint"
+  ],
+  "homepage": "https://github.com/AmpedWasTaken/Glint#readme",
+  "bugs": {
+    "url": "https://github.com/AmpedWasTaken/Glint/issues"
+  },
   "type": "module",
   "exports": {
     ".": {
@@ -26,12 +43,17 @@
   "sideEffects": [
     "*.css"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "rollup -c -w",
     "build": "rimraf dist && rollup -c",
     "lint": "eslint .",
     "format": "prettier . --check",
-    "format:write": "prettier . --write"
+    "format:write": "prettier . --write",
+    "prepublishOnly": "npm run build",
+    "prepack": "npm run build"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.2",

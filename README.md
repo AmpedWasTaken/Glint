@@ -6,8 +6,8 @@
 
 **Modern, minimal UI components built with Web Components + Shadow DOM**
 
-[![npm version](https://img.shields.io/npm/v/@glint-ui/glint?style=for-the-badge&color=693B93)](https://www.npmjs.com/package/@glint-ui/glint)
-[![License](https://img.shields.io/npm/l/@glint-ui/glint?style=for-the-badge&color=693B93)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/@amped17/glint-ui?style=for-the-badge&color=693B93)](https://www.npmjs.com/package/@amped17/glint-ui)
+[![License](https://img.shields.io/npm/l/@amped17/glint-ui?style=for-the-badge&color=693B93)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue?style=for-the-badge)](https://www.typescriptlang.org/)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0-brightgreen?style=for-the-badge)](package.json)
 
@@ -43,21 +43,21 @@
 ### npm
 
 ```bash
-npm install @glint-ui/glint
+npm install @amped17/glint-ui
 ```
 
 ### CDN / Plain HTML
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glint-ui/glint/dist/glint.css" />
-<script src="https://cdn.jsdelivr.net/npm/@glint-ui/glint/dist/glint.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@amped17/glint-ui/dist/glint.css" />
+<script src="https://cdn.jsdelivr.net/npm/@amped17/glint-ui/dist/glint.js"></script>
 ```
 
 ### ESM
 
 ```typescript
-import "@glint-ui/glint/glint.css";
-import { defineGlint } from "@glint-ui/glint";
+import "@amped17/glint-ui/glint.css";
+import { defineGlint } from "@amped17/glint-ui";
 
 defineGlint();
 ```
@@ -65,8 +65,8 @@ defineGlint();
 ### CommonJS
 
 ```javascript
-require("@glint-ui/glint/glint.css");
-const { defineGlint } = require("@glint-ui/glint");
+require("@amped17/glint-ui/glint.css");
+const { defineGlint } = require("@amped17/glint-ui");
 
 defineGlint();
 ```
@@ -240,8 +240,8 @@ Auto-wire buttons to open/close components without JavaScript:
 
 ```tsx
 import { useEffect } from 'react';
-import '@glint-ui/glint/glint.css';
-import { defineGlint } from '@glint-ui/glint';
+import '@amped17/glint-ui/glint.css';
+import { defineGlint } from '@amped17/glint-ui';
 
 function App() {
   useEffect(() => {
@@ -260,8 +260,8 @@ function App() {
 </template>
 
 <script setup>
-import '@glint-ui/glint/glint.css';
-import { defineGlint } from '@glint-ui/glint';
+import '@amped17/glint-ui/glint.css';
+import { defineGlint } from '@amped17/glint-ui';
 
 defineGlint();
 </script>
@@ -271,8 +271,8 @@ defineGlint();
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
-import '@glint-ui/glint/glint.css';
-import { defineGlint } from '@glint-ui/glint';
+import '@amped17/glint-ui/glint.css';
+import { defineGlint } from '@amped17/glint-ui';
 
 @Component({
   selector: 'app-root',
@@ -356,8 +356,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Made with ❤️ by [Amped](https://github.com/glint-ui)**
+**Made with ❤️ by [Amped](https://github.com/AmpedWasTaken)**
 
-[⭐ Star on GitHub](https://github.com/glint-ui/glint) • [📖 Documentation](examples/components.html) • [🐛 Report Bug](https://github.com/glint-ui/glint/issues) • [💡 Request Feature](https://github.com/glint-ui/glint/issues)
+[⭐ Star on GitHub](https://github.com/AmpedWasTaken/Glint) • [📖 Documentation](examples/components.html) • [🐛 Report Bug](https://github.com/AmpedWasTaken/Glint/issues) • [💡 Request Feature](https://github.com/AmpedWasTaken/Glint/issues)
 
 </div>
