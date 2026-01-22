@@ -219,8 +219,8 @@ export class GlCodeblock extends HTMLElement {
       const attrsHighlighted = attrs
         .replace(/(\s+)([\w-]+)(=)(["'][^"']*["'])/g, '$1<span class="attr-name">$2</span><span class="operator">$3</span><span class="attr-value">$4</span>')
         .replace(/(\s+)([\w-]+)(\s|&gt;)/g, '$1<span class="attr-name">$2</span>$3');
-      return `<span class="tag">&lt;${close}${tag}</span>${attrsHighlighted}<span class="tag">&gt;</span>`;
-    });
+        return `<span class="tag">&lt;${close}${tag}</span>${attrsHighlighted}<span class="tag">&gt;</span>`;
+      });
     
     return highlighted;
   }

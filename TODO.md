@@ -17,13 +17,13 @@ This file tracks potential additions, improvements, and enhancements for the Gli
 - [x] **Form** - Form wrapper with validation and submission handling
 
 ### Layout & Navigation
-- [ ] **Drawer** - Bottom drawer/sheet component
-- [ ] **Stepper** - Step-by-step wizard component
-- [ ] **Menu** - Context menu component
-- [ ] **Command Palette** - Command palette with keyboard shortcuts
-- [ ] **Split Pane** - Resizable split pane layout
-- [ ] **Stack** - Flexbox/Grid layout component
-- [ ] **Container** - Responsive container component
+- [x] **Drawer** - Bottom drawer/sheet component
+- [x] **Stepper** - Step-by-step wizard component
+- [x] **Menu** - Context menu component
+- [x] **Command Palette** - Command palette with keyboard shortcuts
+- [x] **Split Pane** - Resizable split pane layout
+- [x] **Stack** - Flexbox/Grid layout component
+- [x] **Container** - Responsive container component
 
 ### Data Display
 - [ ] **Timeline** - Timeline/activity feed component

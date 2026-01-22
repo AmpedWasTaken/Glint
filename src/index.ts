@@ -54,6 +54,7 @@ import { defineMenu } from "./components/menu/define.js";
 import { defineSplitPane } from "./components/split-pane/define.js";
 import { defineStack } from "./components/stack/define.js";
 import { defineStepper } from "./components/stepper/define.js";
+import { defineTimeline } from "./components/timeline/define.js";
 
 export { defineAccordion, GlAccordion, GlAccordionItem } from "./components/accordion/define.js";
 export { defineAlert, GlAlert } from "./components/alert/define.js";
@@ -101,6 +102,7 @@ export { defineMenu, GlMenu, GlMenuItem, GlMenuSeparator, GlMenuLabel } from "./
 export { defineSplitPane, GlSplitPane } from "./components/split-pane/define.js";
 export { defineStack, GlStack } from "./components/stack/define.js";
 export { defineStepper, GlStepper, GlStepperStep } from "./components/stepper/define.js";
+export { defineTimeline, GlTimeline, GlTimelineItem } from "./components/timeline/define.js";
 
 export function defineGlint(): void {
   defineAccordion();
@@ -149,6 +151,7 @@ export function defineGlint(): void {
   defineSplitPane();
   defineStack();
   defineStepper();
+  defineTimeline();
 }
 
 declare global {

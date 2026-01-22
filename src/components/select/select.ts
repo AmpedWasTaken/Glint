@@ -348,7 +348,7 @@ export class GlSelect extends HTMLElement {
     this.#select.innerHTML = "";
     this.#dropdown.innerHTML = "";
     this.#options = [];
-    
+
     const optionsAttr = this.getAttribute("options");
     if (optionsAttr) {
       try {

@@ -255,6 +255,7 @@
             <a href="#divider" class="docs-nav-link">Divider</a>
             <a href="#table" class="docs-nav-link">Table</a>
             <a href="#link" class="docs-nav-link">Link</a>
+            <a href="#timeline" class="docs-nav-link">Timeline</a>
               </div>
           <div class="docs-nav-group">
             <div class="docs-nav-group-title">Layout</div>
@@ -2888,6 +2889,118 @@
 &#10;&lt;gl-link href=&quot;#card&quot; variant=&quot;muted&quot;&gt;Muted link&lt;/gl-link&gt;
 &#10;&lt;gl-link href=&quot;#forms&quot; variant=&quot;destructive&quot;&gt;Destructive link&lt;/gl-link&gt;
 &#10;&lt;gl-link href=&quot;#forms&quot; variant=&quot;ghost&quot;&gt;Ghost link&lt;/gl-link&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="timeline" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Timeline</h2>
+              <p>Timeline/activity feed component with vertical and horizontal variants.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-timeline>
+                <gl-timeline-item state="completed">
+                  <span slot="title">Project created</span>
+                  <span slot="timestamp">2 hours ago</span>
+                  <span slot="description">The project was successfully created</span>
+                </gl-timeline-item>
+                <gl-timeline-item state="active">
+                  <span slot="title">In progress</span>
+                  <span slot="timestamp">1 hour ago</span>
+                  <span slot="description">Currently working on this task</span>
+                </gl-timeline-item>
+                <gl-timeline-item>
+                  <span slot="title">Pending</span>
+                  <span slot="timestamp">Upcoming</span>
+                  <span slot="description">This task is pending</span>
+                </gl-timeline-item>
+              </gl-timeline>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-timeline&gt;
+&#10;  &lt;gl-timeline-item state=&quot;completed&quot;&gt;
+&#10;    &lt;span slot=&quot;title&quot;&gt;Project created&lt;/span&gt;
+&#10;    &lt;span slot=&quot;timestamp&quot;&gt;2 hours ago&lt;/span&gt;
+&#10;    &lt;span slot=&quot;description&quot;&gt;The project was successfully created&lt;/span&gt;
+&#10;  &lt;/gl-timeline-item&gt;
+&#10;  &lt;gl-timeline-item state=&quot;active&quot;&gt;
+&#10;    &lt;span slot=&quot;title&quot;&gt;In progress&lt;/span&gt;
+&#10;    &lt;span slot=&quot;timestamp&quot;&gt;1 hour ago&lt;/span&gt;
+&#10;    &lt;span slot=&quot;description&quot;&gt;Currently working on this task&lt;/span&gt;
+&#10;  &lt;/gl-timeline-item&gt;
+&#10;  &lt;gl-timeline-item&gt;
+&#10;    &lt;span slot=&quot;title&quot;&gt;Pending&lt;/span&gt;
+&#10;    &lt;span slot=&quot;timestamp&quot;&gt;Upcoming&lt;/span&gt;
+&#10;    &lt;span slot=&quot;description&quot;&gt;This task is pending&lt;/span&gt;
+&#10;  &lt;/gl-timeline-item&gt;
+&#10;&lt;/gl-timeline&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"vertical" | "horizontal"</code></td>
+                    <td><code>"vertical"</code></td>
+                    <td>Timeline layout direction</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="margin-top: 16px; font-size: 14px; color: var(--gl-muted);"><strong>gl-timeline-item:</strong> <code>state</code> ("default" | "active" | "completed" | "error"), <code>icon</code> (boolean) - Show custom icon slot</p>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>States</h2>
+              <p>Timeline items with different states.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-timeline>
+                <gl-timeline-item state="completed">
+                  <span slot="title">Completed</span>
+                  <span slot="timestamp">Done</span>
+                </gl-timeline-item>
+                <gl-timeline-item state="active">
+                  <span slot="title">Active</span>
+                  <span slot="timestamp">In progress</span>
+                </gl-timeline-item>
+                <gl-timeline-item state="error">
+                  <span slot="title">Error</span>
+                  <span slot="timestamp">Failed</span>
+                </gl-timeline-item>
+                <gl-timeline-item>
+                  <span slot="title">Default</span>
+                  <span slot="timestamp">Pending</span>
+                </gl-timeline-item>
+              </gl-timeline>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-timeline-item state=&quot;completed&quot;&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;Completed&lt;/span&gt;
+&#10;&lt;/gl-timeline-item&gt;
+&#10;&lt;gl-timeline-item state=&quot;active&quot;&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;Active&lt;/span&gt;
+&#10;&lt;/gl-timeline-item&gt;
+&#10;&lt;gl-timeline-item state=&quot;error&quot;&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;Error&lt;/span&gt;
+&#10;&lt;/gl-timeline-item&gt;"></gl-codeblock>
             </div>
           </div>
         </section>
