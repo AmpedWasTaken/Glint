@@ -204,17 +204,25 @@ export class GlCodeblock extends HTMLElement {
   }
 
   #highlightHTML(code: string): string {
-    return code
+    // First escape HTML entities
+    let highlighted = code
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/&lt;(\/?)([\w-]+)([^&]*?)&gt;/g, (_, close, tag, attrs) => {
-        const attrsHighlighted = attrs.replace(
-          /(\w+)(=)(["'][^"']*["'])/g,
-          '<span class="attr-name">$1</span><span class="operator">$2</span><span class="attr-value">$3</span>'
-        );
-        return `<span class="tag">&lt;${close}${tag}</span>${attrsHighlighted}<span class="tag">&gt;</span>`;
-      });
+      .replace(/>/g, "&gt;");
+    
+    // Comments (must be first)
+    highlighted = highlighted.replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="comment">$1</span>');
+    
+    // HTML tags - handle both opening and closing tags
+    highlighted = highlighted.replace(/&lt;(\/?)([\w-]+)([^&]*?)&gt;/g, (_, close, tag, attrs) => {
+      // Highlight attributes with better regex
+      const attrsHighlighted = attrs
+        .replace(/(\s+)([\w-]+)(=)(["'][^"']*["'])/g, '$1<span class="attr-name">$2</span><span class="operator">$3</span><span class="attr-value">$4</span>')
+        .replace(/(\s+)([\w-]+)(\s|&gt;)/g, '$1<span class="attr-name">$2</span>$3');
+      return `<span class="tag">&lt;${close}${tag}</span>${attrsHighlighted}<span class="tag">&gt;</span>`;
+    });
+    
+    return highlighted;
   }
 
   #highlightCSS(code: string): string {
@@ -246,21 +254,46 @@ export class GlCodeblock extends HTMLElement {
   }
 
   #highlightJS(code: string): string {
-    const keywords = /\b(const|let|var|function|if|else|for|while|return|class|extends|import|export|from|default|async|await|try|catch|throw|new|this|super|static|public|private|protected|interface|type|enum|namespace|declare|as|of|in|typeof|instanceof|true|false|null|undefined|void)\b/g;
-    const strings = /(["'`])(?:(?=(\\?))\2.)*?\1/g;
-    const numbers = /\b\d+\.?\d*\b/g;
-    const functions = /\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g;
-    const comments = /(\/\/.*$|\/\*[\s\S]*?\*\/)/gm;
-
-    return code
+    // First escape HTML entities
+    let highlighted = code
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(comments, '<span class="comment">$1</span>')
-      .replace(strings, '<span class="string">$&</span>')
-      .replace(numbers, '<span class="number">$&</span>')
-      .replace(keywords, '<span class="keyword">$&</span>')
-      .replace(functions, '<span class="function">$1</span> ');
+      .replace(/>/g, "&gt;");
+    
+    // Comments (must be first to avoid breaking other patterns)
+    highlighted = highlighted.replace(/(\/\/.*$|\/\*[\s\S]*?\*\/)/gm, '<span class="comment">$1</span>');
+    
+    // Template literals and strings (before other patterns)
+    highlighted = highlighted.replace(/(`[^`]*`)/g, '<span class="string">$1</span>');
+    highlighted = highlighted.replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, '<span class="string">$&</span>');
+    
+    // Regex literals
+    highlighted = highlighted.replace(/(\/[^\/\n]+\/[gimuy]*)/g, '<span class="regex">$1</span>');
+    
+    // Numbers (including hex, binary, etc.)
+    highlighted = highlighted.replace(/\b(0x[\da-fA-F]+|0b[01]+|0o[0-7]+|\d+\.?\d*(?:[eE][+-]?\d+)?)\b/g, '<span class="number">$1</span>');
+    
+    // Keywords
+    const keywords = /\b(const|let|var|function|if|else|for|while|return|class|extends|import|export|from|default|async|await|try|catch|throw|new|this|super|static|public|private|protected|interface|type|enum|namespace|declare|as|of|in|typeof|instanceof|true|false|null|undefined|void|break|continue|switch|case|do|with|yield|get|set|delete|void|of|in)\b/g;
+    highlighted = highlighted.replace(keywords, '<span class="keyword">$&</span>');
+    
+    // Operators
+    highlighted = highlighted.replace(/([+\-*/%=<>!&|?:]+)/g, '<span class="operator">$1</span>');
+    
+    // Functions and method calls
+    highlighted = highlighted.replace(/\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g, '<span class="function">$1</span> ');
+    
+    // Constants (uppercase identifiers)
+    highlighted = highlighted.replace(/\b([A-Z][A-Z0-9_]*)\b/g, (match, p1) => {
+      // Don't highlight if already highlighted as keyword
+      if (match.includes('class=') || match.includes('span')) return match;
+      return `<span class="constant">${p1}</span>`;
+    });
+    
+    // Properties (after dot or bracket)
+    highlighted = highlighted.replace(/(\.)([a-zA-Z_$][a-zA-Z0-9_$]*)/g, '$1<span class="property">$2</span>');
+    
+    return highlighted;
   }
 
   #highlightJSX(code: string): string {
@@ -273,42 +306,67 @@ export class GlCodeblock extends HTMLElement {
     // Comments (must be first)
     highlighted = highlighted.replace(/(\/\/.*$|\/\*[\s\S]*?\*\/)/gm, '<span class="comment">$1</span>');
     
-    // JSX tags - handle both opening and closing tags
-    // Match: &lt;tag&gt; or &lt;/tag&gt; or &lt;tag attr="value"&gt;
-    highlighted = highlighted.replace(/&lt;(\/?)([\w-]+)([^&]*?)&gt;/g, (match, close, tag, attrs) => {
-      // Highlight attributes
-      const attrsHighlighted = attrs.replace(
-        /(\w+)(=)(["'][^"']*["']|\{[^}]*\})/g,
-        '<span class="attr-name">$1</span><span class="operator">$2</span><span class="attr-value">$3</span>'
-      );
-      return `<span class="tag">&lt;${close}${tag}</span>${attrsHighlighted}<span class="tag">&gt;</span>`;
+    // JSX tags - handle both opening and closing tags, including self-closing
+    highlighted = highlighted.replace(/&lt;(\/?)([\w-]+)([^&]*?)(\/?)&gt;/g, (match, close, tag, attrs, selfClose) => {
+      // Highlight attributes with better regex
+      let attrsHighlighted = attrs
+        // Attribute with quoted value
+        .replace(/(\s+)([\w-]+)(=)(["'][^"']*["'])/g, '$1<span class="attr-name">$2</span><span class="operator">$3</span><span class="attr-value">$4</span>')
+        // Attribute with JSX expression
+        .replace(/(\s+)([\w-]+)(=)(\{[^}]*\})/g, '$1<span class="attr-name">$2</span><span class="operator">$3</span><span class="attr-value">$4</span>')
+        // Boolean attributes
+        .replace(/(\s+)([\w-]+)(\s|&gt;)/g, '$1<span class="attr-name">$2</span>$3');
+      
+      const closing = selfClose ? '/' : '';
+      return `<span class="tag">&lt;${close}${tag}</span>${attrsHighlighted}${closing ? '<span class="operator">/</span>' : ''}<span class="tag">&gt;</span>`;
     });
     
-    // Strings (after JSX tags to avoid breaking them, but before other patterns)
-    highlighted = highlighted.replace(/(["'`])(?:(?=(\\?))\2.)*?\1/g, '<span class="string">$&</span>');
+    // JSX expressions { ... }
+    highlighted = highlighted.replace(/(\{)([^}]*)(\})/g, '<span class="punctuation">$1</span>$2<span class="punctuation">$3</span>');
+    
+    // Template literals and strings (after JSX tags)
+    highlighted = highlighted.replace(/(`[^`]*`)/g, '<span class="string">$1</span>');
+    highlighted = highlighted.replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, '<span class="string">$&</span>');
     
     // Numbers
-    highlighted = highlighted.replace(/\b\d+\.?\d*\b/g, '<span class="number">$&</span>');
+    highlighted = highlighted.replace(/\b(0x[\da-fA-F]+|0b[01]+|0o[0-7]+|\d+\.?\d*(?:[eE][+-]?\d+)?)\b/g, '<span class="number">$1</span>');
     
     // Keywords
-    const keywords = /\b(const|let|var|function|if|else|for|while|return|class|extends|import|export|from|default|async|await|try|catch|throw|new|this|super|static|public|private|protected|interface|type|enum|namespace|declare|as|of|in|typeof|instanceof|true|false|null|undefined|void)\b/g;
+    const keywords = /\b(const|let|var|function|if|else|for|while|return|class|extends|import|export|from|default|async|await|try|catch|throw|new|this|super|static|public|private|protected|interface|type|enum|namespace|declare|as|of|in|typeof|instanceof|true|false|null|undefined|void|break|continue|switch|case|do|with|yield|get|set|delete)\b/g;
     highlighted = highlighted.replace(keywords, '<span class="keyword">$&</span>');
     
-    // Functions (simple approach - JSX tags already handled)
+    // Operators
+    highlighted = highlighted.replace(/([+\-*/%=<>!&|?:]+)/g, '<span class="operator">$1</span>');
+    
+    // Functions
     highlighted = highlighted.replace(/\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g, '<span class="function">$1</span> ');
     
     return highlighted;
   }
 
   #highlightJSON(code: string): string {
-    return code
+    // First escape HTML entities
+    let highlighted = code
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/(["'][^"']*["'])(\s*)(:)/g, '<span class="property">$1</span>$2<span class="operator">$3</span>')
-      .replace(/(["'][^"']*["'])/g, '<span class="string">$1</span>')
-      .replace(/(\d+\.?\d*)/g, '<span class="number">$1</span>')
-      .replace(/\b(true|false|null)\b/g, '<span class="constant">$&</span>');
+      .replace(/>/g, "&gt;");
+    
+    // Keys (property names)
+    highlighted = highlighted.replace(/(["'])([^"']*)(["'])(\s*)(:)/g, '<span class="property"><span class="string">$1$2$3</span></span>$4<span class="operator">$5</span>');
+    
+    // String values (not already highlighted as keys)
+    highlighted = highlighted.replace(/(:\s*)(["'])([^"']*)(["'])/g, '$1<span class="string">$2$3$4</span>');
+    
+    // Numbers
+    highlighted = highlighted.replace(/(:\s*)(\d+\.?\d*(?:[eE][+-]?\d+)?)/g, '$1<span class="number">$2</span>');
+    
+    // Booleans and null
+    highlighted = highlighted.replace(/(:\s*)(true|false|null)\b/g, '$1<span class="constant">$2</span>');
+    
+    // Punctuation
+    highlighted = highlighted.replace(/([{}[\],])/g, '<span class="punctuation">$1</span>');
+    
+    return highlighted;
   }
 
   async #copy(): Promise<void> {

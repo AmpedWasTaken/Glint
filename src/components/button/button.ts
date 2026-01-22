@@ -168,6 +168,11 @@ export class GlButton extends HTMLElement {
           (target as any).show();
         }
         break;
+      case "drawer":
+        if (target && target.tagName === "GL-DRAWER") {
+          (target as any).open = true;
+        }
+        break;
       case "popover":
         if (target && target.tagName === "GL-POPOVER") {
           (target as any).show();
@@ -193,6 +198,8 @@ export class GlButton extends HTMLElement {
             (target as any).close("api");
           } else if (target.tagName === "GL-DROPDOWN") {
             (target as any).close("api");
+          } else if (target.tagName === "GL-DRAWER") {
+            (target as any).open = false;
           }
         }
         break;

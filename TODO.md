@@ -7,14 +7,14 @@ This file tracks potential additions, improvements, and enhancements for the Gli
 ## 🎨 New Components
 
 ### Form Controls
-- [ ] **Date Picker** - Calendar-based date selection with range support
-- [ ] **Time Picker** - Time selection input
-- [ ] **Color Picker** - Color selection with hex/rgb/hsl support
-- [ ] **File Upload** - Drag & drop file upload with preview
-- [ ] **Rating** - Star rating component
-- [ ] **Search Input** - Search input with autocomplete suggestions
-- [ ] **Tag Input** - Multi-tag input with add/remove functionality
-- [ ] **Form** - Form wrapper with validation and submission handling
+- [x] **Date Picker** - Calendar-based date selection with range support
+- [x] **Time Picker** - Time selection input
+- [x] **Color Picker** - Color selection with hex/rgb/hsl support
+- [x] **File Upload** - Drag & drop file upload with preview
+- [x] **Rating** - Star rating component
+- [x] **Search Input** - Search input with autocomplete suggestions
+- [x] **Tag Input** - Multi-tag input with add/remove functionality
+- [x] **Form** - Form wrapper with validation and submission handling
 
 ### Layout & Navigation
 - [ ] **Drawer** - Bottom drawer/sheet component

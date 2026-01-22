@@ -3,347 +3,296 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Glint — Components Documentation</title>
+    <title>Components — Glint UI</title>
     <link rel="stylesheet" href="../dist/glint.css" />
     <style>
-      :root {
-        --docs-sidebar-width: 240px;
-        --docs-content-width: 900px;
-      }
+      * { box-sizing: border-box; }
       body {
         margin: 0;
         padding: 0;
         font-family: var(--gl-font-sans);
+        background: var(--gl-bg);
+        color: var(--gl-fg);
+        -webkit-font-smoothing: antialiased;
       }
-      .layout {
+      .docs-container {
         display: flex;
         min-height: 100vh;
       }
-      .sidebar {
+      .docs-sidebar {
         position: fixed;
         left: 0;
         top: 0;
-        width: var(--docs-sidebar-width);
+        width: 260px;
         height: 100vh;
         overflow-y: auto;
-        padding: 20px 16px;
-        z-index: 5;
+        border-right: 1px solid var(--gl-border);
+        background: var(--gl-panel);
+        padding: 24px 16px;
+        z-index: 10;
       }
-      .sidebar nav {
+      .docs-sidebar-header {
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--gl-border);
+      }
+      .docs-sidebar-header h2 {
+        margin: 0 0 4px;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--gl-fg);
+      }
+      .docs-sidebar-header p {
+        margin: 0;
+        font-size: 13px;
+        color: var(--gl-muted);
+      }
+      .docs-nav {
         display: grid;
-        gap: 4px;
+        gap: 2px;
       }
-      .sidebar a {
+      .docs-nav-group {
+        margin-bottom: 24px;
+      }
+      .docs-nav-group-title {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--gl-muted);
+        margin-bottom: 8px;
+        padding: 0 12px;
+      }
+      .docs-nav-link {
         display: block;
         padding: 8px 12px;
-        border-radius: 8px;
+        border-radius: 6px;
+        font-size: 14px;
         color: var(--gl-fg);
         text-decoration: none;
-        font-size: 14px;
-        transition: background var(--gl-dur-1) var(--gl-ease);
+        transition: background 0.15s ease, color 0.15s ease;
       }
-      .sidebar a:hover {
+      .docs-nav-link:hover {
         background: var(--gl-hover);
       }
-      .sidebar a.active {
+      .docs-nav-link.active {
         background: var(--gl-primary);
         color: var(--gl-primary-fg);
       }
-      .content {
-        margin-left: var(--docs-sidebar-width);
+      .docs-content {
+        margin-left: 260px;
         flex: 1;
-        max-width: var(--docs-content-width);
-        padding: 40px 32px;
+        max-width: 1200px;
+        padding: 48px 64px;
       }
-      gl-topbar {
-        margin-bottom: 32px;
-      }
-      gl-topbar[variant="glass"] {
-        --gl-glass-bg: rgba(26, 11, 46, 0.7);
-        --gl-glass-border: rgba(226, 232, 240, 0.1);
-      }
-      .section {
-        margin-bottom: 64px;
-        scroll-margin-top: 100px;
-      }
-      .section h1 {
-        margin: 0 0 8px;
-        font-size: 32px;
-        line-height: 40px;
-        font-weight: 700;
-      }
-      .component {
+      .docs-header {
         margin-bottom: 48px;
-        padding-bottom: 32px;
+        padding-bottom: 24px;
         border-bottom: 1px solid var(--gl-border);
       }
-      .component:last-child {
-        border-bottom: none;
+      .docs-header h1 {
+        margin: 0 0 8px;
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 1.2;
       }
-      .component h2 {
+      .docs-header p {
+        margin: 0;
+        font-size: 16px;
+        color: var(--gl-muted);
+        line-height: 1.6;
+      }
+      .docs-section {
+        margin-bottom: 64px;
+        scroll-margin-top: 24px;
+      }
+      .docs-component {
+        margin-bottom: 48px;
+      }
+      .docs-component-header {
+        margin-bottom: 16px;
+      }
+      .docs-component-header h2 {
         margin: 0 0 8px;
         font-size: 24px;
-        line-height: 32px;
         font-weight: 600;
+        line-height: 1.3;
       }
-      .code {
-        padding: 16px;
+      .docs-component-header p {
         margin: 0;
-        overflow-x: auto;
-        font-family: "Consolas", "Monaco", "Courier New", monospace;
-        font-size: 13px;
+        font-size: 14px;
+        color: var(--gl-muted);
         line-height: 1.6;
-        color: var(--gl-fg);
-        background: var(--gl-bg);
       }
-      .code code {
-        font-family: inherit;
+      .docs-preview {
+        margin: 24px 0;
+        padding: 32px;
+        border: 1px solid var(--gl-border);
+        border-radius: 8px;
+        background: var(--gl-panel);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 120px;
       }
-      .codeCopy {
-        all: unset;
-        cursor: pointer;
-        padding: 4px 8px;
-        border-radius: 6px;
-        font-size: 12px;
-        color: var(--gl-fg);
-        transition: background var(--gl-dur-1) var(--gl-ease);
-      }
-      .codeCopy:hover {
-        background: var(--gl-hover);
-      }
-      .codeCopy.copied {
-        color: var(--gl-success);
-      }
-      .props {
+      .docs-code-wrapper {
         margin: 24px 0;
       }
-      .props h3 {
-        margin: 0 0 12px;
-        font-size: 16px;
+      .docs-api {
+        margin-top: 32px;
+        padding-top: 32px;
+        border-top: 1px solid var(--gl-border);
+      }
+      .docs-api h3 {
+        margin: 0 0 16px;
+        font-size: 18px;
         font-weight: 600;
       }
-      .propsTable {
+      .docs-table {
         width: 100%;
         border-collapse: collapse;
         font-size: 14px;
       }
-      .propsTable th,
-      .propsTable td {
-        padding: 10px 12px;
+      .docs-table th,
+      .docs-table td {
+        padding: 12px 16px;
         text-align: left;
         border-bottom: 1px solid var(--gl-border);
       }
-      .propsTable th {
+      .docs-table th {
         font-weight: 600;
         color: var(--gl-fg);
         background: var(--gl-panel);
       }
-      .propsTable td {
+      .docs-table td {
         color: var(--gl-muted);
       }
-      .propsTable code {
-        background: var(--gl-panel);
+      .docs-table code {
+        background: var(--gl-hover);
         padding: 2px 6px;
         border-radius: 4px;
         font-size: 12px;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
         color: var(--gl-primary);
       }
-      .row {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 10px;
-      }
-      .stack {
-        display: grid;
-        gap: 12px;
-      }
-      .muted {
-        color: var(--gl-muted);
-        font-size: var(--gl-text-md);
-        line-height: var(--gl-line-md);
-      }
-      .link {
-        text-decoration: none;
-      }
-      gl-dropdown .item {
-        display: block;
-        width: 100%;
-        padding: 8px 12px;
-        border: none;
-        background: transparent;
-        color: var(--gl-fg);
-        text-align: left;
-        cursor: pointer;
-        border-radius: 8px;
-        font-size: var(--gl-text-md);
-        line-height: var(--gl-line-md);
-        transition: background var(--gl-dur-1) var(--gl-ease);
-      }
-      gl-dropdown .item:hover {
-        background: var(--gl-hover);
-      }
-      gl-dropdown .item:focus-visible {
-        outline: 2px solid var(--gl-ring);
-        outline-offset: 2px;
-      }
-      gl-dropdown .divider {
-        height: 1px;
-        background: var(--gl-border);
-        margin: 6px 0;
-      }
       @media (max-width: 1024px) {
-        .sidebar {
+        .docs-sidebar {
           transform: translateX(-100%);
-          transition: transform var(--gl-dur-2) var(--gl-ease);
+          transition: transform 0.2s ease;
         }
-        .sidebar.open {
+        .docs-sidebar.open {
           transform: translateX(0);
         }
-        .content {
+        .docs-content {
           margin-left: 0;
+          padding: 32px 24px;
         }
       }
     </style>
   </head>
-  <body class="glint-bg">
-
+  <body>
     <gl-toaster id="toaster"></gl-toaster>
 
-    <div class="layout">
-      <aside class="sidebar" id="sidebar">
-        <gl-card surface="glass" style="padding: 0; border: none; box-shadow: none">
-          <div slot="header" style="padding-bottom: 8px">
-            <div style="font-size: 14px; font-weight: 600; color: var(--gl-muted); text-transform: uppercase; letter-spacing: 0.5px">
-              Components
+    <div class="docs-container">
+      <aside class="docs-sidebar" id="sidebar">
+        <div class="docs-sidebar-header">
+          <h2>Glint UI</h2>
+          <p>Components</p>
             </div>
+        <nav class="docs-nav">
+          <div class="docs-nav-group">
+            <div class="docs-nav-group-title">General</div>
+            <a href="#button" class="docs-nav-link">Button</a>
+            <a href="#card" class="docs-nav-link">Card</a>
           </div>
-          <nav>
-            <a href="#buttons" class="nav-link">Buttons</a>
-            <a href="#cards" class="nav-link">Cards</a>
-            <a href="#forms" class="nav-link">Forms</a>
-            <a href="#navigation" class="nav-link">Navigation</a>
-            <a href="#overlays" class="nav-link">Overlays</a>
-            <a href="#feedback" class="nav-link">Feedback</a>
-            <a href="#display" class="nav-link">Display</a>
-            <a href="#code" class="nav-link">Code</a>
-          </nav>
-        </gl-card>
+          <div class="docs-nav-group">
+            <div class="docs-nav-group-title">Forms</div>
+            <a href="#input" class="docs-nav-link">Input</a>
+            <a href="#textarea" class="docs-nav-link">Textarea</a>
+            <a href="#select" class="docs-nav-link">Select</a>
+            <a href="#checkbox" class="docs-nav-link">Checkbox</a>
+            <a href="#radio" class="docs-nav-link">Radio</a>
+            <a href="#switch" class="docs-nav-link">Switch</a>
+            <a href="#slider" class="docs-nav-link">Slider</a>
+            <a href="#date-picker" class="docs-nav-link">Date Picker</a>
+            <a href="#time-picker" class="docs-nav-link">Time Picker</a>
+            <a href="#color-picker" class="docs-nav-link">Color Picker</a>
+            <a href="#file-upload" class="docs-nav-link">File Upload</a>
+            <a href="#search-input" class="docs-nav-link">Search Input</a>
+            <a href="#tag-input" class="docs-nav-link">Tag Input</a>
+            <a href="#rating" class="docs-nav-link">Rating</a>
+            <a href="#form" class="docs-nav-link">Form</a>
+            </div>
+          <div class="docs-nav-group">
+            <div class="docs-nav-group-title">Navigation</div>
+            <a href="#tabs" class="docs-nav-link">Tabs</a>
+            <a href="#accordion" class="docs-nav-link">Accordion</a>
+            <a href="#breadcrumb" class="docs-nav-link">Breadcrumb</a>
+            <a href="#pagination" class="docs-nav-link">Pagination</a>
+            <a href="#navbar" class="docs-nav-link">Navbar</a>
+            <a href="#topbar" class="docs-nav-link">Topbar</a>
+          </div>
+          <div class="docs-nav-group">
+            <div class="docs-nav-group-title">Overlays</div>
+            <a href="#modal" class="docs-nav-link">Modal</a>
+            <a href="#popover" class="docs-nav-link">Popover</a>
+            <a href="#tooltip" class="docs-nav-link">Tooltip</a>
+            <a href="#dropdown" class="docs-nav-link">Dropdown</a>
+            <a href="#sidebar" class="docs-nav-link">Sidebar</a>
+          </div>
+          <div class="docs-nav-group">
+            <div class="docs-nav-group-title">Feedback</div>
+            <a href="#alert" class="docs-nav-link">Alert</a>
+            <a href="#toast" class="docs-nav-link">Toast</a>
+            <a href="#progress" class="docs-nav-link">Progress</a>
+            <a href="#spinner" class="docs-nav-link">Spinner</a>
+            <a href="#badge" class="docs-nav-link">Badge</a>
+          </div>
+          <div class="docs-nav-group">
+            <div class="docs-nav-group-title">Display</div>
+            <a href="#avatar" class="docs-nav-link">Avatar</a>
+            <a href="#skeleton" class="docs-nav-link">Skeleton</a>
+            <a href="#divider" class="docs-nav-link">Divider</a>
+            <a href="#table" class="docs-nav-link">Table</a>
+            <a href="#link" class="docs-nav-link">Link</a>
+              </div>
+          <div class="docs-nav-group">
+            <div class="docs-nav-group-title">Layout</div>
+            <a href="#drawer" class="docs-nav-link">Drawer</a>
+            <a href="#stepper" class="docs-nav-link">Stepper</a>
+            <a href="#menu" class="docs-nav-link">Menu</a>
+            <a href="#command-palette" class="docs-nav-link">Command Palette</a>
+            <a href="#split-pane" class="docs-nav-link">Split Pane</a>
+            <a href="#stack" class="docs-nav-link">Stack</a>
+            <a href="#container" class="docs-nav-link">Container</a>
+          </div>
+        </nav>
       </aside>
 
-      <main class="content">
-        <gl-topbar variant="bordered" sticky motion="subtle" style="margin-bottom: 32px">
-          <div slot="left">
-            <div>
-              <h1 style="margin: 0; font-size: 20px; line-height: 26px" class="gl-gradient-text" data-animate="true">
-                Components
-              </h1>
-              <p style="margin: 4px 0 0; color: var(--gl-muted); font-size: 14px">Documentation & examples</p>
-            </div>
-          </div>
-          <div slot="right" class="row">
-            <a class="link" href="./index.html"><gl-button variant="ghost">Home</gl-button></a>
-            <gl-button id="toggleSidebar" variant="secondary" size="sm">Menu</gl-button>
-            <gl-button id="toggleTheme" variant="ghost">Theme</gl-button>
-          </div>
-        </gl-topbar>
-
-        <section id="buttons" class="section">
-          <h1>Buttons</h1>
-          <p>Interactive button component with variants, sizes, and motion options.</p>
-
-          <div class="component">
-            <h2>Basic usage</h2>
-            <p class="desc">Default button with primary styling.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <gl-button>Primary</gl-button>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle" data-code="<gl-button>Primary</gl-button>"></gl-codeblock>
-          </div>
-
-          <div class="component">
-            <h2>Variants</h2>
-            <p class="desc">Different visual styles for different contexts.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="row">
-                <gl-button>Primary</gl-button>
-                <gl-button variant="secondary">Secondary</gl-button>
-                <gl-button variant="ghost">Ghost</gl-button>
-                <gl-button variant="destructive">Destructive</gl-button>
+      <main class="docs-content">
+        <div class="docs-header">
+          <h1>Components</h1>
+          <p>Beautiful, accessible components built with Web Components. Copy and paste into your project.</p>
               </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-button>Primary</gl-button>
-<gl-button variant="secondary">Secondary</gl-button>
-<gl-button variant="ghost">Ghost</gl-button>
-<gl-button variant="destructive">Destructive</gl-button>
-            </gl-codeblock>
+
+        <section id="button" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Button</h2>
+              <p>Displays a button or a component that looks like a button.</p>
           </div>
 
-          <div class="component">
-            <h2>Sizes</h2>
-            <p class="desc">Control button size with the size attribute.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="row">
-                <gl-button size="sm">Small</gl-button>
-                <gl-button>Default</gl-button>
-                <gl-button size="lg">Large</gl-button>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-button size="sm">Small</gl-button>
-<gl-button>Default</gl-button>
-<gl-button size="lg">Large</gl-button>
-            </gl-codeblock>
+            <div class="docs-preview">
+              <gl-button>Button</gl-button>
           </div>
 
-          <div class="component">
-            <h2>Motion</h2>
-            <p class="desc">Customize animation behavior with motion presets.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="row">
-                <gl-button motion="none">None</gl-button>
-                <gl-button motion="subtle">Subtle</gl-button>
-                <gl-button motion="snappy">Snappy</gl-button>
-                <gl-button motion="bounce">Bounce</gl-button>
-              </div>
-            </gl-card>
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-button&gt;Button&lt;/gl-button&gt;"></gl-codeblock>
           </div>
 
-          <div class="component">
-            <h2>Triggers</h2>
-            <p class="desc">Auto-wire buttons to open/close modals, sidebars, popovers, dropdowns, and show toasts.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="stack">
-                <div class="row">
-                  <gl-button trigger="modal:modalDemo" variant="secondary">Open modal</gl-button>
-                  <gl-button trigger="sidebar:sidebarDemo" variant="secondary">Open sidebar</gl-button>
-                  <gl-button trigger="toast" toast-title="Hello" toast-description="This is a toast notification">Show toast</gl-button>
-                </div>
-                <div class="muted" style="font-size: 12px">
-                  No JavaScript needed! Use <code>trigger="modal:id"</code>, <code>trigger="sidebar:id"</code>, <code>trigger="toast"</code> with <code>toast-title</code> and <code>toast-description</code> attributes.
-                </div>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-button trigger="modal:myModal">Open modal</gl-button>
-<gl-button trigger="sidebar:mySidebar">Open sidebar</gl-button>
-<gl-button trigger="popover:myPopover">Open popover</gl-button>
-<gl-button trigger="dropdown:myDropdown">Open dropdown</gl-button>
-<gl-button trigger="close:myModal">Close modal</gl-button>
-<gl-button trigger="toast" toast-title="Success" toast-description="Action completed">Show toast</gl-button>
-            </gl-codeblock>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-button motion="none">None</gl-button>
-<gl-button motion="subtle">Subtle</gl-button>
-<gl-button motion="snappy">Snappy</gl-button>
-<gl-button motion="bounce">Bounce</gl-button>
-            </gl-codeblock>
-          </div>
-
-          <div class="props">
-            <h3>Attributes</h3>
-            <table class="propsTable">
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
               <thead>
                 <tr>
                   <th>Attribute</th>
@@ -377,109 +326,92 @@
                   <td><code>false</code></td>
                   <td>Disable the button</td>
                 </tr>
-                <tr>
-                  <td><code>trigger</code></td>
-                  <td><code>"modal:id" | "sidebar:id" | "popover:id" | "dropdown:id" | "tooltip:id" | "close:id" | "toast"</code></td>
-                  <td>-</td>
-                  <td>Auto-wire button to trigger component actions</td>
-                </tr>
-                <tr>
-                  <td><code>toast-title</code></td>
-                  <td><code>string</code></td>
-                  <td>-</td>
-                  <td>Title for toast notification (requires <code>trigger="toast"</code>)</td>
-                </tr>
-                <tr>
-                  <td><code>toast-description</code></td>
-                  <td><code>string</code></td>
-                  <td>-</td>
-                  <td>Description for toast notification (requires <code>trigger="toast"</code>)</td>
-                </tr>
               </tbody>
             </table>
+            </div>
           </div>
 
-          <div class="props">
-            <h3>Events</h3>
-            <table class="propsTable">
-              <thead>
-                <tr>
-                  <th>Event</th>
-                  <th>Detail</th>
-                  <th>Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><code>gl-press</code></td>
-                  <td><code>{}</code></td>
-                  <td>Emitted on click</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Variants</h2>
+              <p>Use different variants for different visual styles.</p>
+          </div>
+
+            <div class="docs-preview">
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <gl-button>Primary</gl-button>
+                <gl-button variant="secondary">Secondary</gl-button>
+                <gl-button variant="ghost">Ghost</gl-button>
+                <gl-button variant="destructive">Destructive</gl-button>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-button&gt;Primary&lt;/gl-button&gt;
+&#10;&lt;gl-button variant=&quot;secondary&quot;&gt;Secondary&lt;/gl-button&gt;
+&#10;&lt;gl-button variant=&quot;ghost&quot;&gt;Ghost&lt;/gl-button&gt;
+&#10;&lt;gl-button variant=&quot;destructive&quot;&gt;Destructive&lt;/gl-button&gt;"></gl-codeblock>
+              </div>
+              </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Sizes</h2>
+              <p>Control button size with the size attribute.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <gl-button size="sm">Small</gl-button>
+                <gl-button>Default</gl-button>
+                <gl-button size="lg">Large</gl-button>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-button size=&quot;sm&quot;&gt;Small&lt;/gl-button&gt;
+&#10;&lt;gl-button&gt;Default&lt;/gl-button&gt;
+&#10;&lt;gl-button size=&quot;lg&quot;&gt;Large&lt;/gl-button&gt;"></gl-codeblock>
+            </div>
           </div>
         </section>
 
-        <section id="cards" class="section">
-          <h1>Cards</h1>
-          <p>Container component with header, body, and footer slots.</p>
+<section id="card" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Card</h2>
+              <p>Container component with header, body, and footer slots.</p>
+            </div>
 
-          <div class="component">
-            <h2>Basic usage</h2>
-            <p class="desc">Card with slots for structured content.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div slot="header">
-                <div style="font-weight: 600">Card title</div>
-                <div class="muted">Card description</div>
-              </div>
-              <div>Card body content goes here.</div>
-              <div slot="footer">
-                <gl-button variant="secondary">Action</gl-button>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
+            <div class="docs-preview">
 <gl-card>
   <div slot="header">
-    <div style="font-weight: 600">Card title</div>
-    <div class="muted">Card description</div>
+                  <div style="font-weight: 600">Card Title</div>
+                  <div style="font-size: 14px; color: var(--gl-muted)">Card description</div>
   </div>
   <div>Card body content goes here.</div>
   <div slot="footer">
     <gl-button variant="secondary">Action</gl-button>
   </div>
 </gl-card>
-            </gl-codeblock>
           </div>
 
-          <div class="component">
-            <h2>Effects</h2>
-            <p class="desc">Add tilt effect and glass surface.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="row">
-                <gl-card effect="tilt" motion="snappy" style="padding: 20px; min-width: 180px">
-                  <div style="font-weight: 600">Tilt effect</div>
-                  <div class="muted">Hover to see 3D tilt</div>
-                </gl-card>
-                <gl-card surface="glass" motion="snappy" style="padding: 20px; min-width: 180px">
-                  <div style="font-weight: 600">Glass surface</div>
-                  <div class="muted">Backdrop blur effect</div>
-                </gl-card>
-                <gl-card effect="tilt" surface="glass" motion="snappy" style="padding: 20px; min-width: 180px">
-                  <div style="font-weight: 600">Both</div>
-                  <div class="muted">Tilt + glass</div>
-                </gl-card>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-card effect="tilt" motion="snappy">Tilt effect</gl-card>
-<gl-card surface="glass" motion="snappy">Glass surface</gl-card>
-<gl-card effect="tilt" surface="glass" motion="snappy">Both</gl-card>
-            </gl-codeblock>
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-card&gt;
+&#10;  &lt;div slot=&quot;header&quot;&gt;
+&#10;    &lt;div style=&quot;font-weight: 600&quot;&gt;Card Title&lt;/div&gt;
+&#10;    &lt;div style=&quot;font-size: 14px; color: var(--gl-muted)&quot;&gt;Card description&lt;/div&gt;
+&#10;  &lt;/div&gt;
+&#10;  &lt;div&gt;Card body content goes here.&lt;/div&gt;
+&#10;  &lt;div slot=&quot;footer&quot;&gt;
+&#10;    &lt;gl-button variant=&quot;secondary&quot;&gt;Action&lt;/gl-button&gt;
+&#10;  &lt;/div&gt;
+&#10;&lt;/gl-card&gt;"></gl-codeblock>
           </div>
 
-          <div class="props">
-            <h3>Attributes</h3>
-            <table class="propsTable">
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
               <thead>
                 <tr>
                   <th>Attribute</th>
@@ -493,244 +425,1248 @@
                   <td><code>motion</code></td>
                   <td><code>"none" | "subtle" | "snappy" | "bounce"</code></td>
                   <td><code>"subtle"</code></td>
-                  <td>Animation preset</td>
+                    <td>Animation preset for hover effects</td>
                 </tr>
                 <tr>
-                  <td><code>effect</code></td>
-                  <td><code>"tilt"</code></td>
-                  <td>-</td>
-                  <td>Enable 3D tilt on hover</td>
+                    <td><code>surface</code></td>
+                    <td><code>"default" | "glass"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Surface style variant</td>
                 </tr>
                 <tr>
-                  <td><code>surface</code></td>
-                  <td><code>"glass"</code></td>
-                  <td>-</td>
-                  <td>Apply glassmorphism effect</td>
+                    <td><code>effect</code></td>
+                    <td><code>"none" | "tilt"</code></td>
+                    <td><code>"none"</code></td>
+                    <td>3D tilt effect on hover</td>
                 </tr>
               </tbody>
             </table>
+            </div>
           </div>
 
-          <div class="props">
-            <h3>Slots</h3>
-            <table class="propsTable">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Variants</h2>
+              <p>Different surface and motion variants.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: grid; gap: 16px;">
+                <gl-card motion="subtle">
+                  <div>Default card with subtle motion</div>
+                </gl-card>
+                <gl-card surface="glass" motion="snappy">
+                  <div>Glass surface with snappy motion</div>
+                </gl-card>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-card motion=&quot;subtle&quot;&gt;
+&#10;  &lt;div&gt;Default card&lt;/div&gt;
+&#10;&lt;/gl-card&gt;
+&#10;&lt;gl-card surface=&quot;glass&quot; motion=&quot;snappy&quot;&gt;
+&#10;  &lt;div&gt;Glass card&lt;/div&gt;
+&#10;&lt;/gl-card&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="input" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Input</h2>
+              <p>Text input with label, description, and validation states.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-input placeholder="Email" type="email">
+                <span slot="label">Email</span>
+                <span slot="description">Enter your email address</span>
+              </gl-input>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-input placeholder=&quot;Email&quot; type=&quot;email&quot;&gt;
+&#10;  &lt;span slot=&quot;label&quot;&gt;Email&lt;/span&gt;
+&#10;  &lt;span slot=&quot;description&quot;&gt;Enter your email address&lt;/span&gt;
+&#10;&lt;/gl-input&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
               <thead>
                 <tr>
-                  <th>Slot</th>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
                   <th>Description</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td><code>header</code></td>
-                  <td>Header content</td>
+                    <td><code>value</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Input value</td>
                 </tr>
                 <tr>
-                  <td><code>(default)</code></td>
-                  <td>Body content</td>
+                    <td><code>type</code></td>
+                    <td><code>string</code></td>
+                    <td><code>"text"</code></td>
+                    <td>Input type (text, email, password, etc.)</td>
                 </tr>
                 <tr>
-                  <td><code>footer</code></td>
-                  <td>Footer content</td>
+                    <td><code>placeholder</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Placeholder text</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable the input</td>
+                  </tr>
+                  <tr>
+                    <td><code>error</code></td>
+                    <td><code>string</code></td>
+                    <td><code>-</code></td>
+                    <td>Error message to display</td>
+                  </tr>
+                  <tr>
+                    <td><code>success</code></td>
+                    <td><code>string</code></td>
+                    <td><code>-</code></td>
+                    <td>Success message to display</td>
+                  </tr>
+                  <tr>
+                    <td><code>show-counter</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Show character counter</td>
                 </tr>
               </tbody>
             </table>
           </div>
-        </section>
-
-        <section id="forms" class="section">
-          <h1>Forms</h1>
-          <p>Input components with validation states and native HTML5 support.</p>
-
-          <div class="component">
-            <h2>Input</h2>
-            <p class="desc">Text input with label, description, and validation.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="stack">
-                <gl-input placeholder="you@company.com" type="email" required>
-                  <span slot="label">Email</span>
-                  <span slot="description">Enter your email address. Try typing an invalid email and blur to see validation.</span>
-                </gl-input>
-                <gl-input placeholder="Password" type="password" error="Password is required">
-                  <span slot="label">Password</span>
-                </gl-input>
-                <gl-input placeholder="Username" success="Username is available">
-                  <span slot="label">Username</span>
-                </gl-input>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-input placeholder="you@company.com" type="email" required>
-  <span slot="label">Email</span>
-  <span slot="description">Enter your email address</span>
-</gl-input>
-<gl-input placeholder="Password" type="password" error="Password is required">
-  <span slot="label">Password</span>
-</gl-input>
-<gl-input placeholder="Username" success="Username is available">
-  <span slot="label">Username</span>
-</gl-input>
-            </gl-codeblock>
           </div>
 
-          <div class="component">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>States</h2>
+              <p>Input with error and success states.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: grid; gap: 16px;">
+                <gl-input placeholder="Email" type="email" error="Please enter a valid email">
+                  <span slot="label">Email</span>
+                </gl-input>
+                <gl-input placeholder="Email" type="email" success="Email is valid">
+                  <span slot="label">Email</span>
+                </gl-input>
+                <gl-input placeholder="Email" disabled>
+  <span slot="label">Email</span>
+</gl-input>
+              </div>
+          </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-input error=&quot;Error message&quot;&gt;
+&#10;  &lt;span slot=&quot;label&quot;&gt;Email&lt;/span&gt;
+&#10;&lt;/gl-input&gt;
+&#10;&lt;gl-input success=&quot;Success message&quot;&gt;
+&#10;  &lt;span slot=&quot;label&quot;&gt;Email&lt;/span&gt;
+&#10;&lt;/gl-input&gt;
+&#10;&lt;gl-input disabled&gt;
+&#10;  &lt;span slot=&quot;label&quot;&gt;Email&lt;/span&gt;
+&#10;&lt;/gl-input&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="textarea" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
             <h2>Textarea</h2>
-            <p class="desc">Multi-line text input with resize options.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
+              <p>Multi-line text input with resize options.</p>
+            </div>
+
+            <div class="docs-preview">
               <gl-textarea rows="4" placeholder="Tell us what you need…">
                 <span slot="label">Message</span>
                 <span slot="description">Minimum 10 characters</span>
               </gl-textarea>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-textarea rows="4" placeholder="Tell us what you need…">
-  <span slot="label">Message</span>
-  <span slot="description">Minimum 10 characters</span>
-</gl-textarea>
-            </gl-codeblock>
           </div>
 
-          <div class="component">
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-textarea rows=&quot;4&quot; placeholder=&quot;Tell us what you need…&quot;&gt;
+&#10;  &lt;span slot=&quot;label&quot;&gt;Message&lt;/span&gt;
+&#10;  &lt;span slot=&quot;description&quot;&gt;Minimum 10 characters&lt;/span&gt;
+&#10;&lt;/gl-textarea&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>value</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Textarea value</td>
+                  </tr>
+                  <tr>
+                    <td><code>rows</code></td>
+                    <td><code>number</code></td>
+                    <td><code>4</code></td>
+                    <td>Number of visible rows</td>
+                  </tr>
+                  <tr>
+                    <td><code>placeholder</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Placeholder text</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable the textarea</td>
+                  </tr>
+                  <tr>
+                    <td><code>error</code></td>
+                    <td><code>string</code></td>
+                    <td><code>-</code></td>
+                    <td>Error message to display</td>
+                  </tr>
+                  <tr>
+                    <td><code>success</code></td>
+                    <td><code>string</code></td>
+                    <td><code>-</code></td>
+                    <td>Success message to display</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="select" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
             <h2>Select</h2>
-            <p class="desc">Dropdown select with options.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
+              <p>Dropdown select with custom styled options.</p>
+            </div>
+
+            <div class="docs-preview">
               <gl-select
                 value="design"
                 options='[{"value":"design","label":"Design"},{"value":"engineering","label":"Engineering"},{"value":"ops","label":"Ops"}]'
               >
                 <span slot="label">Team</span>
               </gl-select>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-select
-  value="design"
-  options='[{"value":"design","label":"Design"},{"value":"engineering","label":"Engineering"},{"value":"ops","label":"Ops"}]'
->
-  <span slot="label">Team</span>
-</gl-select>
-            </gl-codeblock>
           </div>
 
-          <div class="component">
-            <h2>Checkbox & Radio</h2>
-            <p class="desc">Selection controls with keyboard support.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="stack">
-                <gl-checkbox checked>Remember me</gl-checkbox>
-                <gl-checkbox>Subscribe to newsletter</gl-checkbox>
-                <gl-divider></gl-divider>
-                <div class="row">
-                  <gl-radio name="plan" value="starter" checked>Starter</gl-radio>
-                  <gl-radio name="plan" value="pro">Pro</gl-radio>
-                  <gl-radio name="plan" value="enterprise">Enterprise</gl-radio>
-                </div>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-select
+&#10;  value=&quot;design&quot;
+&#10;  options=\&#39;[{&quot;value&quot;:&quot;design&quot;,&quot;label&quot;:&quot;Design&quot;},{&quot;value&quot;:&quot;engineering&quot;,&quot;label&quot;:&quot;Engineering&quot;},{&quot;value&quot;:&quot;ops&quot;,&quot;label&quot;:&quot;Ops&quot;}]\&#39;
+&#10;&gt;
+&#10;  &lt;span slot=&quot;label&quot;&gt;Team&lt;/span&gt;
+&#10;&lt;/gl-select&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>value</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Selected value</td>
+                  </tr>
+                  <tr>
+                    <td><code>options</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>JSON array of option objects with value and label</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable the select</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+        </section>
+
+<section id="checkbox" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Checkbox</h2>
+              <p>Selection checkbox with keyboard support.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: grid; gap: 8px;">
 <gl-checkbox checked>Remember me</gl-checkbox>
 <gl-checkbox>Subscribe to newsletter</gl-checkbox>
+              </div>
+            </div>
 
-<gl-radio name="plan" value="starter" checked>Starter</gl-radio>
-<gl-radio name="plan" value="pro">Pro</gl-radio>
-<gl-radio name="plan" value="enterprise">Enterprise</gl-radio>
-            </gl-codeblock>
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-checkbox checked&gt;Remember me&lt;/gl-checkbox&gt;
+&#10;&lt;gl-checkbox&gt;Subscribe to newsletter&lt;/gl-checkbox&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>checked</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Whether the checkbox is checked</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable the checkbox</td>
+                  </tr>
+                  <tr>
+                    <td><code>indeterminate</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Show indeterminate state</td>
+                  </tr>
+                  <tr>
+                    <td><code>name</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Form field name</td>
+                  </tr>
+                  <tr>
+                    <td><code>value</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Form field value</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div class="component">
-            <h2>Switch</h2>
-            <p class="desc">Toggle switch with motion variations.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="stack">
-                <div class="row" style="align-items: center; gap: 12px">
-                  <gl-switch checked motion="none"></gl-switch>
-                  <span class="muted">motion="none"</span>
-                </div>
-                <div class="row" style="align-items: center; gap: 12px">
-                  <gl-switch checked motion="subtle"></gl-switch>
-                  <span class="muted">motion="subtle"</span>
-                </div>
-                <div class="row" style="align-items: center; gap: 12px">
-                  <gl-switch checked motion="snappy"></gl-switch>
-                  <span class="muted">motion="snappy"</span>
-                </div>
-                <div class="row" style="align-items: center; gap: 12px">
-                  <gl-switch checked motion="bounce"></gl-switch>
-                  <span class="muted">motion="bounce"</span>
-                </div>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-              <template><gl-switch checked motion="snappy"></gl-switch>
-<gl-switch checked size="sm"></gl-switch>
-<gl-switch checked size="lg"></gl-switch></template>
-            </gl-codeblock>
-          </div>
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>States</h2>
+              <p>Checkbox with different states.</p>
+            </div>
 
-          <div class="component">
-            <h2>Slider</h2>
-            <p class="desc">Range input with motion and keyboard support.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="stack">
-                <div>
-                  <div class="muted" style="margin-bottom: 8px">Value: <span id="sliderValue">50</span></div>
-                  <gl-slider id="sliderDemo" value="50" min="0" max="100" step="1" motion="snappy"></gl-slider>
-                </div>
-                <div class="row" style="gap: 16px">
-                  <gl-slider value="40" size="sm" motion="snappy" style="flex: 1"></gl-slider>
-                  <gl-slider value="60" motion="snappy" style="flex: 1"></gl-slider>
-                  <gl-slider value="80" size="lg" motion="snappy" style="flex: 1"></gl-slider>
-                </div>
+            <div class="docs-preview">
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <gl-checkbox>Unchecked</gl-checkbox>
+                <gl-checkbox checked>Checked</gl-checkbox>
+                <gl-checkbox indeterminate>Indeterminate</gl-checkbox>
+                <gl-checkbox disabled>Disabled</gl-checkbox>
               </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-slider value="50" min="0" max="100" step="1" motion="snappy"></gl-slider>
-<gl-slider value="40" size="sm"></gl-slider>
-<gl-slider value="60"></gl-slider>
-<gl-slider value="80" size="lg"></gl-slider>
-            </gl-codeblock>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-checkbox&gt;Unchecked&lt;/gl-checkbox&gt;
+&#10;&lt;gl-checkbox checked&gt;Checked&lt;/gl-checkbox&gt;
+&#10;&lt;gl-checkbox indeterminate&gt;Indeterminate&lt;/gl-checkbox&gt;
+&#10;&lt;gl-checkbox disabled&gt;Disabled&lt;/gl-checkbox&gt;"></gl-codeblock>
+            </div>
           </div>
         </section>
 
-        <section id="navigation" class="section">
-          <h1>Navigation</h1>
-          <p>Components for organizing and navigating content.</p>
+<section id="radio" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Radio</h2>
+              <p>Radio button groups with keyboard navigation.</p>
+            </div>
 
-          <div class="component">
+            <div class="docs-preview">
+              <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+<gl-radio name="plan" value="starter" checked>Starter</gl-radio>
+<gl-radio name="plan" value="pro">Pro</gl-radio>
+<gl-radio name="plan" value="enterprise">Enterprise</gl-radio>
+              </div>
+          </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-radio name=&quot;plan&quot; value=&quot;starter&quot; checked&gt;Starter&lt;/gl-radio&gt;
+&#10;&lt;gl-radio name=&quot;plan&quot; value=&quot;pro&quot;&gt;Pro&lt;/gl-radio&gt;
+&#10;&lt;gl-radio name=&quot;plan&quot; value=&quot;enterprise&quot;&gt;Enterprise&lt;/gl-radio&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>checked</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Whether the radio is checked</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable the radio</td>
+                  </tr>
+                  <tr>
+                    <td><code>name</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Form field name (required for grouping)</td>
+                  </tr>
+                  <tr>
+                    <td><code>value</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Form field value</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>States</h2>
+              <p>Radio with different states.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <gl-radio name="demo">Unchecked</gl-radio>
+                <gl-radio name="demo" checked>Checked</gl-radio>
+                <gl-radio name="demo" disabled>Disabled</gl-radio>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-radio name=&quot;demo&quot;&gt;Unchecked&lt;/gl-radio&gt;
+&#10;&lt;gl-radio name=&quot;demo&quot; checked&gt;Checked&lt;/gl-radio&gt;
+&#10;&lt;gl-radio name=&quot;demo&quot; disabled&gt;Disabled&lt;/gl-radio&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="switch" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Switch</h2>
+              <p>Toggle switch with motion variations.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: grid; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <gl-switch checked motion="snappy"></gl-switch>
+                  <span style="font-size: 14px; color: var(--gl-muted)">Toggle switch</span>
+                </div>
+                </div>
+              </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-switch checked motion=&quot;snappy&quot;&gt;&lt;/gl-switch&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>checked</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Whether the switch is checked</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable the switch</td>
+                  </tr>
+                  <tr>
+                    <td><code>size</code></td>
+                    <td><code>"sm" | "md" | "lg"</code></td>
+                    <td><code>"md"</code></td>
+                    <td>Switch size</td>
+                  </tr>
+                  <tr>
+                    <td><code>motion</code></td>
+                    <td><code>"none" | "subtle" | "snappy" | "bounce"</code></td>
+                    <td><code>"snappy"</code></td>
+                    <td>Animation preset</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Sizes</h2>
+              <p>Control switch size with the size attribute.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <gl-switch size="sm"></gl-switch>
+                  <span style="font-size: 14px; color: var(--gl-muted)">Small switch</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <gl-switch></gl-switch>
+                  <span style="font-size: 14px; color: var(--gl-muted)">Default switch</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <gl-switch size="lg"></gl-switch>
+                  <span style="font-size: 14px; color: var(--gl-muted)">Large switch</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-switch size=&quot;sm&quot;&gt;&lt;/gl-switch&gt;
+&#10;&lt;gl-switch&gt;&lt;/gl-switch&gt;
+&#10;&lt;gl-switch size=&quot;lg&quot;&gt;&lt;/gl-switch&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="slider" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+            <h2>Slider</h2>
+              <p>Range input with motion and keyboard support.</p>
+                </div>
+
+            <div class="docs-preview">
+              <gl-slider value="50" min="0" max="100" step="1" motion="snappy"></gl-slider>
+                </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-slider value=&quot;50&quot; min=&quot;0&quot; max=&quot;100&quot; step=&quot;1&quot; motion=&quot;snappy&quot;&gt;&lt;/gl-slider&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>value</code></td>
+                    <td><code>number</code></td>
+                    <td><code>0</code></td>
+                    <td>Current slider value</td>
+                  </tr>
+                  <tr>
+                    <td><code>min</code></td>
+                    <td><code>number</code></td>
+                    <td><code>0</code></td>
+                    <td>Minimum value</td>
+                  </tr>
+                  <tr>
+                    <td><code>max</code></td>
+                    <td><code>number</code></td>
+                    <td><code>100</code></td>
+                    <td>Maximum value</td>
+                  </tr>
+                  <tr>
+                    <td><code>step</code></td>
+                    <td><code>number</code></td>
+                    <td><code>1</code></td>
+                    <td>Step increment</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable the slider</td>
+                  </tr>
+                  <tr>
+                    <td><code>size</code></td>
+                    <td><code>"sm" | "md" | "lg"</code></td>
+                    <td><code>"md"</code></td>
+                    <td>Slider size</td>
+                  </tr>
+                  <tr>
+                    <td><code>motion</code></td>
+                    <td><code>"none" | "subtle" | "snappy" | "bounce"</code></td>
+                    <td><code>"snappy"</code></td>
+                    <td>Animation preset</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Sizes</h2>
+              <p>Control slider size with the size attribute.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: grid; gap: 24px;">
+                <gl-slider value="30" size="sm"></gl-slider>
+                <gl-slider value="50"></gl-slider>
+                <gl-slider value="70" size="lg"></gl-slider>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-slider value=&quot;30&quot; size=&quot;sm&quot;&gt;&lt;/gl-slider&gt;
+&#10;&lt;gl-slider value=&quot;50&quot;&gt;&lt;/gl-slider&gt;
+&#10;&lt;gl-slider value=&quot;70&quot; size=&quot;lg&quot;&gt;&lt;/gl-slider&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="date-picker" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Date Picker</h2>
+              <p>Calendar-based date selection with range support.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-date-picker value="2024-01-15" format="YYYY-MM-DD">
+                <span slot="label">Date</span>
+                <span slot="description">Select a date</span>
+              </gl-date-picker>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-date-picker value=&quot;2024-01-15&quot; format=&quot;YYYY-MM-DD&quot;&gt;
+&#10;  &lt;span slot=&quot;label&quot;&gt;Date&lt;/span&gt;
+&#10;  &lt;span slot=&quot;description&quot;&gt;Select a date&lt;/span&gt;
+&#10;&lt;/gl-date-picker&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>value</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Selected date value</td>
+                  </tr>
+                  <tr>
+                    <td><code>format</code></td>
+                    <td><code>string</code></td>
+                    <td><code>"YYYY-MM-DD"</code></td>
+                    <td>Date format string</td>
+                  </tr>
+                  <tr>
+                    <td><code>mode</code></td>
+                    <td><code>"single" | "range"</code></td>
+                    <td><code>"single"</code></td>
+                    <td>Selection mode</td>
+                  </tr>
+                  <tr>
+                    <td><code>min</code></td>
+                    <td><code>string</code></td>
+                    <td><code>-</code></td>
+                    <td>Minimum selectable date</td>
+                  </tr>
+                  <tr>
+                    <td><code>max</code></td>
+                    <td><code>string</code></td>
+                    <td><code>-</code></td>
+                    <td>Maximum selectable date</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable the date picker</td>
+                  </tr>
+                  <tr>
+                    <td><code>error</code></td>
+                    <td><code>string</code></td>
+                    <td><code>-</code></td>
+                    <td>Error message to display</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="time-picker" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Time Picker</h2>
+              <p>Time selection input with custom picker UI.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-time-picker value="14:30" format="HH:mm">
+                <span slot="label">Time</span>
+                <span slot="description">Select a time</span>
+              </gl-time-picker>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-time-picker value=&quot;14:30&quot; format=&quot;HH:mm&quot;&gt;
+&#10;  &lt;span slot=&quot;label&quot;&gt;Time&lt;/span&gt;
+&#10;  &lt;span slot=&quot;description&quot;&gt;Select a time&lt;/span&gt;
+&#10;&lt;/gl-time-picker&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>value</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Selected time value</td>
+                  </tr>
+                  <tr>
+                    <td><code>format</code></td>
+                    <td><code>string</code></td>
+                    <td><code>"HH:mm"</code></td>
+                    <td>Time format string (HH:mm, HH:mm:ss)</td>
+                  </tr>
+                  <tr>
+                    <td><code>placeholder</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Placeholder text</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable the time picker</td>
+                  </tr>
+                  <tr>
+                    <td><code>error</code></td>
+                    <td><code>string</code></td>
+                    <td><code>-</code></td>
+                    <td>Error message to display</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="color-picker" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Color Picker</h2>
+              <p>Color selection with hex/rgb/hsl support and interactive picker.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-color-picker value="#3b82f6" format="hex">
+                <span slot="label">Color</span>
+                <span slot="description">Click preview to open picker</span>
+              </gl-color-picker>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-color-picker value=&quot;#3b82f6&quot; format=&quot;hex&quot;&gt;
+&#10;  &lt;span slot=&quot;label&quot;&gt;Color&lt;/span&gt;
+&#10;  &lt;span slot=&quot;description&quot;&gt;Click preview to open picker&lt;/span&gt;
+&#10;&lt;/gl-color-picker&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>value</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Selected color value (hex, rgb, or hsl)</td>
+                  </tr>
+                  <tr>
+                    <td><code>format</code></td>
+                    <td><code>"hex" | "rgb" | "hsl"</code></td>
+                    <td><code>"hex"</code></td>
+                    <td>Color format</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable the color picker</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="file-upload" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>File Upload</h2>
+              <p>Drag & drop file upload with preview and validation.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-file-upload accept="image/*" multiple max-files="5">
+                <span slot="label">Upload Images</span>
+                <span slot="description">Drag and drop or click to browse</span>
+              </gl-file-upload>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-file-upload accept=&quot;image/*&quot; multiple max-files=&quot;5&quot;&gt;
+&#10;  &lt;span slot=&quot;label&quot;&gt;Upload Images&lt;/span&gt;
+&#10;  &lt;span slot=&quot;description&quot;&gt;Drag and drop or click to browse&lt;/span&gt;
+&#10;&lt;/gl-file-upload&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>accept</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Accepted file types (e.g., "image/*", ".pdf")</td>
+                  </tr>
+                  <tr>
+                    <td><code>multiple</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Allow multiple file selection</td>
+                  </tr>
+                  <tr>
+                    <td><code>max-files</code></td>
+                    <td><code>number</code></td>
+                    <td><code>-</code></td>
+                    <td>Maximum number of files</td>
+                  </tr>
+                  <tr>
+                    <td><code>max-size</code></td>
+                    <td><code>number</code></td>
+                    <td><code>-</code></td>
+                    <td>Maximum file size in bytes</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable the file upload</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="search-input" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Search Input</h2>
+              <p>Search input with autocomplete suggestions and debouncing.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-search-input
+                placeholder="Search..."
+                suggestions='["Apple", "Banana", "Cherry", "Date"]'
+                debounce="300"
+              >
+                <span slot="label">Search</span>
+              </gl-search-input>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-search-input
+&#10;  placeholder=&quot;Search...&quot;
+&#10;  suggestions=\&#39;[&quot;Apple&quot;, &quot;Banana&quot;, &quot;Cherry&quot;, &quot;Date&quot;]\&#39;
+&#10;  debounce=&quot;300&quot;
+&#10;&gt;
+&#10;  &lt;span slot=&quot;label&quot;&gt;Search&lt;/span&gt;
+&#10;&lt;/gl-search-input&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>value</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Search input value</td>
+                  </tr>
+                  <tr>
+                    <td><code>placeholder</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Placeholder text</td>
+                  </tr>
+                  <tr>
+                    <td><code>suggestions</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>JSON array of suggestion strings</td>
+                  </tr>
+                  <tr>
+                    <td><code>debounce</code></td>
+                    <td><code>number</code></td>
+                    <td><code>300</code></td>
+                    <td>Debounce delay in milliseconds</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable the search input</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="tag-input" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Tag Input</h2>
+              <p>Multi-tag input with add/remove functionality.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-tag-input placeholder="Add tags..." separator=",">
+                <span slot="label">Tags</span>
+              </gl-tag-input>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-tag-input placeholder=&quot;Add tags...&quot; separator=&quot;,&quot;&gt;
+&#10;  &lt;span slot=&quot;label&quot;&gt;Tags&lt;/span&gt;
+&#10;&lt;/gl-tag-input&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="rating" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Rating</h2>
+              <p>Star rating component with keyboard navigation.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-rating value="3" max="5"></gl-rating>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-rating value=&quot;3&quot; max=&quot;5&quot;&gt;&lt;/gl-rating&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>value</code></td>
+                    <td><code>number</code></td>
+                    <td><code>0</code></td>
+                    <td>Current rating value</td>
+                  </tr>
+                  <tr>
+                    <td><code>max</code></td>
+                    <td><code>number</code></td>
+                    <td><code>5</code></td>
+                    <td>Maximum rating value</td>
+                  </tr>
+                  <tr>
+                    <td><code>size</code></td>
+                    <td><code>"sm" | "md" | "lg"</code></td>
+                    <td><code>"md"</code></td>
+                    <td>Star size</td>
+                  </tr>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "filled"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Star style variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>readonly</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Make rating read-only</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable the rating</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="form" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Form</h2>
+              <p>Form wrapper with validation and submission handling.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-form>
+                <gl-input name="name" required>
+                  <span slot="label">Name</span>
+                </gl-input>
+                <gl-input name="email" type="email" required>
+                  <span slot="label">Email</span>
+                </gl-input>
+                <div slot="actions" style="display: flex; gap: 8px; justify-content: flex-end;">
+                  <gl-button type="button" variant="secondary">Cancel</gl-button>
+                  <gl-button type="submit">Submit</gl-button>
+                </div>
+              </gl-form>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-form&gt;
+&#10;  &lt;gl-input name=&quot;name&quot; required&gt;
+&#10;    &lt;span slot=&quot;label&quot;&gt;Name&lt;/span&gt;
+&#10;  &lt;/gl-input&gt;
+&#10;  &lt;gl-input name=&quot;email&quot; type=&quot;email&quot; required&gt;
+&#10;    &lt;span slot=&quot;label&quot;&gt;Email&lt;/span&gt;
+&#10;  &lt;/gl-input&gt;
+&#10;  &lt;div slot=&quot;actions&quot;&gt;
+&#10;    &lt;gl-button type=&quot;submit&quot;&gt;Submit&lt;/gl-button&gt;
+&#10;  &lt;/div&gt;
+&#10;&lt;/gl-form&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>action</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Form submission URL</td>
+                  </tr>
+                  <tr>
+                    <td><code>method</code></td>
+                    <td><code>"get" | "post"</code></td>
+                    <td><code>"post"</code></td>
+                    <td>HTTP method</td>
+                  </tr>
+                  <tr>
+                    <td><code>novalidate</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable HTML5 validation</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="tabs" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
             <h2>Tabs</h2>
-            <p class="desc">Tabbed interface with keyboard navigation.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
+              <p>Tabbed interface with keyboard navigation.</p>
+            </div>
+
+            <div class="docs-preview">
               <gl-tabs value="account">
                 <gl-tab slot="tabs" value="account">Account</gl-tab>
                 <gl-tab slot="tabs" value="security">Security</gl-tab>
                 <gl-tab slot="tabs" value="billing">Billing</gl-tab>
                 <gl-tab-panel slot="panels" value="account">
-                  <div class="muted">Account settings content</div>
+                  <div style="font-size: 14px; color: var(--gl-muted)">Account settings content</div>
                 </gl-tab-panel>
                 <gl-tab-panel slot="panels" value="security">
-                  <div class="muted">Security settings content</div>
+                  <div style="font-size: 14px; color: var(--gl-muted)">Security settings content</div>
                 </gl-tab-panel>
                 <gl-tab-panel slot="panels" value="billing">
-                  <div class="muted">Billing settings content</div>
+                  <div style="font-size: 14px; color: var(--gl-muted)">Billing settings content</div>
                 </gl-tab-panel>
               </gl-tabs>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-tabs value="account">
-  <gl-tab slot="tabs" value="account">Account</gl-tab>
-  <gl-tab slot="tabs" value="security">Security</gl-tab>
-  <gl-tab slot="tabs" value="billing">Billing</gl-tab>
-  <gl-tab-panel slot="panels" value="account">Account content</gl-tab-panel>
-  <gl-tab-panel slot="panels" value="security">Security content</gl-tab-panel>
-  <gl-tab-panel slot="panels" value="billing">Billing content</gl-tab-panel>
-</gl-tabs>
-            </gl-codeblock>
           </div>
 
-          <div class="component">
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-tabs value=&quot;account&quot;&gt;
+&#10;  &lt;gl-tab slot=&quot;tabs&quot; value=&quot;account&quot;&gt;Account&lt;/gl-tab&gt;
+&#10;  &lt;gl-tab slot=&quot;tabs&quot; value=&quot;security&quot;&gt;Security&lt;/gl-tab&gt;
+&#10;  &lt;gl-tab slot=&quot;tabs&quot; value=&quot;billing&quot;&gt;Billing&lt;/gl-tab&gt;
+&#10;  &lt;gl-tab-panel slot=&quot;panels&quot; value=&quot;account&quot;&gt;Account content&lt;/gl-tab-panel&gt;
+&#10;  &lt;gl-tab-panel slot=&quot;panels&quot; value=&quot;security&quot;&gt;Security content&lt;/gl-tab-panel&gt;
+&#10;  &lt;gl-tab-panel slot=&quot;panels&quot; value=&quot;billing&quot;&gt;Billing content&lt;/gl-tab-panel&gt;
+&#10;&lt;/gl-tabs&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>value</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Active tab value</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="margin-top: 16px; font-size: 14px; color: var(--gl-muted);"><strong>gl-tab:</strong> <code>active</code> (boolean), <code>disabled</code> (boolean), <code>value</code> (string)</p>
+              <p style="font-size: 14px; color: var(--gl-muted);"><strong>gl-tab-panel:</strong> <code>active</code> (boolean), <code>value</code> (string)</p>
+            </div>
+          </div>
+        </section>
+
+<section id="accordion" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
             <h2>Accordion</h2>
-            <p class="desc">Collapsible content panels, single or multiple.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="stack">
+              <p>Collapsible content panels, single or multiple.</p>
+            </div>
+
+            <div class="docs-preview">
                 <gl-accordion>
                   <gl-accordion-item open>
                     <span slot="title">What is Glint?</span>
@@ -741,115 +1677,180 @@
                     Yes—space/enter toggles and ARIA is built-in.
                   </gl-accordion-item>
                 </gl-accordion>
-                <gl-accordion multiple>
-                  <gl-accordion-item open>
-                    <span slot="title">Multiple panels</span>
-                    This accordion allows multiple open panels.
-                  </gl-accordion-item>
-                  <gl-accordion-item open>
-                    <span slot="title">Also open</span>
-                    Works independently.
-                  </gl-accordion-item>
-                </gl-accordion>
               </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-accordion>
-  <gl-accordion-item open>
-    <span slot="title">Title</span>
-    Content goes here.
-  </gl-accordion-item>
-</gl-accordion>
 
-<gl-accordion multiple>
-  <gl-accordion-item open>Multiple panels</gl-accordion-item>
-</gl-accordion>
-            </gl-codeblock>
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-accordion&gt;
+&#10;  &lt;gl-accordion-item open&gt;
+&#10;    &lt;span slot=&quot;title&quot;&gt;Title&lt;/span&gt;
+&#10;    Content goes here.
+&#10;  &lt;/gl-accordion-item&gt;
+&#10;&lt;/gl-accordion&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>open</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Whether the accordion item is open</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable the accordion item</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
+        </section>
 
-          <div class="component">
+<section id="breadcrumb" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
             <h2>Breadcrumb</h2>
-            <p class="desc">Navigation trail with separators.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
+              <p>Navigation trail with separators.</p>
+            </div>
+
+            <div class="docs-preview">
               <gl-breadcrumb separator="›">
-                <gl-breadcrumb-item href="./index.html">Home</gl-breadcrumb-item>
-                <gl-breadcrumb-item href="./components.html">Components</gl-breadcrumb-item>
-                <gl-breadcrumb-item current>Navigation</gl-breadcrumb-item>
+                <gl-breadcrumb-item href="#home">Home</gl-breadcrumb-item>
+                <gl-breadcrumb-item href="#components">Components</gl-breadcrumb-item>
+                <gl-breadcrumb-item current>Breadcrumb</gl-breadcrumb-item>
               </gl-breadcrumb>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-              <template><gl-breadcrumb separator="›">
-  <gl-breadcrumb-item href="/">Home</gl-breadcrumb-item>
-  <gl-breadcrumb-item href="/docs">Docs</gl-breadcrumb-item>
-  <gl-breadcrumb-item current>Current</gl-breadcrumb-item>
-</gl-breadcrumb></template>
-            </gl-codeblock>
           </div>
 
-          <div class="component">
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-breadcrumb separator=&quot;›&quot;&gt;
+&#10;  &lt;gl-breadcrumb-item href=&quot;/&quot;&gt;Home&lt;/gl-breadcrumb-item&gt;
+&#10;  &lt;gl-breadcrumb-item href=&quot;/docs&quot;&gt;Docs&lt;/gl-breadcrumb-item&gt;
+&#10;  &lt;gl-breadcrumb-item current&gt;Current&lt;/gl-breadcrumb-item&gt;
+&#10;&lt;/gl-breadcrumb&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>separator</code></td>
+                    <td><code>string</code></td>
+                    <td><code>"/"</code></td>
+                    <td>Separator character between items</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="margin-top: 16px; font-size: 14px; color: var(--gl-muted);"><strong>gl-breadcrumb-item:</strong> <code>href</code> (string), <code>current</code> (boolean)</p>
+            </div>
+          </div>
+        </section>
+
+<section id="pagination" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
             <h2>Pagination</h2>
-            <p class="desc">Page navigation with prev/next and page numbers.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="row" style="justify-content: space-between; align-items: center">
-                <div class="muted">Page: <span id="pageLabel">3</span></div>
-                <gl-pagination id="pagerDemo" page="3" pages="12"></gl-pagination>
+              <p>Page navigation with prev/next and page numbers.</p>
               </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
+
+            <div class="docs-preview">
 <gl-pagination page="3" pages="12"></gl-pagination>
-            </gl-codeblock>
           </div>
 
-          <div class="component">
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-pagination page=&quot;3&quot; pages=&quot;12&quot;&gt;&lt;/gl-pagination&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>page</code></td>
+                    <td><code>number</code></td>
+                    <td><code>1</code></td>
+                    <td>Current page number</td>
+                  </tr>
+                  <tr>
+                    <td><code>pages</code></td>
+                    <td><code>number</code></td>
+                    <td><code>1</code></td>
+                    <td>Total number of pages</td>
+                  </tr>
+                  <tr>
+                    <td><code>sibling</code></td>
+                    <td><code>number</code></td>
+                    <td><code>1</code></td>
+                    <td>Number of sibling pages to show</td>
+                  </tr>
+                  <tr>
+                    <td><code>boundary</code></td>
+                    <td><code>number</code></td>
+                    <td><code>1</code></td>
+                    <td>Number of boundary pages to show</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="navbar" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
             <h2>Navbar</h2>
-            <p class="desc">Navigation bar component with brand, nav links, and actions. Perfect for main site navigation.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="stack">
-                <div class="muted" style="margin-bottom: 8px; font-size: 12px">Default</div>
+              <p>Navigation bar component with brand, nav links, and actions.</p>
+            </div>
+
+            <div class="docs-preview">
                 <gl-navbar>
                   <div slot="brand" style="font-weight: 600">Logo</div>
-                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg); padding: 4px 8px; border-radius: 6px; transition: background var(--gl-dur-1) var(--gl-ease)">Home</a>
-                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg); padding: 4px 8px; border-radius: 6px; transition: background var(--gl-dur-1) var(--gl-ease)">About</a>
-                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg); padding: 4px 8px; border-radius: 6px; transition: background var(--gl-dur-1) var(--gl-ease)">Contact</a>
+                <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg); padding: 4px 8px; border-radius: 6px;">Home</a>
+                <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg); padding: 4px 8px; border-radius: 6px;">About</a>
                   <gl-button slot="actions" size="sm">Sign In</gl-button>
                 </gl-navbar>
-                <div class="muted" style="margin: 16px 0 8px; font-size: 12px">Glass variant (sticky)</div>
-                <gl-navbar variant="glass" sticky>
-                  <div slot="brand" style="font-weight: 600">Logo</div>
-                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg); padding: 4px 8px; border-radius: 6px; transition: background var(--gl-dur-1) var(--gl-ease)">Home</a>
-                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg); padding: 4px 8px; border-radius: 6px; transition: background var(--gl-dur-1) var(--gl-ease)">About</a>
-                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg); padding: 4px 8px; border-radius: 6px; transition: background var(--gl-dur-1) var(--gl-ease)">Docs</a>
-                  <gl-button slot="actions" variant="secondary" size="sm">Sign In</gl-button>
-                </gl-navbar>
-                <div class="muted" style="margin: 16px 0 8px; font-size: 12px">Bordered variant</div>
-                <gl-navbar variant="bordered">
-                  <div slot="brand" style="font-weight: 600">Logo</div>
-                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg); padding: 4px 8px; border-radius: 6px; transition: background var(--gl-dur-1) var(--gl-ease)">Home</a>
-                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg); padding: 4px 8px; border-radius: 6px; transition: background var(--gl-dur-1) var(--gl-ease)">About</a>
-                  <gl-button slot="actions" variant="ghost" size="sm">Menu</gl-button>
-                </gl-navbar>
-                <div class="muted" style="margin: 16px 0 8px; font-size: 12px">Minimal variant with centered nav</div>
-                <gl-navbar variant="minimal" align="center">
-                  <div slot="brand" style="font-weight: 600">Logo</div>
-                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg); padding: 4px 8px; border-radius: 6px; transition: background var(--gl-dur-1) var(--gl-ease)">Home</a>
-                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg); padding: 4px 8px; border-radius: 6px; transition: background var(--gl-dur-1) var(--gl-ease)">About</a>
-                  <a slot="nav" href="#" style="text-decoration: none; color: var(--gl-fg); padding: 4px 8px; border-radius: 6px; transition: background var(--gl-dur-1) var(--gl-ease)">Contact</a>
-                  <gl-button slot="actions" variant="ghost" size="sm">Sign In</gl-button>
-                </gl-navbar>
               </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-navbar variant="glass" sticky motion="snappy">
-  <div slot="brand">Logo</div>
-  <a slot="nav" href="#">Home</a>
-  <a slot="nav" href="#">About</a>
-  <a slot="nav" href="#">Contact</a>
-  <gl-button slot="actions">Sign In</gl-button>
-</gl-navbar>
-            </gl-codeblock>
-            <div class="props">
-              <h3>Attributes</h3>
-              <table class="propsTable">
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-navbar&gt;
+&#10;  &lt;div slot=&quot;brand&quot;&gt;Logo&lt;/div&gt;
+&#10;  &lt;a slot=&quot;nav&quot; href=&quot;#&quot;&gt;Home&lt;/a&gt;
+&#10;  &lt;a slot=&quot;nav&quot; href=&quot;#&quot;&gt;About&lt;/a&gt;
+&#10;  &lt;gl-button slot=&quot;actions&quot; size=&quot;sm&quot;&gt;Sign In&lt;/gl-button&gt;
+&#10;&lt;/gl-navbar&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
                 <thead>
                   <tr>
                     <th>Attribute</th>
@@ -863,110 +1864,46 @@
                     <td><code>variant</code></td>
                     <td><code>"default" | "glass" | "bordered" | "minimal"</code></td>
                     <td><code>"default"</code></td>
-                    <td>Visual style variant</td>
-                  </tr>
-                  <tr>
-                    <td><code>sticky</code></td>
-                    <td><code>boolean</code></td>
-                    <td><code>false</code></td>
-                    <td>Make navbar sticky at top</td>
-                  </tr>
-                  <tr>
-                    <td><code>align</code></td>
-                    <td><code>"start" | "center" | "end"</code></td>
-                    <td><code>"start"</code></td>
-                    <td>Align nav items</td>
+                    <td>Navbar visual style variant</td>
                   </tr>
                   <tr>
                     <td><code>motion</code></td>
-                    <td><code>"none" | "subtle" | "snappy" | "bounce"</code></td>
+                    <td><code>"none" | "subtle" | "snappy"</code></td>
                     <td><code>"subtle"</code></td>
                     <td>Animation preset</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <div class="props">
-              <h3>Slots</h3>
-              <table class="propsTable">
-                <thead>
-                  <tr>
-                    <th>Slot</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><code>brand</code></td>
-                    <td>Brand/logo content</td>
-                  </tr>
-                  <tr>
-                    <td><code>nav</code></td>
-                    <td>Navigation links</td>
-                  </tr>
-                  <tr>
-                    <td><code>actions</code></td>
-                    <td>Action buttons (right side)</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
           </div>
+        </section>
 
-          <div class="component">
+<section id="topbar" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
             <h2>Topbar</h2>
-            <p class="desc">Top bar component with left, center, and right slots. Ideal for app headers and toolbars.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="stack">
-                <div class="muted" style="margin-bottom: 8px; font-size: 12px">Default</div>
+              <p>Top bar component with left, center, and right slots.</p>
+            </div>
+
+            <div class="docs-preview">
                 <gl-topbar>
                   <div slot="left" style="font-weight: 600">Logo</div>
-                  <div slot="center" class="muted" style="font-size: 14px">Center content</div>
+                <div slot="center" style="font-size: 14px; color: var(--gl-muted)">Center content</div>
                   <gl-button slot="right" size="sm">Menu</gl-button>
                 </gl-topbar>
-                <div class="muted" style="margin: 16px 0 8px; font-size: 12px">Glass variant (sticky)</div>
-                <gl-topbar variant="glass" sticky>
-                  <div slot="left" style="font-weight: 600">Logo</div>
-                  <div slot="center">
-                    <gl-input placeholder="Search..." size="sm" style="max-width: 300px">
-                      <span slot="label" style="display: none"></span>
-                    </gl-input>
                   </div>
-                  <div slot="right" class="row">
-                    <gl-button variant="secondary" size="sm">Actions</gl-button>
-                    <gl-button variant="ghost" size="sm">Profile</gl-button>
-                  </div>
-                </gl-topbar>
-                <div class="muted" style="margin: 16px 0 8px; font-size: 12px">Floating variant</div>
-                <gl-topbar variant="floating">
-                  <div slot="left" style="font-weight: 600">Logo</div>
-                  <div slot="center" class="muted" style="font-size: 14px">Page Title</div>
-                  <div slot="right" class="row">
-                    <gl-button size="sm">Sign In</gl-button>
-                    <gl-button variant="ghost" size="sm">Menu</gl-button>
-                  </div>
-                </gl-topbar>
-                <div class="muted" style="margin: 16px 0 8px; font-size: 12px">Minimal variant</div>
-                <gl-topbar variant="minimal">
-                  <div slot="left" style="font-weight: 600">Logo</div>
-                  <div slot="right" class="row">
-                    <gl-button variant="ghost" size="sm">Home</gl-button>
-                    <gl-button variant="ghost" size="sm">About</gl-button>
-                    <gl-button size="sm">Contact</gl-button>
-                  </div>
-                </gl-topbar>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-topbar variant="glass" sticky motion="snappy">
-  <div slot="left">Logo</div>
-  <div slot="center">Search or center content</div>
-  <gl-button slot="right">Menu</gl-button>
-</gl-topbar>
-            </gl-codeblock>
-            <div class="props">
-              <h3>Attributes</h3>
-              <table class="propsTable">
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-topbar&gt;
+&#10;  &lt;div slot=&quot;left&quot;&gt;Logo&lt;/div&gt;
+&#10;  &lt;div slot=&quot;center&quot;&gt;Center content&lt;/div&gt;
+&#10;  &lt;gl-button slot=&quot;right&quot; size=&quot;sm&quot;&gt;Menu&lt;/gl-button&gt;
+&#10;&lt;/gl-topbar&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
                 <thead>
                   <tr>
                     <th>Attribute</th>
@@ -978,442 +1915,112 @@
                 <tbody>
                   <tr>
                     <td><code>variant</code></td>
-                    <td><code>"default" | "glass" | "floating" | "minimal"</code></td>
+                    <td><code>"default" | "glass" | "floating"</code></td>
                     <td><code>"default"</code></td>
-                    <td>Visual style variant</td>
-                  </tr>
-                  <tr>
-                    <td><code>sticky</code></td>
-                    <td><code>boolean</code></td>
-                    <td><code>false</code></td>
-                    <td>Make topbar sticky at top</td>
+                    <td>Topbar visual style variant</td>
                   </tr>
                   <tr>
                     <td><code>motion</code></td>
-                    <td><code>"none" | "subtle" | "snappy" | "bounce"</code></td>
+                    <td><code>"none" | "subtle" | "snappy"</code></td>
                     <td><code>"subtle"</code></td>
                     <td>Animation preset</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <div class="props">
-              <h3>Slots</h3>
-              <table class="propsTable">
-                <thead>
-                  <tr>
-                    <th>Slot</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><code>left</code></td>
-                    <td>Left side content (logo, etc.)</td>
-                  </tr>
-                  <tr>
-                    <td><code>center</code></td>
-                    <td>Center content (search, title, etc.)</td>
-                  </tr>
-                  <tr>
-                    <td><code>right</code></td>
-                    <td>Right side content (actions, buttons)</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
           </div>
         </section>
 
-        <section id="overlays" class="section">
-          <h1>Overlays</h1>
-          <p>Modal dialogs, popovers, tooltips, and dropdowns.</p>
-
-          <div class="component">
+<section id="modal" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
             <h2>Modal</h2>
-            <p class="desc">Dialog with focus trap and backdrop.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <gl-button trigger="modal:modalDemo" motion="snappy">Open modal</gl-button>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-modal id="modal" label="Example modal">
+              <p>Dialog with focus trap and backdrop.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-button trigger="modal:modalDemo">Open Modal</gl-button>
+              <gl-modal id="modalDemo" label="Example modal">
   <div slot="header">
-    <div style="font-weight: 600">Modal title</div>
+                  <div style="font-weight: 600">Modal Title</div>
   </div>
-  <div>Modal content</div>
+                <div>Modal content goes here.</div>
   <div slot="footer">
-    <gl-button trigger="close:modal">Close</gl-button>
+                  <gl-button trigger="close:modalDemo" variant="secondary">Close</gl-button>
+                  <gl-button>Confirm</gl-button>
   </div>
 </gl-modal>
+            </div>
 
-<gl-button trigger="modal:modal">Open modal</gl-button>
-            </gl-codeblock>
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-button trigger=&quot;modal:myModal&quot;&gt;Open Modal&lt;/gl-button&gt;
+&#10;&lt;gl-modal id=&quot;myModal&quot; label=&quot;Example modal&quot;&gt;
+&#10;  &lt;div slot=&quot;header&quot;&gt;
+&#10;    &lt;div style=&quot;font-weight: 600&quot;&gt;Modal Title&lt;/div&gt;
+&#10;  &lt;/div&gt;
+&#10;  &lt;div&gt;Modal content goes here.&lt;/div&gt;
+&#10;  &lt;div slot=&quot;footer&quot;&gt;
+&#10;    &lt;gl-button trigger=&quot;close:myModal&quot; variant=&quot;secondary&quot;&gt;Close&lt;/gl-button&gt;
+&#10;    &lt;gl-button&gt;Confirm&lt;/gl-button&gt;
+&#10;  &lt;/div&gt;
+&#10;&lt;/gl-modal&gt;"></gl-codeblock>
           </div>
+          </div>
+        </section>
 
-          <div class="component">
+<section id="popover" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
             <h2>Popover</h2>
-            <p class="desc">Positioned popup with rich content.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="row" style="flex-wrap: wrap; gap: 12px">
-                <gl-popover motion="subtle" surface="glass">
-                  <gl-button slot="trigger" variant="secondary">Bottom / start</gl-button>
-                  <div slot="content" style="display: grid; gap: 10px">
-                    <div style="font-weight: 600">Popover title</div>
-                    <div class="muted">Content can be anything.</div>
-                    <div class="row">
-                      <gl-button motion="snappy">Action</gl-button>
-                      <gl-button variant="ghost">Secondary</gl-button>
+              <p>Positioned popup with rich content.</p>
                     </div>
-                  </div>
-                </gl-popover>
-                <gl-popover motion="snappy" side="top" align="center">
-                  <gl-button slot="trigger" variant="secondary">Top / center</gl-button>
-                  <div slot="content" class="muted">Quick info up top.</div>
-                </gl-popover>
-                <gl-popover motion="bounce" side="right" align="center" trap surface="glass">
-                  <gl-button slot="trigger" variant="secondary">Right + trap</gl-button>
+
+            <div class="docs-preview">
+              <gl-popover>
+                <gl-button slot="trigger" variant="secondary">Open Popover</gl-button>
                   <div slot="content" style="display: grid; gap: 10px">
-                    <div style="font-weight: 600">Focusable content</div>
-                    <gl-input placeholder="Type here">
-                      <span slot="label">Input</span>
-                    </gl-input>
+                  <div style="font-weight: 600">Popover Title</div>
+                  <div style="font-size: 14px; color: var(--gl-muted)">Content can be anything.</div>
                   </div>
                 </gl-popover>
               </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-popover motion="subtle" side="bottom" align="start">
-  <gl-button slot="trigger">Open</gl-button>
-  <div slot="content">
-    <div style="font-weight: 600">Popover title</div>
-    <div class="muted">Content here</div>
-  </div>
-</gl-popover>
-            </gl-codeblock>
-          </div>
 
-          <div class="component">
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-popover&gt;
+&#10;  &lt;gl-button slot=&quot;trigger&quot; variant=&quot;secondary&quot;&gt;Open Popover&lt;/gl-button&gt;
+&#10;  &lt;div slot=&quot;content&quot;&gt;
+&#10;    &lt;div style=&quot;font-weight: 600&quot;&gt;Popover Title&lt;/div&gt;
+&#10;    &lt;div style=&quot;font-size: 14px; color: var(--gl-muted)&quot;&gt;Content can be anything.&lt;/div&gt;
+&#10;  &lt;/div&gt;
+&#10;&lt;/gl-popover&gt;"></gl-codeblock>
+  </div>
+          </div>
+        </section>
+
+<section id="tooltip" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
             <h2>Tooltip</h2>
-            <p class="desc">Simple hover/focus tooltip.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
+              <p>Simple hover/focus tooltip.</p>
+            </div>
+
+            <div class="docs-preview">
               <gl-tooltip motion="snappy">
                 <gl-button variant="secondary">Hover me</gl-button>
                 <span slot="content">This is a tooltip</span>
               </gl-tooltip>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-              <template><gl-tooltip>
-  <gl-button>Hover me</gl-button>
-  <span slot="content">This is a tooltip</span>
-</gl-tooltip></template>
-            </gl-codeblock>
           </div>
 
-          <div class="component">
-            <h2>Dropdown</h2>
-            <p class="desc">Menu dropdown with focus trap.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <gl-dropdown id="dropdownDemo" motion="subtle">
-                <gl-button slot="trigger" variant="secondary">Menu</gl-button>
-                <button class="item" data-value="edit">Edit</button>
-                <button class="item" data-value="duplicate">Duplicate</button>
-                <div class="divider"></div>
-                <button class="item" data-value="delete">Delete</button>
-              </gl-dropdown>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-dropdown>
-  <gl-button slot="trigger">Menu</gl-button>
-  <button class="item" data-value="edit">Edit</button>
-  <button class="item" data-value="duplicate">Duplicate</button>
-  <div class="divider"></div>
-  <button class="item" data-value="delete">Delete</button>
-</gl-dropdown>
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-tooltip&gt;
+&#10;  &lt;gl-button&gt;Hover me&lt;/gl-button&gt;
+&#10;  &lt;span slot=&quot;content&quot;&gt;This is a tooltip&lt;/span&gt;
+&#10;&lt;/gl-tooltip&gt;"></gl-codeblock>
+            </div>
 
-<style>
-  gl-dropdown .item {
-    display: block;
-    width: 100%;
-    padding: 8px 12px;
-    border: none;
-    background: transparent;
-    color: var(--gl-fg);
-    cursor: pointer;
-    border-radius: 8px;
-  }
-  gl-dropdown .item:hover {
-    background: var(--gl-hover);
-  }
-</style>
-            </gl-codeblock>
-          </div>
-
-          <div class="component">
-            <h2>Sidebar</h2>
-            <p class="desc">Slide-out panel with backdrop.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <gl-button trigger="sidebar:sidebarDemo" motion="snappy">Open sidebar</gl-button>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-sidebar id="sidebar" side="right" surface="glass">
-  <span slot="title">Sidebar</span>
-  <div>Sidebar content</div>
-</gl-sidebar>
-
-<gl-button trigger="sidebar:sidebar">Open sidebar</gl-button>
-            </gl-codeblock>
-          </div>
-        </section>
-
-        <section id="feedback" class="section">
-          <h1>Feedback</h1>
-          <p>Components for displaying status, progress, and notifications.</p>
-
-          <div class="component">
-            <h2>Alert</h2>
-            <p class="desc">Alert messages with variants and close button.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="stack">
-                <gl-alert variant="default" motion="subtle">
-                  <span slot="title">Info</span>
-                  Default alert with information.
-                </gl-alert>
-                <gl-alert variant="success" motion="subtle">
-                  <span slot="title">Success</span>
-                  Operation completed successfully.
-                </gl-alert>
-                <gl-alert variant="warning" motion="subtle">
-                  <span slot="title">Warning</span>
-                  Please review this action.
-                </gl-alert>
-                <gl-alert variant="destructive" motion="subtle">
-                  <span slot="title">Error</span>
-                  Something went wrong.
-                </gl-alert>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-alert variant="success">
-  <span slot="title">Success</span>
-  Operation completed successfully.
-</gl-alert>
-<gl-alert variant="warning">
-  <span slot="title">Warning</span>
-  Please review this action.
-</gl-alert>
-<gl-alert variant="destructive">
-  <span slot="title">Error</span>
-  Something went wrong.
-</gl-alert>
-            </gl-codeblock>
-          </div>
-
-          <div class="component">
-            <h2>Toast</h2>
-            <p class="desc">Notification toasts with auto-dismiss.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <gl-button trigger="toast" toast-title="Hello" toast-description="This toast auto-dismisses. Hover to pause." motion="snappy">Show toast</gl-button>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-toaster id="toaster"></gl-toaster>
-
-<gl-button trigger="toast" toast-title="Hello" toast-description="This toast auto-dismisses. Hover to pause.">Show toast</gl-button>
-            </gl-codeblock>
-          </div>
-
-          <div class="component">
-            <h2>Progress</h2>
-            <p class="desc">Progress bar with animation.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="stack">
-                <div>
-                  <div class="muted" style="margin-bottom: 8px">45%</div>
-                  <gl-progress value="45" motion="snappy"></gl-progress>
-                </div>
-                <div>
-                  <div class="muted" style="margin-bottom: 8px">75%</div>
-                  <gl-progress value="75" motion="snappy"></gl-progress>
-                </div>
-                <div>
-                  <div class="muted" style="margin-bottom: 8px">100%</div>
-                  <gl-progress value="100" motion="snappy"></gl-progress>
-                </div>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-progress value="45" motion="snappy"></gl-progress>
-<gl-progress value="75" motion="snappy"></gl-progress>
-<gl-progress value="100" motion="snappy"></gl-progress>
-            </gl-codeblock>
-          </div>
-
-          <div class="component">
-            <h2>Spinner</h2>
-            <p class="desc">Loading spinner with sizes and variants.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="row">
-                <gl-spinner size="sm"></gl-spinner>
-                <gl-spinner></gl-spinner>
-                <gl-spinner size="lg"></gl-spinner>
-                <gl-spinner variant="destructive"></gl-spinner>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-spinner size="sm"></gl-spinner>
-<gl-spinner></gl-spinner>
-<gl-spinner size="lg"></gl-spinner>
-<gl-spinner variant="destructive"></gl-spinner>
-            </gl-codeblock>
-          </div>
-
-          <div class="component">
-            <h2>Badge</h2>
-            <p class="desc">Small status indicator with variants.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="row">
-                <gl-badge>Default</gl-badge>
-                <gl-badge variant="secondary">Secondary</gl-badge>
-                <gl-badge variant="outline">Outline</gl-badge>
-                <gl-badge variant="destructive">Destructive</gl-badge>
-                <gl-badge size="sm">Small</gl-badge>
-                <gl-badge size="lg" motion="snappy">Large</gl-badge>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-badge>Default</gl-badge>
-<gl-badge variant="secondary">Secondary</gl-badge>
-<gl-badge variant="outline">Outline</gl-badge>
-<gl-badge variant="destructive">Destructive</gl-badge>
-<gl-badge size="sm">Small</gl-badge>
-<gl-badge size="lg">Large</gl-badge>
-            </gl-codeblock>
-          </div>
-        </section>
-
-        <section id="display" class="section">
-          <h1>Display</h1>
-          <p>Components for displaying content and data.</p>
-
-          <div class="component">
-            <h2>Avatar</h2>
-            <p class="desc">User avatar with image, initials, and status.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="row" style="align-items: center; gap: 16px">
-                <gl-avatar name="John Doe" size="sm" status="online"></gl-avatar>
-                <gl-avatar name="Jane Smith" size="md" status="away" motion="snappy"></gl-avatar>
-                <gl-avatar name="Alex Johnson" size="lg" status="busy" motion="bounce"></gl-avatar>
-                <gl-avatar name="Sam Wilson" size="xl" status="offline"></gl-avatar>
-                <gl-avatar src="https://i.pravatar.cc/150?img=12" alt="User" size="lg" status="online" motion="snappy"></gl-avatar>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-avatar name="John Doe" size="md" status="online"></gl-avatar>
-<gl-avatar name="Jane Smith" size="lg" status="away"></gl-avatar>
-<gl-avatar src="https://example.com/avatar.jpg" alt="User" size="lg" status="online"></gl-avatar>
-            </gl-codeblock>
-          </div>
-
-          <div class="component">
-            <h2>Skeleton</h2>
-            <p class="desc">Loading placeholders with variants.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="stack">
-                <div class="row" style="align-items: center; gap: 12px">
-                  <gl-skeleton width="40px" height="40px" shape="circle" variant="shimmer"></gl-skeleton>
-                  <div style="flex: 1">
-                    <gl-skeleton width="60%" height="16px" variant="shimmer" style="margin-bottom: 8px"></gl-skeleton>
-                    <gl-skeleton width="40%" height="12px" variant="shimmer"></gl-skeleton>
-                  </div>
-                </div>
-                <div class="row" style="gap: 8px">
-                  <gl-skeleton width="80px" height="32px" variant="pulse"></gl-skeleton>
-                  <gl-skeleton width="100px" height="32px" variant="wave"></gl-skeleton>
-                  <gl-skeleton width="120px" height="32px" variant="shimmer"></gl-skeleton>
-                </div>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-skeleton width="40px" height="40px" shape="circle" variant="shimmer"></gl-skeleton>
-<gl-skeleton width="200px" height="16px" variant="shimmer"></gl-skeleton>
-<gl-skeleton width="150px" height="32px" variant="pulse"></gl-skeleton>
-<gl-skeleton width="100%" height="200px" variant="wave"></gl-skeleton>
-            </gl-codeblock>
-          </div>
-
-          <div class="component">
-            <h2>Divider</h2>
-            <p class="desc">Horizontal and vertical dividers.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="stack">
-                <div>Content above</div>
-                <gl-divider></gl-divider>
-                <div>Content below</div>
-                <div style="display: flex; align-items: center; gap: 12px">
-                  <span>Left</span>
-                  <gl-divider orientation="vertical" style="height: 40px"></gl-divider>
-                  <span>Right</span>
-                </div>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<div>Content above</div>
-<gl-divider></gl-divider>
-<div>Content below</div>
-
-<div style="display: flex; align-items: center; gap: 12px">
-  <span>Left</span>
-  <gl-divider orientation="vertical" style="height: 40px"></gl-divider>
-  <span>Right</span>
-</div>
-            </gl-codeblock>
-          </div>
-        </section>
-
-        <section id="code" class="section">
-          <h1>Code</h1>
-          <p>Components for displaying code and structured content.</p>
-
-          <div class="component">
-            <h2>Codeblock</h2>
-            <p class="desc">Syntax-highlighted code blocks with copy functionality.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="stack">
-                <gl-codeblock lang="html" copy motion="subtle">
-<gl-button>Click me</gl-button>
-<gl-card>
-  <div slot="header">Title</div>
-  Content here
-</gl-card>
-                </gl-codeblock>
-                <gl-codeblock lang="js" copy motion="subtle">
-const button = document.querySelector('gl-button');
-button.addEventListener('gl-press', () => {
-  console.log('Button clicked!');
-});
-                </gl-codeblock>
-                <gl-codeblock lang="css" copy motion="subtle">
-.my-class {
-  color: var(--gl-primary);
-  padding: var(--gl-space-4);
-  border-radius: var(--gl-radius);
-}
-                </gl-codeblock>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-              <template><gl-codeblock lang="html" copy motion="subtle">
-  <template><gl-button>Click me</gl-button></template>
-</gl-codeblock>
-<gl-codeblock lang="js" copy>
-  <template>const button = document.querySelector('gl-button');</template>
-</gl-codeblock>
-<gl-codeblock lang="css">
-  <template>.my-class { color: var(--gl-primary); }</template>
-</gl-codeblock></template>
-            </gl-codeblock>
-            <div class="props">
-              <h3>Attributes</h3>
-              <table class="propsTable">
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
                 <thead>
                   <tr>
                     <th>Attribute</th>
@@ -1424,16 +2031,16 @@ button.addEventListener('gl-press', () => {
                 </thead>
                 <tbody>
                   <tr>
-                    <td><code>lang</code></td>
-                    <td><code>"html" | "css" | "js" | "ts" | "json" | "text"</code></td>
-                    <td><code>"text"</code></td>
-                    <td>Language for syntax highlighting</td>
-                  </tr>
-                  <tr>
-                    <td><code>copy</code></td>
+                    <td><code>open</code></td>
                     <td><code>boolean</code></td>
                     <td><code>false</code></td>
-                    <td>Show copy button</td>
+                    <td>Whether the tooltip is open</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable the tooltip</td>
                   </tr>
                   <tr>
                     <td><code>motion</code></td>
@@ -1444,61 +2051,698 @@ button.addEventListener('gl-press', () => {
                 </tbody>
               </table>
             </div>
+          </div>
+        </section>
 
-            <div class="props">
-              <h3>Events</h3>
-              <table class="propsTable">
+<section id="dropdown" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+            <h2>Dropdown</h2>
+              <p>Menu dropdown with focus trap.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-dropdown>
+                <gl-button slot="trigger" variant="secondary">Menu</gl-button>
+                <button class="item" data-value="edit" style="display: block; width: 100%; padding: 8px 12px; border: none; background: transparent; color: var(--gl-fg); text-align: left; cursor: pointer; border-radius: 8px;">Edit</button>
+                <button class="item" data-value="delete" style="display: block; width: 100%; padding: 8px 12px; border: none; background: transparent; color: var(--gl-fg); text-align: left; cursor: pointer; border-radius: 8px;">Delete</button>
+              </gl-dropdown>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-dropdown&gt;
+&#10;  &lt;gl-button slot=&quot;trigger&quot;&gt;Menu&lt;/gl-button&gt;
+&#10;  &lt;button class=&quot;item&quot; data-value=&quot;edit&quot;&gt;Edit&lt;/button&gt;
+&#10;  &lt;button class=&quot;item&quot; data-value=&quot;delete&quot;&gt;Delete&lt;/button&gt;
+&#10;&lt;/gl-dropdown&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
                 <thead>
                   <tr>
-                    <th>Event</th>
-                    <th>Detail</th>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
                     <th>Description</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><code>gl-copy</code></td>
-                    <td><code>{ code: string }</code></td>
-                    <td>Emitted when code is copied</td>
+                    <td><code>open</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Whether the dropdown is open</td>
+                  </tr>
+                  <tr>
+                    <td><code>side</code></td>
+                    <td><code>"bottom" | "top" | "right"</code></td>
+                    <td><code>"bottom"</code></td>
+                    <td>Dropdown position</td>
+                  </tr>
+                  <tr>
+                    <td><code>motion</code></td>
+                    <td><code>"none" | "subtle" | "snappy" | "bounce"</code></td>
+                    <td><code>"snappy"</code></td>
+                    <td>Animation preset</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="sidebar" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+            <h2>Sidebar</h2>
+              <p>Slide-out panel with backdrop.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-button trigger="sidebar:sidebarDemo">Open Sidebar</gl-button>
+              <gl-sidebar id="sidebarDemo" motion="snappy" side="right">
+  <span slot="title">Sidebar</span>
+                <div style="font-size: 14px; color: var(--gl-muted)">Sidebar content</div>
+</gl-sidebar>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-button trigger=&quot;sidebar:mySidebar&quot;&gt;Open Sidebar&lt;/gl-button&gt;
+&#10;&lt;gl-sidebar id=&quot;mySidebar&quot; side=&quot;right&quot;&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;Sidebar&lt;/span&gt;
+&#10;  &lt;div&gt;Sidebar content&lt;/div&gt;
+&#10;&lt;/gl-sidebar&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>open</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Whether the sidebar is open</td>
+                  </tr>
+                  <tr>
+                    <td><code>side</code></td>
+                    <td><code>"left" | "right"</code></td>
+                    <td><code>"left"</code></td>
+                    <td>Sidebar position</td>
+                  </tr>
+                  <tr>
+                    <td><code>surface</code></td>
+                    <td><code>"default" | "glass"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Surface style variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>motion</code></td>
+                    <td><code>"none" | "subtle" | "snappy" | "bounce"</code></td>
+                    <td><code>"subtle"</code></td>
+                    <td>Animation preset</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="alert" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+            <h2>Alert</h2>
+              <p>Alert messages with variants and close button.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: grid; gap: 12px; width: 100%;">
+                <gl-alert variant="default">
+                  <span slot="title">Info</span>
+                  Default alert with information.
+                </gl-alert>
+<gl-alert variant="success">
+  <span slot="title">Success</span>
+  Operation completed successfully.
+</gl-alert>
+              </div>
+          </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-alert variant=&quot;default&quot;&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;Info&lt;/span&gt;
+&#10;  Default alert with information.
+&#10;&lt;/gl-alert&gt;
+&#10;&lt;gl-alert variant=&quot;success&quot;&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;Success&lt;/span&gt;
+&#10;  Operation completed successfully.
+&#10;&lt;/gl-alert&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "destructive" | "success" | "warning"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Visual style variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>motion</code></td>
+                    <td><code>"none" | "subtle" | "snappy"</code></td>
+                    <td><code>"subtle"</code></td>
+                    <td>Animation preset</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          <div class="component">
-            <h2>Table</h2>
-            <p class="desc">Data tables with variants and hover effects.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <gl-table variant="striped" motion="subtle">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>All Variants</h2>
+              <p>Different alert variants for different message types.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: grid; gap: 12px;">
+                <gl-alert variant="default">
+                  <span slot="title">Info</span>
+                  Default alert with information.
+                </gl-alert>
+                <gl-alert variant="destructive">
+                  <span slot="title">Error</span>
+                  This is a destructive alert message.
+                </gl-alert>
+                <gl-alert variant="success">
+                  <span slot="title">Success</span>
+                  Operation completed successfully.
+                </gl-alert>
+                <gl-alert variant="warning">
+                  <span slot="title">Warning</span>
+                  This is a warning alert message.
+                </gl-alert>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-alert variant=&quot;default&quot;&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;Info&lt;/span&gt;
+&#10;  Default alert with information.
+&#10;&lt;/gl-alert&gt;
+&#10;&lt;gl-alert variant=&quot;destructive&quot;&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;Error&lt;/span&gt;
+&#10;  This is a destructive alert message.
+&#10;&lt;/gl-alert&gt;
+&#10;&lt;gl-alert variant=&quot;success&quot;&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;Success&lt;/span&gt;
+&#10;  Operation completed successfully.
+&#10;&lt;/gl-alert&gt;
+&#10;&lt;gl-alert variant=&quot;warning&quot;&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;Warning&lt;/span&gt;
+&#10;  This is a warning alert message.
+&#10;&lt;/gl-alert&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="toast" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+            <h2>Toast</h2>
+              <p>Notification toasts with auto-dismiss.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-button trigger="toast" toast-title="Hello" toast-description="This is a toast notification">Show Toast</gl-button>
+<gl-toaster id="toaster"></gl-toaster>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-toaster id=&quot;toaster&quot;&gt;&lt;/gl-toaster&gt;
+&#10;&lt;gl-button trigger=&quot;toast&quot; toast-title=&quot;Hello&quot; toast-description=&quot;This is a toast notification&quot;&gt;Show Toast&lt;/gl-button&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
                 <thead>
                   <tr>
-                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--gl-border)">Name</th>
-                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--gl-border)">Role</th>
-                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--gl-border)">Status</th>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td style="padding: 12px; border-bottom: 1px solid var(--gl-border)">John Doe</td>
-                    <td style="padding: 12px; border-bottom: 1px solid var(--gl-border)">Developer</td>
-                    <td style="padding: 12px; border-bottom: 1px solid var(--gl-border)"><gl-badge variant="secondary">Active</gl-badge></td>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "success" | "warning" | "destructive"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Toast variant</td>
                   </tr>
                   <tr>
-                    <td style="padding: 12px; border-bottom: 1px solid var(--gl-border)">Jane Smith</td>
-                    <td style="padding: 12px; border-bottom: 1px solid var(--gl-border)">Designer</td>
-                    <td style="padding: 12px; border-bottom: 1px solid var(--gl-border)"><gl-badge variant="secondary">Active</gl-badge></td>
+                    <td><code>duration</code></td>
+                    <td><code>number</code></td>
+                    <td><code>5000</code></td>
+                    <td>Auto-dismiss duration in milliseconds</td>
                   </tr>
                   <tr>
-                    <td style="padding: 12px; border-bottom: 1px solid var(--gl-border)">Alex Johnson</td>
-                    <td style="padding: 12px; border-bottom: 1px solid var(--gl-border)">Manager</td>
-                    <td style="padding: 12px; border-bottom: 1px solid var(--gl-border)"><gl-badge variant="outline">Away</gl-badge></td>
+                    <td><code>motion</code></td>
+                    <td><code>"none" | "subtle" | "snappy" | "bounce"</code></td>
+                    <td><code>"snappy"</code></td>
+                    <td>Animation preset</td>
                   </tr>
                 </tbody>
-              </gl-table>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-table variant="striped" motion="subtle">
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="progress" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+            <h2>Progress</h2>
+              <p>Progress bar with animation.</p>
+                </div>
+
+            <div class="docs-preview">
+              <div style="width: 100%;">
+                <gl-progress value="50" motion="snappy"></gl-progress>
+                </div>
+                </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-progress value=&quot;50&quot; motion=&quot;snappy&quot;&gt;&lt;/gl-progress&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>value</code></td>
+                    <td><code>number</code></td>
+                    <td><code>0</code></td>
+                    <td>Progress value (0-100)</td>
+                  </tr>
+                  <tr>
+                    <td><code>size</code></td>
+                    <td><code>"sm" | "md" | "lg"</code></td>
+                    <td><code>"md"</code></td>
+                    <td>Progress bar size</td>
+                  </tr>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "destructive" | "success" | "warning"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Visual style variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>motion</code></td>
+                    <td><code>"none" | "subtle" | "snappy" | "bounce"</code></td>
+                    <td><code>"subtle"</code></td>
+                    <td>Animation preset</td>
+                  </tr>
+                  <tr>
+                    <td><code>show-label</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Show label with value</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="spinner" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+            <h2>Spinner</h2>
+              <p>Loading spinner with sizes and variants.</p>
+              </div>
+
+            <div class="docs-preview">
+              <div style="display: flex; gap: 16px; align-items: center;">
+<gl-spinner size="sm"></gl-spinner>
+<gl-spinner></gl-spinner>
+<gl-spinner size="lg"></gl-spinner>
+              </div>
+          </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-spinner size=&quot;sm&quot;&gt;&lt;/gl-spinner&gt;
+&#10;&lt;gl-spinner&gt;&lt;/gl-spinner&gt;
+&#10;&lt;gl-spinner size=&quot;lg&quot;&gt;&lt;/gl-spinner&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>size</code></td>
+                    <td><code>"sm" | "md" | "lg"</code></td>
+                    <td><code>"md"</code></td>
+                    <td>Spinner size</td>
+                  </tr>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "destructive"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Spinner color variant</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Sizes</h2>
+              <p>Control spinner size with the size attribute.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: flex; gap: 16px; align-items: center;">
+                <gl-spinner size="sm"></gl-spinner>
+                <gl-spinner></gl-spinner>
+                <gl-spinner size="lg"></gl-spinner>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-spinner size=&quot;sm&quot;&gt;&lt;/gl-spinner&gt;
+&#10;&lt;gl-spinner&gt;&lt;/gl-spinner&gt;
+&#10;&lt;gl-spinner size=&quot;lg&quot;&gt;&lt;/gl-spinner&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="badge" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+            <h2>Badge</h2>
+              <p>Small status indicator with variants.</p>
+              </div>
+
+            <div class="docs-preview">
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+<gl-badge>Default</gl-badge>
+<gl-badge variant="secondary">Secondary</gl-badge>
+<gl-badge variant="outline">Outline</gl-badge>
+<gl-badge variant="destructive">Destructive</gl-badge>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-badge&gt;Default&lt;/gl-badge&gt;
+&#10;&lt;gl-badge variant=&quot;secondary&quot;&gt;Secondary&lt;/gl-badge&gt;
+&#10;&lt;gl-badge variant=&quot;outline&quot;&gt;Outline&lt;/gl-badge&gt;
+&#10;&lt;gl-badge variant=&quot;destructive&quot;&gt;Destructive&lt;/gl-badge&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"primary" | "secondary" | "outline" | "destructive" | "success" | "warning" | "dot"</code></td>
+                    <td><code>"primary"</code></td>
+                    <td>Visual style variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>size</code></td>
+                    <td><code>"sm" | "md" | "lg"</code></td>
+                    <td><code>"md"</code></td>
+                    <td>Badge size</td>
+                  </tr>
+                  <tr>
+                    <td><code>motion</code></td>
+                    <td><code>"none" | "subtle" | "snappy"</code></td>
+                    <td><code>"subtle"</code></td>
+                    <td>Animation preset</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Sizes</h2>
+              <p>Control badge size with the size attribute.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <gl-badge size="sm">Small</gl-badge>
+                <gl-badge>Default</gl-badge>
+                <gl-badge size="lg">Large</gl-badge>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-badge size=&quot;sm&quot;&gt;Small&lt;/gl-badge&gt;
+&#10;&lt;gl-badge&gt;Default&lt;/gl-badge&gt;
+&#10;&lt;gl-badge size=&quot;lg&quot;&gt;Large&lt;/gl-badge&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="avatar" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+            <h2>Avatar</h2>
+              <p>User avatar with image, initials, and status.</p>
+              </div>
+
+            <div class="docs-preview">
+              <div style="display: flex; gap: 16px; align-items: center;">
+                <gl-avatar src="https://i.pravatar.cc/150?img=1" name="John Doe" size="md" status="online"></gl-avatar>
+                <gl-avatar src="https://i.pravatar.cc/150?img=2" name="Jane Smith" size="lg" status="away"></gl-avatar>
+                <gl-avatar name="Alex Johnson" size="md" status="busy"></gl-avatar>
+              </div>
+          </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-avatar src=&quot;https://example.com/avatar.jpg&quot; name=&quot;John Doe&quot; size=&quot;md&quot; status=&quot;online&quot;&gt;&lt;/gl-avatar&gt;
+&#10;&lt;gl-avatar name=&quot;Jane Smith&quot; size=&quot;lg&quot; status=&quot;away&quot;&gt;&lt;/gl-avatar&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>src</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Image source URL</td>
+                  </tr>
+                  <tr>
+                    <td><code>name</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Name for generating initials</td>
+                  </tr>
+                  <tr>
+                    <td><code>size</code></td>
+                    <td><code>"sm" | "md" | "lg" | "xl"</code></td>
+                    <td><code>"md"</code></td>
+                    <td>Avatar size</td>
+                  </tr>
+                  <tr>
+                    <td><code>status</code></td>
+                    <td><code>"online" | "away" | "busy" | "offline"</code></td>
+                    <td><code>-</code></td>
+                    <td>Status indicator</td>
+                  </tr>
+                  <tr>
+                    <td><code>motion</code></td>
+                    <td><code>"none" | "subtle" | "snappy" | "bounce"</code></td>
+                    <td><code>"subtle"</code></td>
+                    <td>Animation preset</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="skeleton" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+            <h2>Skeleton</h2>
+              <p>Loading placeholders with variants.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: flex; gap: 12px; align-items: center;">
+                  <gl-skeleton width="40px" height="40px" shape="circle" variant="shimmer"></gl-skeleton>
+                <div style="flex: 1;">
+                    <gl-skeleton width="60%" height="16px" variant="shimmer" style="margin-bottom: 8px"></gl-skeleton>
+                    <gl-skeleton width="40%" height="12px" variant="shimmer"></gl-skeleton>
+                  </div>
+                </div>
+                </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-skeleton width=&quot;40px&quot; height=&quot;40px&quot; shape=&quot;circle&quot; variant=&quot;shimmer&quot;&gt;&lt;/gl-skeleton&gt;
+&#10;&lt;gl-skeleton width=&quot;200px&quot; height=&quot;16px&quot; variant=&quot;shimmer&quot;&gt;&lt;/gl-skeleton&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>width</code></td>
+                    <td><code>string</code></td>
+                    <td><code>"100%"</code></td>
+                    <td>Skeleton width</td>
+                  </tr>
+                  <tr>
+                    <td><code>height</code></td>
+                    <td><code>string</code></td>
+                    <td><code>"20px"</code></td>
+                    <td>Skeleton height</td>
+                  </tr>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"shimmer" | "pulse" | "wave" | "none"</code></td>
+                    <td><code>"shimmer"</code></td>
+                    <td>Animation variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>shape</code></td>
+                    <td><code>"rect" | "circle" | "text"</code></td>
+                    <td><code>"rect"</code></td>
+                    <td>Skeleton shape</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="divider" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+            <h2>Divider</h2>
+              <p>Horizontal and vertical dividers.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: grid; gap: 12px;">
+                <div style="font-size: 14px;">Content above</div>
+                <gl-divider></gl-divider>
+                <div style="font-size: 14px;">Content below</div>
+                </div>
+              </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;div&gt;Content above&lt;/div&gt;
+&#10;&lt;gl-divider&gt;&lt;/gl-divider&gt;
+&#10;&lt;div&gt;Content below&lt;/div&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>orientation</code></td>
+                    <td><code>"horizontal" | "vertical"</code></td>
+                    <td><code>"horizontal"</code></td>
+                    <td>Divider orientation</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="table" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Table</h2>
+              <p>Data tables with variants and hover effects.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-table variant="striped" motion="subtle">
+                <table>
   <thead>
     <tr>
       <th>Name</th>
@@ -1510,14 +2754,37 @@ button.addEventListener('gl-press', () => {
     <tr>
       <td>John Doe</td>
       <td>Developer</td>
-      <td><gl-badge>Active</gl-badge></td>
-    </tr>
-  </tbody>
-</gl-table>
-            </gl-codeblock>
-            <div class="props">
-              <h3>Attributes</h3>
-              <table class="propsTable">
+                      <td><gl-badge variant="secondary">Active</gl-badge></td>
+                  </tr>
+                </tbody>
+              </table>
+              </gl-table>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-table variant=&quot;striped&quot;&gt;
+&#10;  &lt;table&gt;
+&#10;    &lt;thead&gt;
+&#10;      &lt;tr&gt;
+&#10;        &lt;th&gt;Name&lt;/th&gt;
+&#10;        &lt;th&gt;Role&lt;/th&gt;
+&#10;        &lt;th&gt;Status&lt;/th&gt;
+&#10;      &lt;/tr&gt;
+&#10;    &lt;/thead&gt;
+&#10;    &lt;tbody&gt;
+&#10;      &lt;tr&gt;
+&#10;        &lt;td&gt;John Doe&lt;/td&gt;
+&#10;        &lt;td&gt;Developer&lt;/td&gt;
+&#10;        &lt;td&gt;&lt;gl-badge&gt;Active&lt;/gl-badge&gt;&lt;/td&gt;
+&#10;      &lt;/tr&gt;
+&#10;    &lt;/tbody&gt;
+&#10;  &lt;/table&gt;
+&#10;&lt;/gl-table&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
                 <thead>
                   <tr>
                     <th>Attribute</th>
@@ -1529,49 +2796,46 @@ button.addEventListener('gl-press', () => {
                 <tbody>
                   <tr>
                     <td><code>variant</code></td>
-                    <td><code>"bordered" | "striped" | "hover"</code></td>
-                    <td>-</td>
-                    <td>Visual style variant</td>
+                    <td><code>"default" | "bordered" | "striped" | "hover"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Table visual style variant</td>
                   </tr>
                   <tr>
                     <td><code>motion</code></td>
                     <td><code>"none" | "subtle" | "snappy"</code></td>
-                    <td>-</td>
-                    <td>Animation preset</td>
+                    <td><code>"subtle"</code></td>
+                    <td>Animation preset for row hover</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
+        </section>
 
-          <div class="component">
+<section id="link" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
             <h2>Link</h2>
-            <p class="desc">Styled link component with variants.</p>
-            <gl-card motion="subtle" style="margin: 24px 0">
-              <div class="stack">
-                <div>
-                  <gl-link href="#buttons">Default link</gl-link>
+              <p>Styled link component with variants.</p>
                 </div>
-                <div>
-                  <gl-link href="#cards" variant="muted">Muted link</gl-link>
-                </div>
-                <div>
+
+            <div class="docs-preview">
+              <div style="display: grid; gap: 8px;">
+                <gl-link href="#button">Default link</gl-link>
+                <gl-link href="#card" variant="muted">Muted link</gl-link>
                   <gl-link href="#forms" variant="destructive">Destructive link</gl-link>
                 </div>
-                <div>
-                  <gl-link href="#navigation" variant="ghost">Ghost link</gl-link>
                 </div>
-              </div>
-            </gl-card>
-            <gl-codeblock lang="html" copy motion="subtle">
-<gl-link href="/page">Default link</gl-link>
-<gl-link href="/page" variant="muted">Muted link</gl-link>
-<gl-link href="/page" variant="destructive">Destructive link</gl-link>
-<gl-link href="/page" variant="ghost">Ghost link</gl-link>
-            </gl-codeblock>
-            <div class="props">
-              <h3>Attributes</h3>
-              <table class="propsTable">
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-link href=&quot;/page&quot;&gt;Default link&lt;/gl-link&gt;
+&#10;&lt;gl-link href=&quot;/page&quot; variant=&quot;muted&quot;&gt;Muted link&lt;/gl-link&gt;
+&#10;&lt;gl-link href=&quot;/page&quot; variant=&quot;destructive&quot;&gt;Destructive link&lt;/gl-link&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
                 <thead>
                   <tr>
                     <th>Attribute</th>
@@ -1590,7 +2854,7 @@ button.addEventListener('gl-press', () => {
                   <tr>
                     <td><code>target</code></td>
                     <td><code>string</code></td>
-                    <td>-</td>
+                    <td><code>""</code></td>
                     <td>Link target (e.g., "_blank")</td>
                   </tr>
                   <tr>
@@ -1603,119 +2867,619 @@ button.addEventListener('gl-press', () => {
               </table>
             </div>
           </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Variants</h2>
+              <p>Different link variants for different visual styles.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: grid; gap: 8px;">
+                <gl-link href="#button">Default link</gl-link>
+                <gl-link href="#card" variant="muted">Muted link</gl-link>
+                <gl-link href="#forms" variant="destructive">Destructive link</gl-link>
+                <gl-link href="#forms" variant="ghost">Ghost link</gl-link>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-link href=&quot;#button&quot;&gt;Default link&lt;/gl-link&gt;
+&#10;&lt;gl-link href=&quot;#card&quot; variant=&quot;muted&quot;&gt;Muted link&lt;/gl-link&gt;
+&#10;&lt;gl-link href=&quot;#forms&quot; variant=&quot;destructive&quot;&gt;Destructive link&lt;/gl-link&gt;
+&#10;&lt;gl-link href=&quot;#forms&quot; variant=&quot;ghost&quot;&gt;Ghost link&lt;/gl-link&gt;"></gl-codeblock>
+            </div>
+          </div>
         </section>
-      </main>
+
+<section id="drawer" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Drawer</h2>
+              <p>Slide-out drawer component with backdrop and multiple positions.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-button trigger="drawer:drawerDemo">Open Drawer</gl-button>
+              <gl-drawer id="drawerDemo" side="bottom" size="md" close-on-backdrop>
+                <span slot="title">Drawer Title</span>
+                <div>Drawer content goes here. This is a bottom drawer example.</div>
+                <div slot="footer">
+                  <gl-button trigger="close:drawerDemo" variant="secondary">Cancel</gl-button>
+                  <gl-button>Confirm</gl-button>
+                </div>
+              </gl-drawer>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-button trigger=&quot;drawer:myDrawer&quot;&gt;Open Drawer&lt;/gl-button&gt;
+&#10;&lt;gl-drawer id=&quot;myDrawer&quot; side=&quot;bottom&quot; size=&quot;md&quot; close-on-backdrop&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;Drawer Title&lt;/span&gt;
+&#10;  &lt;div&gt;Drawer content goes here.&lt;/div&gt;
+&#10;  &lt;div slot=&quot;footer&quot;&gt;
+&#10;    &lt;gl-button trigger=&quot;close:myDrawer&quot; variant=&quot;secondary&quot;&gt;Cancel&lt;/gl-button&gt;
+&#10;    &lt;gl-button&gt;Confirm&lt;/gl-button&gt;
+&#10;  &lt;/div&gt;
+&#10;&lt;/gl-drawer&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>open</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Whether the drawer is open</td>
+                  </tr>
+                  <tr>
+                    <td><code>side</code></td>
+                    <td><code>"top" | "right" | "bottom" | "left"</code></td>
+                    <td><code>"right"</code></td>
+                    <td>Drawer position</td>
+                  </tr>
+                  <tr>
+                    <td><code>size</code></td>
+                    <td><code>"sm" | "md" | "lg" | "xl" | "full"</code></td>
+                    <td><code>"md"</code></td>
+                    <td>Drawer size</td>
+                  </tr>
+                  <tr>
+                    <td><code>close-on-backdrop</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Close drawer when backdrop is clicked</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="stepper" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Stepper</h2>
+              <p>Step-by-step wizard component with navigation and validation states.</p>
     </div>
 
-    <gl-modal id="modalDemo" label="Example modal" motion="snappy" surface="glass">
-      <div slot="header">
-        <div style="font-weight: 600; font-size: 16px; line-height: 24px">Example modal</div>
-        <div class="muted">Focus is trapped. Esc closes.</div>
+            <div class="docs-preview">
+              <gl-stepper current="1" variant="horizontal">
+                <gl-stepper-step slot="steps">
+                  <span slot="label">Step 1</span>
+                  <span slot="description">Account</span>
+                </gl-stepper-step>
+                <gl-stepper-step slot="steps">
+                  <span slot="label">Step 2</span>
+                  <span slot="description">Details</span>
+                </gl-stepper-step>
+                <gl-stepper-step slot="steps">
+                  <span slot="label">Step 3</span>
+                  <span slot="description">Review</span>
+                </gl-stepper-step>
+                <div slot="navigation" style="display: flex; justify-content: space-between; width: 100%;">
+                  <gl-button variant="secondary">Previous</gl-button>
+                  <gl-button>Next</gl-button>
       </div>
-      <div style="display: grid; gap: 12px">
-        <gl-input placeholder="Type anything">
-          <span slot="label">Input</span>
-          <span slot="description">This is inside the modal.</span>
-        </gl-input>
+              </gl-stepper>
       </div>
-      <div slot="footer" class="row" style="justify-content: flex-end">
-        <gl-button trigger="close:modalDemo" variant="secondary">Close</gl-button>
-        <gl-button trigger="toast" toast-title="Confirmed" toast-description="Action completed successfully" motion="snappy">Confirm</gl-button>
-      </div>
-    </gl-modal>
 
-    <gl-sidebar id="sidebarDemo" motion="snappy" side="right" surface="glass">
-      <span slot="title">Glint</span>
-      <div style="display: grid; gap: 10px">
-        <a class="link muted" href="./index.html">Home</a>
-        <a class="link muted" href="./components.html">Components</a>
-        <gl-divider></gl-divider>
-        <div class="muted">Theme</div>
-        <div class="row">
-          <gl-button id="themeLight" variant="secondary" size="sm">Light</gl-button>
-          <gl-button id="themeDark" variant="secondary" size="sm">Dark</gl-button>
-          <gl-button id="themeSystem" variant="secondary" size="sm">System</gl-button>
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-stepper current=&quot;1&quot; variant=&quot;horizontal&quot;&gt;
+&#10;  &lt;gl-stepper-step slot=&quot;steps&quot;&gt;
+&#10;    &lt;span slot=&quot;label&quot;&gt;Step 1&lt;/span&gt;
+&#10;    &lt;span slot=&quot;description&quot;&gt;Account&lt;/span&gt;
+&#10;  &lt;/gl-stepper-step&gt;
+&#10;  &lt;gl-stepper-step slot=&quot;steps&quot;&gt;
+&#10;    &lt;span slot=&quot;label&quot;&gt;Step 2&lt;/span&gt;
+&#10;    &lt;span slot=&quot;description&quot;&gt;Details&lt;/span&gt;
+&#10;  &lt;/gl-stepper-step&gt;
+&#10;  &lt;gl-stepper-step slot=&quot;steps&quot;&gt;
+&#10;    &lt;span slot=&quot;label&quot;&gt;Step 3&lt;/span&gt;
+&#10;    &lt;span slot=&quot;description&quot;&gt;Review&lt;/span&gt;
+&#10;  &lt;/gl-stepper-step&gt;
+&#10;  &lt;div slot=&quot;navigation&quot;&gt;
+&#10;    &lt;gl-button variant=&quot;secondary&quot;&gt;Previous&lt;/gl-button&gt;
+&#10;    &lt;gl-button&gt;Next&lt;/gl-button&gt;
+&#10;  &lt;/div&gt;
+&#10;&lt;/gl-stepper&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>current</code></td>
+                    <td><code>number</code></td>
+                    <td><code>0</code></td>
+                    <td>Current step index (0-based)</td>
+                  </tr>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"horizontal" | "vertical"</code></td>
+                    <td><code>"horizontal"</code></td>
+                    <td>Stepper layout direction</td>
+                  </tr>
+                  <tr>
+                    <td><code>size</code></td>
+                    <td><code>"sm" | "md" | "lg"</code></td>
+                    <td><code>"md"</code></td>
+                    <td>Step size</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="margin-top: 16px; font-size: 14px; color: var(--gl-muted);"><strong>gl-stepper-step:</strong> <code>error</code> (boolean) - Mark step as error state</p>
+            </div>
+          </div>
+        </section>
+
+<section id="menu" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Menu</h2>
+              <p>Context menu with keyboard navigation and rich content support.</p>
         </div>
+
+            <div class="docs-preview">
+              <gl-button id="menuTrigger">Open Menu</gl-button>
+              <gl-menu id="menuDemo" trigger-id="menuTrigger" position="bottom-start">
+                <gl-menu-label>Actions</gl-menu-label>
+                <gl-menu-item>
+                  <span slot="icon">✏️</span>
+                  Edit
+                </gl-menu-item>
+                <gl-menu-item>
+                  <span slot="icon">📋</span>
+                  Duplicate
+                </gl-menu-item>
+                <gl-menu-separator></gl-menu-separator>
+                <gl-menu-item variant="destructive">
+                  <span slot="icon">🗑️</span>
+                  Delete
+                </gl-menu-item>
+              </gl-menu>
       </div>
-    </gl-sidebar>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-button id=&quot;menuTrigger&quot;&gt;Open Menu&lt;/gl-button&gt;
+&#10;&lt;gl-menu id=&quot;menuDemo&quot; trigger-id=&quot;menuTrigger&quot; position=&quot;bottom-start&quot;&gt;
+&#10;  &lt;gl-menu-label&gt;Actions&lt;/gl-menu-label&gt;
+&#10;  &lt;gl-menu-item&gt;
+&#10;    &lt;span slot=&quot;icon&quot;&gt;✏️&lt;/span&gt;
+&#10;    Edit
+&#10;  &lt;/gl-menu-item&gt;
+&#10;  &lt;gl-menu-item&gt;
+&#10;    &lt;span slot=&quot;icon&quot;&gt;📋&lt;/span&gt;
+&#10;    Duplicate
+&#10;  &lt;/gl-menu-item&gt;
+&#10;  &lt;gl-menu-separator&gt;&lt;/gl-menu-separator&gt;
+&#10;  &lt;gl-menu-item variant=&quot;destructive&quot;&gt;
+&#10;    &lt;span slot=&quot;icon&quot;&gt;🗑️&lt;/span&gt;
+&#10;    Delete
+&#10;  &lt;/gl-menu-item&gt;
+&#10;&lt;/gl-menu&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>open</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Whether the menu is open</td>
+                  </tr>
+                  <tr>
+                    <td><code>trigger-id</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>ID of the trigger element</td>
+                  </tr>
+                  <tr>
+                    <td><code>position</code></td>
+                    <td><code>string</code></td>
+                    <td><code>"bottom-start"</code></td>
+                    <td>Menu position (e.g., "bottom-start", "top-end")</td>
+                  </tr>
+                  <tr>
+                    <td><code>motion</code></td>
+                    <td><code>"none" | "subtle" | "snappy"</code></td>
+                    <td><code>"subtle"</code></td>
+                    <td>Animation preset</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="margin-top: 16px; font-size: 14px; color: var(--gl-muted);"><strong>gl-menu-item:</strong> <code>disabled</code> (boolean), <code>variant</code> ("destructive"), <code>value</code> (string)</p>
+            </div>
+          </div>
+        </section>
+
+<section id="command-palette" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Command Palette</h2>
+              <p>Command palette with search, keyboard shortcuts, and grouped results.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-button onclick="document.querySelector('gl-command-palette').open = true">Open Command Palette (⌘K)</gl-button>
+              <gl-command-palette>
+                <gl-command-group slot="results">
+                  <span slot="label">Actions</span>
+                  <gl-command-item title="Create new file" keywords="new file create" value="new-file">
+                    <span slot="icon">📄</span>
+                    <span slot="description">Create a new file in the workspace</span>
+                    <span slot="shortcut">⌘N</span>
+                  </gl-command-item>
+                  <gl-command-item title="Open settings" keywords="settings preferences" value="settings">
+                    <span slot="icon">⚙️</span>
+                    <span slot="description">Open application settings</span>
+                    <span slot="shortcut">⌘,</span>
+                  </gl-command-item>
+                </gl-command-group>
+              </gl-command-palette>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-command-palette&gt;
+&#10;  &lt;gl-command-group slot=&quot;results&quot;&gt;
+&#10;    &lt;span slot=&quot;label&quot;&gt;Actions&lt;/span&gt;
+&#10;    &lt;gl-command-item title=&quot;Create new file&quot; keywords=&quot;new file create&quot; value=&quot;new-file&quot;&gt;
+&#10;      &lt;span slot=&quot;icon&quot;&gt;📄&lt;/span&gt;
+&#10;      &lt;span slot=&quot;description&quot;&gt;Create a new file&lt;/span&gt;
+&#10;      &lt;span slot=&quot;shortcut&quot;&gt;⌘N&lt;/span&gt;
+&#10;    &lt;/gl-command-item&gt;
+&#10;  &lt;/gl-command-group&gt;
+&#10;&lt;/gl-command-palette&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>open</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Whether the command palette is open</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="margin-top: 16px; font-size: 14px; color: var(--gl-muted);"><strong>gl-command-item:</strong> <code>title</code> (string), <code>keywords</code> (string), <code>value</code> (string), <code>disabled</code> (boolean)</p>
+            </div>
+          </div>
+        </section>
+
+<section id="split-pane" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Split Pane</h2>
+              <p>Resizable split pane layout with horizontal and vertical orientations.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-split-pane orientation="horizontal" split="50" style="height: 200px; border: 1px solid var(--gl-border); border-radius: var(--gl-radius);">
+                <div slot="first" style="padding: 16px; background: var(--gl-panel);">Left Panel</div>
+                <div slot="second" style="padding: 16px; background: var(--gl-panel);">Right Panel</div>
+              </gl-split-pane>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-split-pane orientation=&quot;horizontal&quot; split=&quot;50&quot; style=&quot;height: 200px;&quot;&gt;
+&#10;  &lt;div slot=&quot;first&quot;&gt;Left Panel&lt;/div&gt;
+&#10;  &lt;div slot=&quot;second&quot;&gt;Right Panel&lt;/div&gt;
+&#10;&lt;/gl-split-pane&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>orientation</code></td>
+                    <td><code>"horizontal" | "vertical"</code></td>
+                    <td><code>"horizontal"</code></td>
+                    <td>Split direction</td>
+                  </tr>
+                  <tr>
+                    <td><code>split</code></td>
+                    <td><code>number</code></td>
+                    <td><code>50</code></td>
+                    <td>Split percentage (0-100)</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable resizing</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="stack" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Stack</h2>
+              <p>Flexbox and Grid layout component with responsive options.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-stack direction="row" gap="md" align="center">
+                <gl-button>Button 1</gl-button>
+                <gl-button>Button 2</gl-button>
+                <gl-button>Button 3</gl-button>
+              </gl-stack>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-stack direction=&quot;row&quot; gap=&quot;md&quot; align=&quot;center&quot;&gt;
+&#10;  &lt;gl-button&gt;Button 1&lt;/gl-button&gt;
+&#10;  &lt;gl-button&gt;Button 2&lt;/gl-button&gt;
+&#10;  &lt;gl-button&gt;Button 3&lt;/gl-button&gt;
+&#10;&lt;/gl-stack&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-component-header" style="margin-top: 32px;">
+              <h3>Grid Variant</h3>
+            </div>
+
+            <div class="docs-preview">
+              <gl-stack variant="grid" columns="3" gap="md" responsive>
+                <gl-card><div style="padding: 16px;">Card 1</div></gl-card>
+                <gl-card><div style="padding: 16px;">Card 2</div></gl-card>
+                <gl-card><div style="padding: 16px;">Card 3</div></gl-card>
+              </gl-stack>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-stack variant=&quot;grid&quot; columns=&quot;3&quot; gap=&quot;md&quot; responsive&gt;
+&#10;  &lt;gl-card&gt;Card 1&lt;/gl-card&gt;
+&#10;  &lt;gl-card&gt;Card 2&lt;/gl-card&gt;
+&#10;  &lt;gl-card&gt;Card 3&lt;/gl-card&gt;
+&#10;&lt;/gl-stack&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>direction</code></td>
+                    <td><code>"row" | "column" | "row-reverse" | "column-reverse"</code></td>
+                    <td><code>"row"</code></td>
+                    <td>Flex direction</td>
+                  </tr>
+                  <tr>
+                    <td><code>gap</code></td>
+                    <td><code>"xs" | "sm" | "md" | "lg" | "xl"</code></td>
+                    <td><code>"md"</code></td>
+                    <td>Gap between items</td>
+                  </tr>
+                  <tr>
+                    <td><code>align</code></td>
+                    <td><code>"start" | "center" | "end" | "stretch"</code></td>
+                    <td><code>"start"</code></td>
+                    <td>Align items</td>
+                  </tr>
+                  <tr>
+                    <td><code>justify</code></td>
+                    <td><code>"start" | "center" | "end" | "between" | "around" | "evenly"</code></td>
+                    <td><code>"start"</code></td>
+                    <td>Justify content</td>
+                  </tr>
+                  <tr>
+                    <td><code>wrap</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Enable flex wrap</td>
+                  </tr>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"flex" | "grid"</code></td>
+                    <td><code>"flex"</code></td>
+                    <td>Layout variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>columns</code></td>
+                    <td><code>number</code></td>
+                    <td><code>-</code></td>
+                    <td>Grid columns (1-12, requires variant="grid")</td>
+                  </tr>
+                  <tr>
+                    <td><code>responsive</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Enable responsive grid</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="container" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Container</h2>
+              <p>Responsive container component with size variants and padding options.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-container size="md" style="background: var(--gl-panel); border: 1px solid var(--gl-border); border-radius: var(--gl-radius); padding: 24px;">
+                <div style="text-align: center;">Container content with max-width constraint</div>
+              </gl-container>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-container size=&quot;md&quot;&gt;
+&#10;  &lt;div&gt;Container content with max-width constraint&lt;/div&gt;
+&#10;&lt;/gl-container&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>size</code></td>
+                    <td><code>"sm" | "md" | "lg" | "xl" | "2xl" | "full"</code></td>
+                    <td><code>"md"</code></td>
+                    <td>Container max-width size</td>
+                  </tr>
+                  <tr>
+                    <td><code>fluid</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Full width container (no max-width)</td>
+                  </tr>
+                  <tr>
+                    <td><code>centered</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Center content vertically and horizontally</td>
+                  </tr>
+                  <tr>
+                    <td><code>padding</code></td>
+                    <td><code>"none" | "sm" | "md" | "lg" | "xl"</code></td>
+                    <td><code>"md"</code></td>
+                    <td>Horizontal padding size</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+</main>
+    </div>
 
     <script>
-      const html = document.documentElement;
-      const toaster = document.getElementById("toaster");
-      const modal = document.getElementById("modalDemo");
-      const sidebar = document.getElementById("sidebarDemo");
 
-      const setTheme = (t) => html.setAttribute("data-glint-theme", t);
-      document.getElementById("toggleTheme").addEventListener("gl-press", () => {
-        const cur = html.getAttribute("data-glint-theme") || "system";
-        setTheme(cur === "dark" ? "light" : "dark");
-      });
-      document.getElementById("themeLight").addEventListener("gl-press", () => setTheme("light"));
-      document.getElementById("themeDark").addEventListener("gl-press", () => setTheme("dark"));
-      document.getElementById("themeSystem").addEventListener("gl-press", () => setTheme("system"));
-
-      document.getElementById("toggleSidebar").addEventListener("gl-press", () => {
-        const sidebarEl = document.getElementById("sidebar");
-        sidebarEl.classList.toggle("open");
-      });
-
-
-      document.getElementById("sliderDemo")?.addEventListener("gl-change", (e) => {
-        document.getElementById("sliderValue").textContent = String(e.detail.value);
-      });
-
-      document.getElementById("pagerDemo")?.addEventListener("gl-change", (e) => {
-        document.getElementById("pageLabel").textContent = String(e.detail.page);
-      });
-
-      document.getElementById("dropdownDemo")?.addEventListener("gl-select", (e) => {
-        toaster.show({ title: "Selected", description: e.detail.value, duration: 2000 });
-      });
-
-      document.querySelectorAll(".codeCopy").forEach((btn) => {
-        btn.addEventListener("click", async () => {
-          const code = btn.getAttribute("data-code");
-          if (code) {
-            await navigator.clipboard.writeText(code);
-            btn.textContent = "Copied!";
-            btn.classList.add("copied");
-            setTimeout(() => {
-              btn.textContent = "Copy";
-              btn.classList.remove("copied");
-            }, 2000);
-          }
-        });
-      });
-
-      const navLinks = document.querySelectorAll(".nav-link");
-      const sections = document.querySelectorAll(".section");
+      // Active nav link
+      const navLinks = document.querySelectorAll('.docs-nav-link');
+      const sections = document.querySelectorAll('.docs-section');
 
       const updateActiveNav = () => {
-        const scrollY = window.scrollY + 150;
+        const scrollY = window.scrollY + 100;
         sections.forEach((section, index) => {
           const top = section.offsetTop;
           const bottom = top + section.offsetHeight;
           if (scrollY >= top && scrollY < bottom) {
-            navLinks.forEach((link) => link.classList.remove("active"));
-            if (navLinks[index]) navLinks[index].classList.add("active");
+            navLinks.forEach(link => link.classList.remove('active'));
+            const id = section.id;
+            const link = document.querySelector(`.docs-nav-link[href="#${id}"]`);
+            if (link) link.classList.add('active');
           }
         });
       };
 
-      window.addEventListener("scroll", updateActiveNav);
+      window.addEventListener('scroll', updateActiveNav);
       updateActiveNav();
 
-      navLinks.forEach((link) => {
-        link.addEventListener("click", (e) => {
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
           e.preventDefault();
-          const targetId = link.getAttribute("href").slice(1);
+          const targetId = link.getAttribute('href').slice(1);
           const target = document.getElementById(targetId);
           if (target) {
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
         });
       });
+
+      // Menu trigger
+      const menuTrigger = document.getElementById('menuTrigger');
+      const menuDemo = document.getElementById('menuDemo');
+      if (menuTrigger && menuDemo) {
+        menuTrigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          menuDemo.open = !menuDemo.open;
+        });
+      }
     </script>
     <script src="../dist/glint.js"></script>
   </body>
 </html>
+

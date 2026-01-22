@@ -13,21 +13,23 @@ template.innerHTML = `
     .trigger{display:inline-block;cursor:pointer}
     .menu{
       position:absolute;
-      top:calc(100% + 6px);
+      top:calc(100% + 8px);
       left:0;
-      min-width:180px;
+      min-width:200px;
       background:var(--gl-panel);
       border:1px solid var(--gl-border);
-      border-radius:var(--gl-radius);
-      box-shadow:var(--gl-shadow-lg);
-      padding:6px;
+      border-radius:8px;
+      box-shadow:0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+      padding:4px;
       z-index:var(--gl-z-tooltip);
       display:none;
       opacity:0;
-      transform:translateY(calc(-6px * var(--gl-motion) * var(--gl-dropdown-amp))) scale(0.98);
+      transform:translateY(calc(-8px * var(--gl-motion) * var(--gl-dropdown-amp))) scale(0.96);
       transition:opacity var(--gl-dropdown-dur) var(--gl-dropdown-ease), transform var(--gl-dropdown-dur) var(--gl-dropdown-ease);
       max-height:min(320px, 80vh);
       overflow:auto;
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
     }
     :host([open]) .menu{
       display:block;
@@ -45,21 +47,36 @@ template.innerHTML = `
     .item{
       display:block;
       width:100%;
-      padding:8px 12px;
+      padding:10px 12px;
       border:none;
       background:transparent;
       color:var(--gl-fg);
       text-align:left;
       cursor:pointer;
-      border-radius:8px;
-      font-size:var(--gl-text-md);
-      line-height:var(--gl-line-md);
-      transition:background var(--gl-dur-1) var(--gl-ease);
+      border-radius:6px;
+      font-size:14px;
+      line-height:20px;
+      transition:background 0.15s ease, color 0.15s ease;
     }
-    .item:hover{background:var(--gl-hover)}
-    .item:focus-visible{outline:2px solid var(--gl-ring);outline-offset:2px}
-    .item[disabled]{opacity:0.5;cursor:not-allowed;pointer-events:none}
-    .divider{height:1px;background:var(--gl-border);margin:6px 0}
+    .item:hover{
+      background:var(--gl-hover);
+      color:var(--gl-fg);
+    }
+    .item:focus-visible{
+      outline:2px solid var(--gl-ring);
+      outline-offset:2px;
+      background:var(--gl-hover);
+    }
+    .item[disabled]{
+      opacity:0.5;
+      cursor:not-allowed;
+      pointer-events:none;
+    }
+    .divider{
+      height:1px;
+      background:var(--gl-border);
+      margin:4px 0;
+    }
   </style>
   <div part="trigger" class="trigger"><slot name="trigger"></slot></div>
   <div part="menu" class="menu" role="menu" aria-hidden="true">
