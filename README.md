@@ -4,7 +4,7 @@
   <img src="https://i.postimg.cc/Nf5mThW2/Chat-GPT-Image-Jan-21-2026-10-06-54-AM-(1).png" alt="Glint" width="180" />
 </p>
 
-**Modern, minimal UI components built with Web Components + Shadow DOM**
+**Modern, minimal Web Components UI library built with Shadow DOM**
 
 [![npm version](https://img.shields.io/npm/v/@amped17/glint-ui?style=for-the-badge&color=693B93)](https://www.npmjs.com/package/@amped17/glint-ui)
 [![License](https://img.shields.io/npm/l/@amped17/glint-ui?style=for-the-badge&color=693B93)](LICENSE)
@@ -13,7 +13,12 @@
 
 **One CSS file. One JS file. Zero dependencies.**
 
-[Documentation](#-documentation) • [Components](#-components) • [Examples](#-examples) • [Installation](#-installation)
+### TL;DR
+- 🎯 **Framework agnostic** - Works with React, Vue, Angular, Svelte, or vanilla JS
+- 📦 **Zero dependencies** - One CSS file, one JS file, no build step required
+- 🎨 **50+ components** - Complete UI library with forms, navigation, overlays, and layout components
+
+[Documentation](#-documentation) • [Components](#-components) • [Quick Start](#-quick-start) • [Installation](#-installation)
 
 </div>
 
@@ -21,7 +26,7 @@
 
 ## 🚀 Why Glint?
 
-**Glint** is a modern, lightweight UI component library built with **Web Components** and **Shadow DOM**. Inspired by shadcn/ui's elegant API and UX, Glint ships as a single JavaScript file and CSS file—no build step required.
+**Glint** is a modern, lightweight **Web Components UI library** built with **Shadow DOM**. Inspired by shadcn/ui's elegant API and UX, Glint ships as a single JavaScript file and CSS file—no build step required. Perfect for building framework-agnostic UI components that work everywhere.
 
 ### ✨ Key Features
 
@@ -31,10 +36,29 @@
 - 🎨 **Highly Customizable** - CSS custom properties for easy theming and customization.
 - 🎭 **Motion Options** - Subtle, snappy, or bounce animations. Respects `prefers-reduced-motion`.
 - 🔒 **Shadow DOM** - Styles are encapsulated. No CSS conflicts. Works alongside any stylesheet.
-- 📦 **Tree Shakeable** - Import only what you need. ESM and CommonJS support.
+- 📦 **Tree Shakeable** - Import only what you need (ESM). Shadow DOM encapsulation doesn't prevent tree-shaking of unused component definitions.
 - 🚀 **Framework Agnostic** - Works with React, Vue, Angular, Svelte, or vanilla JavaScript.
 - ⚙️ **TypeScript Ready** - Full TypeScript support with comprehensive type definitions.
-- 🎪 **50+ Components** - Buttons, forms, navigation, overlays, feedback, layout, and more.
+- 🎪 **50+ Components** - [Complete component list](#-components) with forms, navigation, overlays, feedback, and layout components.
+
+---
+
+## 🎯 Quick Start
+
+```html
+<!DOCTYPE html>
+<html lang="en" class="glint">
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@amped17/glint-ui@0.2.0/dist/glint.css" />
+</head>
+<body>
+  <gl-button>Click me</gl-button>
+  <script src="https://cdn.jsdelivr.net/npm/@amped17/glint-ui@0.2.0/dist/glint.js"></script>
+</body>
+</html>
+```
+
+That's it! The `defineGlint()` function is called automatically and is **idempotent** (safe to call multiple times).
 
 ---
 
@@ -49,9 +73,12 @@ npm install @amped17/glint-ui
 ### CDN / Plain HTML
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@amped17/glint-ui/dist/glint.css" />
-<script src="https://cdn.jsdelivr.net/npm/@amped17/glint-ui/dist/glint.js"></script>
+<!-- Recommended: Pin to specific version for stability -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@amped17/glint-ui@0.2.0/dist/glint.css" />
+<script src="https://cdn.jsdelivr.net/npm/@amped17/glint-ui@0.2.0/dist/glint.js"></script>
 ```
+
+**Note:** Always pin to a specific version in production. The CDN script automatically calls `defineGlint()` (idempotent).
 
 ### ESM
 
@@ -59,7 +86,7 @@ npm install @amped17/glint-ui
 import "@amped17/glint-ui/glint.css";
 import { defineGlint } from "@amped17/glint-ui";
 
-defineGlint();
+defineGlint(); // Idempotent - safe to call multiple times
 ```
 
 ### CommonJS
@@ -68,35 +95,22 @@ defineGlint();
 require("@amped17/glint-ui/glint.css");
 const { defineGlint } = require("@amped17/glint-ui");
 
-defineGlint();
+defineGlint(); // Idempotent - safe to call multiple times
 ```
 
 ---
 
-## 🎯 Quick Start
+## 📊 Browser Support
 
-```html
-<!DOCTYPE html>
-<html lang="en" class="glint" data-glint-theme="system">
-<head>
-  <link rel="stylesheet" href="./dist/glint.css" />
-</head>
-<body>
-  <gl-button motion="snappy">Click me</gl-button>
-  <gl-input placeholder="Enter your email">
-    <span slot="label">Email</span>
-  </gl-input>
-  <gl-card surface="glass" effect="tilt">
-    <div slot="header">
-      <div style="font-weight: 600">Card Title</div>
-    </div>
-    Card content goes here
-  </gl-card>
+Glint works in all modern browsers that support Web Components (Custom Elements v1) and Shadow DOM v1.
 
-  <script src="./dist/glint.js"></script>
-</body>
-</html>
-```
+**Supported browsers:**
+- Chrome/Edge 67+
+- Firefox 63+
+- Safari 10.1+
+- Opera 54+
+
+**Note:** Glint requires CSS Custom Properties support, which is available in all modern browsers listed above.
 
 ---
 
@@ -151,7 +165,7 @@ Glint automatically respects `prefers-reduced-motion` for accessibility.
 - **Radio** - Radio button groups
 - **Switch** - Toggle switch
 - **Slider** - Range input with keyboard support
-- **Date Picker** - Calendar-based date selection with range support
+- **Date Picker** - Calendar-based date selection with range support (advanced)
 - **Time Picker** - Time selection input with custom picker UI
 - **Color Picker** - Color selection with hex/rgb/hsl support
 - **File Upload** - Drag & drop file upload with preview and validation
@@ -168,17 +182,16 @@ Glint automatically respects `prefers-reduced-motion` for accessibility.
 - **Accordion** - Collapsible content panels
 - **Breadcrumb** - Navigation trail
 - **Pagination** - Page navigation controls
-- **Drawer** - Slide-out drawer component with backdrop and multiple positions
 - **Stepper** - Step-by-step wizard component with navigation
 - **Menu** - Context menu with keyboard navigation
-- **Command Palette** - Command palette with search and keyboard shortcuts
+- **Command Palette** - Command palette with search and keyboard shortcuts (advanced)
 - **Split Pane** - Resizable split pane layout
 - **Stack** - Flexbox and Grid layout component
 - **Container** - Responsive container component
 
 ### Overlays & Modals
 - **Modal** - Dialog with focus trap and backdrop
-- **Drawer** - Slide-out drawer component with backdrop
+- **Drawer** - Slide-out drawer component with backdrop and multiple positions
 - **Sidebar** - Slide-out panel
 - **Popover** - Positioned popup with rich content
 - **Tooltip** - Hover/focus tooltip
@@ -244,14 +257,11 @@ Auto-wire buttons to open/close components without JavaScript:
 
 ## 🌟 Use Cases
 
-- **Dashboard Applications** - Build powerful admin panels with comprehensive components, command palettes, and data tables
-- **Form Heavy Applications** - Create beautiful, accessible forms with validation, date/time pickers, file uploads, and more
-- **Marketing Websites** - Stunning landing pages with glassmorphism and animations
-- **Web Applications** - Framework-agnostic components for any stack
-- **Design Systems** - Customizable foundation for your design system
-- **Wizard/Onboarding Flows** - Step-by-step wizards with the Stepper component
-- **Data Visualization** - Tables, charts, and data display components
-- **Admin Panels** - Complete admin interfaces with navigation, modals, drawers, and command palettes
+- **Dashboard & Admin Panels** - Complete admin interfaces with command palettes, data tables, navigation, and modals
+- **Form Heavy Applications** - Beautiful, accessible forms with validation, date/time pickers, file uploads, and multi-step wizards
+- **Marketing Websites** - Stunning landing pages with glassmorphism effects and smooth animations
+- **Design Systems** - Customizable foundation for building your own design system
+- **Framework-Agnostic Projects** - Works seamlessly with React, Vue, Angular, Svelte, or vanilla JavaScript
 
 ---
 
@@ -337,16 +347,15 @@ After building, open:
 
 ## 📊 Browser Support
 
-Glint works in all modern browsers that support:
-- Web Components (Custom Elements v1)
-- Shadow DOM v1
-- CSS Custom Properties
+Glint works in all modern browsers that support Web Components (Custom Elements v1) and Shadow DOM v1.
 
 **Supported browsers:**
 - Chrome/Edge 67+
 - Firefox 63+
 - Safari 10.1+
 - Opera 54+
+
+**Note:** Glint requires CSS Custom Properties support, which is available in all modern browsers listed above.
 
 ---
 
@@ -365,6 +374,28 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🔄 Comparison
+
+### Glint vs Other Libraries
+
+| Feature | Glint | shadcn/ui | Radix UI | Shoelace |
+|---------|-------|-----------|----------|----------|
+| **Framework** | Web Components | React | React | Web Components |
+| **Shadow DOM** | ✅ Yes | ❌ No | ❌ No | ✅ Yes |
+| **Zero Dependencies** | ✅ Yes | ⚠️ React required | ⚠️ React required | ✅ Yes |
+| **Framework Agnostic** | ✅ Yes | ❌ React only | ❌ React only | ✅ Yes |
+| **Build Step Required** | ❌ No | ✅ Yes | ✅ Yes | ❌ No |
+| **TypeScript** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Tree Shakeable** | ✅ Yes (ESM) | ✅ Yes | ✅ Yes | ✅ Yes |
+
+**When to choose Glint:**
+- You need framework-agnostic components
+- You want zero dependencies and no build step
+- You're building with vanilla JavaScript or multiple frameworks
+- You need Shadow DOM encapsulation for style isolation
 
 ---
 
