@@ -39,6 +39,21 @@ import { defineTabs } from "./components/tabs/define.js";
 import { defineToast } from "./components/toast/define.js";
 import { defineTooltip } from "./components/tooltip/define.js";
 import { defineTopbar } from "./components/topbar/define.js";
+import { defineDatePicker } from "./components/date-picker/define.js";
+import { defineTimePicker } from "./components/time-picker/define.js";
+import { defineColorPicker } from "./components/color-picker/define.js";
+import { defineFileUpload } from "./components/file-upload/define.js";
+import { defineRating } from "./components/rating/define.js";
+import { defineSearchInput } from "./components/search-input/define.js";
+import { defineTagInput } from "./components/tag-input/define.js";
+import { defineForm } from "./components/form/define.js";
+import { defineCommandPalette } from "./components/command-palette/define.js";
+import { defineContainer } from "./components/container/define.js";
+import { defineDrawer } from "./components/drawer/define.js";
+import { defineMenu } from "./components/menu/define.js";
+import { defineSplitPane } from "./components/split-pane/define.js";
+import { defineStack } from "./components/stack/define.js";
+import { defineStepper } from "./components/stepper/define.js";
 
 export { defineAccordion, GlAccordion, GlAccordionItem } from "./components/accordion/define.js";
 export { defineAlert, GlAlert } from "./components/alert/define.js";
@@ -71,6 +86,21 @@ export { defineTabs, GlTabs, GlTab, GlTabPanel } from "./components/tabs/define.
 export { defineToast, GlToast, GlToaster } from "./components/toast/define.js";
 export { defineTooltip, GlTooltip } from "./components/tooltip/define.js";
 export { defineTopbar, GlTopbar } from "./components/topbar/define.js";
+export { defineDatePicker, GlDatePicker } from "./components/date-picker/define.js";
+export { defineTimePicker, GlTimePicker } from "./components/time-picker/define.js";
+export { defineColorPicker, GlColorPicker } from "./components/color-picker/define.js";
+export { defineFileUpload, GlFileUpload } from "./components/file-upload/define.js";
+export { defineRating, GlRating } from "./components/rating/define.js";
+export { defineSearchInput, GlSearchInput } from "./components/search-input/define.js";
+export { defineTagInput, GlTagInput } from "./components/tag-input/define.js";
+export { defineForm, GlForm } from "./components/form/define.js";
+export { defineCommandPalette, GlCommandPalette, GlCommandItem, GlCommandGroup } from "./components/command-palette/define.js";
+export { defineContainer, GlContainer } from "./components/container/define.js";
+export { defineDrawer, GlDrawer } from "./components/drawer/define.js";
+export { defineMenu, GlMenu, GlMenuItem, GlMenuSeparator, GlMenuLabel } from "./components/menu/define.js";
+export { defineSplitPane, GlSplitPane } from "./components/split-pane/define.js";
+export { defineStack, GlStack } from "./components/stack/define.js";
+export { defineStepper, GlStepper, GlStepperStep } from "./components/stepper/define.js";
 
 export function defineGlint(): void {
   defineAccordion();
@@ -104,6 +134,21 @@ export function defineGlint(): void {
   defineToast();
   defineTooltip();
   defineTopbar();
+  defineDatePicker();
+  defineTimePicker();
+  defineColorPicker();
+  defineFileUpload();
+  defineRating();
+  defineSearchInput();
+  defineTagInput();
+  defineForm();
+  defineCommandPalette();
+  defineContainer();
+  defineDrawer();
+  defineMenu();
+  defineSplitPane();
+  defineStack();
+  defineStepper();
 }
 
 declare global {

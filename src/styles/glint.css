@@ -75,6 +75,7 @@
   --gl-enter-opacity: 0;
 
   --gl-z-tooltip: 40;
+  --gl-z-popover: 45;
   --gl-z-toast: 50;
   --gl-z-modal: 60;
 
