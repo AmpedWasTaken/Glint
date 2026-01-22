@@ -34,7 +34,7 @@
 - 📦 **Tree Shakeable** - Import only what you need. ESM and CommonJS support.
 - 🚀 **Framework Agnostic** - Works with React, Vue, Angular, Svelte, or vanilla JavaScript.
 - ⚙️ **TypeScript Ready** - Full TypeScript support with comprehensive type definitions.
-- 🎪 **30+ Components** - Buttons, forms, navigation, overlays, feedback, and more.
+- 🎪 **50+ Components** - Buttons, forms, navigation, overlays, feedback, layout, and more.
 
 ---
 
@@ -151,6 +151,14 @@ Glint automatically respects `prefers-reduced-motion` for accessibility.
 - **Radio** - Radio button groups
 - **Switch** - Toggle switch
 - **Slider** - Range input with keyboard support
+- **Date Picker** - Calendar-based date selection with range support
+- **Time Picker** - Time selection input with custom picker UI
+- **Color Picker** - Color selection with hex/rgb/hsl support
+- **File Upload** - Drag & drop file upload with preview and validation
+- **Search Input** - Search input with autocomplete suggestions
+- **Tag Input** - Multi-tag input with add/remove functionality
+- **Rating** - Star rating component with keyboard navigation
+- **Form** - Form wrapper with validation and submission handling
 
 ### Layout & Navigation
 - **Card** - Container with header, body, footer slots
@@ -160,9 +168,17 @@ Glint automatically respects `prefers-reduced-motion` for accessibility.
 - **Accordion** - Collapsible content panels
 - **Breadcrumb** - Navigation trail
 - **Pagination** - Page navigation controls
+- **Drawer** - Slide-out drawer component with backdrop and multiple positions
+- **Stepper** - Step-by-step wizard component with navigation
+- **Menu** - Context menu with keyboard navigation
+- **Command Palette** - Command palette with search and keyboard shortcuts
+- **Split Pane** - Resizable split pane layout
+- **Stack** - Flexbox and Grid layout component
+- **Container** - Responsive container component
 
 ### Overlays & Modals
 - **Modal** - Dialog with focus trap and backdrop
+- **Drawer** - Slide-out drawer component with backdrop
 - **Sidebar** - Slide-out panel
 - **Popover** - Positioned popup with rich content
 - **Tooltip** - Hover/focus tooltip
@@ -181,6 +197,7 @@ Glint automatically respects `prefers-reduced-motion` for accessibility.
 ### Code & Data
 - **Codeblock** - Syntax-highlighted code blocks with copy
 - **Table** - Data tables with variants
+- **Link** - Styled link component with variants
 
 ---
 
@@ -212,6 +229,7 @@ Auto-wire buttons to open/close components without JavaScript:
 ```html
 <gl-button trigger="modal:myModal">Open Modal</gl-button>
 <gl-button trigger="sidebar:mySidebar">Open Sidebar</gl-button>
+<gl-button trigger="drawer:myDrawer">Open Drawer</gl-button>
 <gl-button trigger="toast" toast-title="Success!" toast-description="Action completed">Show Toast</gl-button>
 <gl-button trigger="close:myModal">Close</gl-button>
 ```
@@ -226,11 +244,14 @@ Auto-wire buttons to open/close components without JavaScript:
 
 ## 🌟 Use Cases
 
-- **Dashboard Applications** - Build powerful admin panels with comprehensive components
-- **Form Heavy Applications** - Create beautiful, accessible forms with validation
+- **Dashboard Applications** - Build powerful admin panels with comprehensive components, command palettes, and data tables
+- **Form Heavy Applications** - Create beautiful, accessible forms with validation, date/time pickers, file uploads, and more
 - **Marketing Websites** - Stunning landing pages with glassmorphism and animations
 - **Web Applications** - Framework-agnostic components for any stack
 - **Design Systems** - Customizable foundation for your design system
+- **Wizard/Onboarding Flows** - Step-by-step wizards with the Stepper component
+- **Data Visualization** - Tables, charts, and data display components
+- **Admin Panels** - Complete admin interfaces with navigation, modals, drawers, and command palettes
 
 ---
 
