@@ -12,12 +12,6 @@
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0-brightgreen?style=for-the-badge)](package.json)
 
 **One CSS file. One JS file. Zero dependencies.**
-
-### TL;DR
-- 🎯 **Framework agnostic** - Works with React, Vue, Angular, Svelte, or vanilla JS
-- 📦 **Zero dependencies** - One CSS file, one JS file, no build step required
-- 🎨 **50+ components** - Complete UI library with forms, navigation, overlays, and layout components
-
 [Documentation](#-documentation) • [Components](#-components) • [Quick Start](#-quick-start) • [Installation](#-installation)
 
 </div>
