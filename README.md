@@ -12,6 +12,7 @@
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0-brightgreen?style=for-the-badge)](package.json)
 
 **One CSS file. One JS file. Zero dependencies.**
+
 [Documentation](#-documentation) • [Components](#-components) • [Quick Start](#-quick-start) • [Installation](#-installation)
 
 </div>
