@@ -17,7 +17,49 @@ tabsTemplate.innerHTML = `
       width:max-content;
       max-width:100%;
       overflow:auto;
+      scroll-behavior:smooth;
+      scrollbar-width:thin;
+      scrollbar-color:var(--gl-border) transparent;
     }
+    .list::-webkit-scrollbar{height:6px}
+    .list::-webkit-scrollbar-track{background:transparent}
+    .list::-webkit-scrollbar-thumb{background:var(--gl-border);border-radius:3px}
+    .list::-webkit-scrollbar-thumb:hover{background:var(--gl-muted)}
+    :host([scrollable]) .list{
+      position:relative;
+      overflow:hidden;
+    }
+    :host([scrollable]) .list-inner{
+      display:flex;
+      gap:var(--gl-space-2);
+      overflow-x:auto;
+      scroll-behavior:smooth;
+      scrollbar-width:none;
+    }
+    :host([scrollable]) .list-inner::-webkit-scrollbar{display:none}
+    :host([scrollable]) .scroll-btn{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      z-index:1;
+      background:var(--gl-panel);
+      border:1px solid var(--gl-border);
+      border-radius:50%;
+      width:28px;
+      height:28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity var(--gl-dur-1) var(--gl-ease);
+      box-shadow:var(--gl-shadow-sm);
+    }
+    :host([scrollable]:hover) .scroll-btn{opacity:1;pointer-events:auto}
+    :host([scrollable]) .scroll-btn-left{left:4px}
+    :host([scrollable]) .scroll-btn-right{right:4px}
+    :host([scrollable]) .scroll-btn:disabled{opacity:0.3;cursor:not-allowed}
     :host([orientation="vertical"]) .wrap{
       display:grid;
       grid-template-columns:auto 1fr;
@@ -36,7 +78,19 @@ tabsTemplate.innerHTML = `
     .panels{min-width:0}
   </style>
   <div class="wrap" part="tabs">
-    <div class="list" part="list" role="tablist"><slot name="tabs"></slot></div>
+    <div class="list" part="list" role="tablist">
+      <div class="list-inner" part="list-inner"><slot name="tabs"></slot></div>
+      <button class="scroll-btn scroll-btn-left" part="scroll-left" aria-label="Scroll left" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      <button class="scroll-btn scroll-btn-right" part="scroll-right" aria-label="Scroll right" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+    </div>
     <div class="panels" part="panels"><slot name="panels"></slot></div>
   </div>
 `;
@@ -204,8 +258,12 @@ export class GlTabPanel extends HTMLElement {
 export class GlTabs extends HTMLElement {
   static tagName = "gl-tabs";
   static get observedAttributes() {
-    return ["value", "orientation"];
+    return ["value", "orientation", "scrollable"];
   }
+
+  #listInner!: HTMLElement;
+  #scrollLeft!: HTMLButtonElement;
+  #scrollRight!: HTMLButtonElement;
 
   get value() {
     return this.getAttribute("value") ?? "";
@@ -226,6 +284,17 @@ export class GlTabs extends HTMLElement {
   connectedCallback() {
     if (!this.shadowRoot) this.attachShadow({ mode: "open" });
     this.shadowRoot!.appendChild(tabsTemplate.content.cloneNode(true));
+    this.#listInner = this.shadowRoot!.querySelector(".list-inner") as HTMLElement;
+    this.#scrollLeft = this.shadowRoot!.querySelector(".scroll-btn-left") as HTMLButtonElement;
+    this.#scrollRight = this.shadowRoot!.querySelector(".scroll-btn-right") as HTMLButtonElement;
+    
+    if (this.hasAttribute("scrollable")) {
+      this.#scrollLeft.addEventListener("click", () => this.#scroll(-100));
+      this.#scrollRight.addEventListener("click", () => this.#scroll(100));
+      this.#listInner.addEventListener("scroll", () => this.#updateScrollButtons());
+      this.#updateScrollButtons();
+    }
+    
     this.#sync();
   }
 
@@ -258,5 +327,36 @@ export class GlTabs extends HTMLElement {
       activeTab.setAttribute("aria-controls", activePanel.idForAria);
       activePanel.setAttribute("aria-labelledby", activeTab.idForAria);
     }
+
+    if (this.hasAttribute("scrollable") && activeTab) {
+      queueMicrotask(() => this.#scrollToTab(activeTab));
+    }
+  }
+
+  #scroll(delta: number) {
+    if (!this.#listInner) return;
+    this.#listInner.scrollBy({ left: delta, behavior: "smooth" });
+  }
+
+  #scrollToTab(tab: GlTab) {
+    if (!this.#listInner || !tab) return;
+    const tabRect = tab.getBoundingClientRect();
+    const listRect = this.#listInner.getBoundingClientRect();
+    const scrollLeft = this.#listInner.scrollLeft;
+    const tabLeft = tab.offsetLeft;
+    const tabWidth = tabRect.width;
+    
+    if (tabLeft < scrollLeft) {
+      this.#listInner.scrollTo({ left: tabLeft - 8, behavior: "smooth" });
+    } else if (tabLeft + tabWidth > scrollLeft + listRect.width) {
+      this.#listInner.scrollTo({ left: tabLeft + tabWidth - listRect.width + 8, behavior: "smooth" });
+    }
+  }
+
+  #updateScrollButtons() {
+    if (!this.#listInner || !this.#scrollLeft || !this.#scrollRight) return;
+    const { scrollLeft, scrollWidth, clientWidth } = this.#listInner;
+    this.#scrollLeft.disabled = scrollLeft <= 0;
+    this.#scrollRight.disabled = scrollLeft >= scrollWidth - clientWidth - 1;
   }
 }
