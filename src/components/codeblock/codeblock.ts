@@ -6,6 +6,8 @@ export class GlCodeblock extends HTMLElement {
   #pre?: HTMLPreElement;
   #code?: HTMLElement;
   #copyBtn?: HTMLButtonElement;
+  #foldBtn?: HTMLButtonElement;
+  #lineNumbers?: HTMLElement;
   #codeContent = "";
 
   constructor() {
@@ -72,6 +74,8 @@ export class GlCodeblock extends HTMLElement {
 
     const lang = this.getAttribute("lang") || "text";
     const showCopy = this.hasAttribute("copy");
+    const showLines = this.hasAttribute("line-numbers");
+    const foldable = this.hasAttribute("foldable");
 
     // Ensure content is extracted
     if (!this.#codeContent) {
@@ -122,6 +126,23 @@ export class GlCodeblock extends HTMLElement {
         .copyBtn.copied {
           color: var(--gl-success);
         }
+        .code-wrapper{
+          display:flex;
+          overflow-x:auto;
+        }
+        .line-numbers{
+          display:none;
+          padding:16px 8px 16px 16px;
+          background:var(--gl-bg);
+          border-right:1px solid var(--gl-border);
+          font-family:"Consolas", "Monaco", "Courier New", monospace;
+          font-size:13px;
+          line-height:1.6;
+          color:var(--gl-muted);
+          user-select:none;
+          text-align:right;
+        }
+        :host([line-numbers]) .line-numbers{display:block}
         pre {
           margin: 0;
           padding: 16px;
@@ -131,11 +152,27 @@ export class GlCodeblock extends HTMLElement {
           line-height: 1.6;
           color: var(--gl-fg);
           background: var(--gl-panel);
+          flex:1;
         }
         code {
           font-family: inherit;
           display: block;
         }
+        .fold-btn{
+          display:none;
+          all:unset;
+          cursor:pointer;
+          padding:4px 8px;
+          border-radius:4px;
+          font-size:12px;
+          color:var(--gl-muted);
+          transition:background var(--gl-dur-1) var(--gl-ease);
+        }
+        .fold-btn:hover{background:var(--gl-hover)}
+        :host([foldable]) .fold-btn{display:inline-flex}
+        :host([folded]) pre{max-height:200px;overflow:hidden}
+        :host([folded]) .fold-btn::before{content:"Expand"}
+        :host(:not([folded])[foldable]) .fold-btn::before{content:"Collapse"}
         :host([motion="subtle"]) pre {
           transition: opacity var(--gl-dur-2) var(--gl-ease-out);
         }
@@ -162,11 +199,17 @@ export class GlCodeblock extends HTMLElement {
         .regex { color: var(--gl-code-regex, #c3e88d); }
       </style>
       <div class="container">
-        ${showCopy ? `<div class="header">
+        ${showCopy || foldable ? `<div class="header">
           <span class="lang">${lang}</span>
-          <button class="copyBtn" part="copy-button" aria-label="Copy code">Copy</button>
+          <div style="display:flex;gap:8px;align-items:center">
+            ${foldable ? `<button class="fold-btn" part="fold-button" aria-label="Toggle code folding"></button>` : ""}
+            ${showCopy ? `<button class="copyBtn" part="copy-button" aria-label="Copy code">Copy</button>` : ""}
+          </div>
         </div>` : ""}
-        <pre part="pre"><code part="code"></code></pre>
+        <div class="code-wrapper">
+          ${showLines ? `<div class="line-numbers" part="line-numbers"></div>` : ""}
+          <pre part="pre"><code part="code"></code></pre>
+        </div>
       </div>
     `;
 
@@ -175,12 +218,20 @@ export class GlCodeblock extends HTMLElement {
 
     this.#pre = shadow.querySelector("pre")!;
     this.#code = shadow.querySelector("code")!;
+    this.#lineNumbers = shadow.querySelector(".line-numbers") as HTMLElement;
     if (showCopy) {
       this.#copyBtn = shadow.querySelector(".copyBtn")!;
       this.#copyBtn.addEventListener("click", () => this.#copy());
     }
+    if (foldable) {
+      this.#foldBtn = shadow.querySelector(".fold-btn")!;
+      this.#foldBtn.addEventListener("click", () => this.toggleAttribute("folded"));
+    }
 
     this.#highlight(this.#codeContent, lang);
+    if (showLines) {
+      this.#updateLineNumbers();
+    }
   }
 
   #highlight(code: string, lang: string): void {
@@ -198,9 +249,69 @@ export class GlCodeblock extends HTMLElement {
       }
     } else if (lang === "json") {
       this.#code.innerHTML = this.#highlightJSON(code);
+    } else if (lang === "py" || lang === "python") {
+      this.#code.innerHTML = this.#highlightPython(code);
+    } else if (lang === "bash" || lang === "sh" || lang === "shell") {
+      this.#code.innerHTML = this.#highlightBash(code);
+    } else if (lang === "md" || lang === "markdown") {
+      this.#code.innerHTML = this.#highlightMarkdown(code);
     } else {
       this.#code.textContent = code;
     }
+    
+    if (this.hasAttribute("line-numbers")) {
+      this.#updateLineNumbers();
+    }
+  }
+
+  #updateLineNumbers() {
+    if (!this.#lineNumbers || !this.#code) return;
+    const lines = this.#codeContent.split("\n").length;
+    this.#lineNumbers.innerHTML = Array.from({ length: lines }, (_, i) => i + 1).join("<br>");
+  }
+
+  #highlightPython(code: string): string {
+    let highlighted = code
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+    
+    highlighted = highlighted.replace(/(#.*$)/gm, '<span class="comment">$1</span>');
+    highlighted = highlighted.replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, '<span class="string">$&</span>');
+    highlighted = highlighted.replace(/\b(0x[\da-fA-F]+|\d+\.?\d*(?:[eE][+-]?\d+)?)\b/g, '<span class="number">$1</span>');
+    const keywords = /\b(def|class|if|elif|else|for|while|return|import|from|as|try|except|finally|raise|with|lambda|yield|async|await|True|False|None|and|or|not|in|is|del|global|nonlocal|pass|break|continue|assert)\b/g;
+    highlighted = highlighted.replace(keywords, '<span class="keyword">$&</span>');
+    highlighted = highlighted.replace(/([+\-*/%=<>!&|?:]+)/g, '<span class="operator">$1</span>');
+    highlighted = highlighted.replace(/\b([a-zA-Z_][a-zA-Z0-9_]*)\s*(?=\()/g, '<span class="function">$1</span> ');
+    return highlighted;
+  }
+
+  #highlightBash(code: string): string {
+    let highlighted = code
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+    
+    highlighted = highlighted.replace(/(#.*$)/gm, '<span class="comment">$1</span>');
+    highlighted = highlighted.replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, '<span class="string">$&</span>');
+    highlighted = highlighted.replace(/\$\{[^}]+\}|\$[a-zA-Z_][a-zA-Z0-9_]*/g, '<span class="variable">$&</span>');
+    const keywords = /\b(if|then|else|elif|fi|case|esac|for|while|until|do|done|function|select|time|coproc)\b/g;
+    highlighted = highlighted.replace(keywords, '<span class="keyword">$&</span>');
+    return highlighted;
+  }
+
+  #highlightMarkdown(code: string): string {
+    let highlighted = code
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+    
+    highlighted = highlighted.replace(/(^#{1,6}\s+.+$)/gm, '<span class="keyword">$1</span>');
+    highlighted = highlighted.replace(/(\*\*|__)(.+?)\1/g, '<span class="keyword">$2</span>');
+    highlighted = highlighted.replace(/(\*|_)(.+?)\1/g, '<span class="property">$2</span>');
+    highlighted = highlighted.replace(/(`)(.+?)\1/g, '<span class="string">$2</span>');
+    highlighted = highlighted.replace(/(\[.+?\]\(.+?\))/g, '<span class="function">$1</span>');
+    return highlighted;
   }
 
   #highlightHTML(code: string): string {
