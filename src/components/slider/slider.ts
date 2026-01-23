@@ -81,19 +81,22 @@ template.innerHTML = `
     <div part="fill" class="fill"></div>
     <div part="marks" class="marks"></div>
     <div part="thumb" class="thumb"></div>
+    <div part="thumb-end" class="thumb thumb-end" style="display:none"></div>
   </div>
 `;
 
 export class GlSlider extends HTMLElement {
   static tagName = "gl-slider";
   static get observedAttributes() {
-    return ["value", "min", "max", "step", "disabled", "size", "marks"];
+    return ["value", "min", "max", "step", "disabled", "size", "marks", "range", "value-start", "value-end"];
   }
 
   #track!: HTMLDivElement;
   #fill!: HTMLDivElement;
   #thumb!: HTMLDivElement;
+  #thumbEnd!: HTMLDivElement;
   #marks!: HTMLDivElement;
+  #activeThumb: "start" | "end" | null = null;
   #onPointerDown?: (e: PointerEvent) => void;
   #onPointerMove?: (e: PointerEvent) => void;
   #onPointerUp?: () => void;
@@ -103,6 +106,24 @@ export class GlSlider extends HTMLElement {
   }
   set value(v: number) {
     this.setAttribute("value", String(v));
+  }
+
+  get valueStart() {
+    return Number(this.getAttribute("value-start")) || this.min;
+  }
+  set valueStart(v: number) {
+    this.setAttribute("value-start", String(v));
+  }
+
+  get valueEnd() {
+    return Number(this.getAttribute("value-end")) || this.max;
+  }
+  set valueEnd(v: number) {
+    this.setAttribute("value-end", String(v));
+  }
+
+  get range() {
+    return this.hasAttribute("range");
   }
 
   get min() {
@@ -121,6 +142,7 @@ export class GlSlider extends HTMLElement {
     this.#track = this.shadowRoot!.querySelector(".track") as HTMLDivElement;
     this.#fill = this.shadowRoot!.querySelector(".fill") as HTMLDivElement;
     this.#thumb = this.shadowRoot!.querySelector(".thumb") as HTMLDivElement;
+    this.#thumbEnd = this.shadowRoot!.querySelector(".thumb-end") as HTMLDivElement;
     this.#marks = this.shadowRoot!.querySelector(".marks") as HTMLDivElement;
     this.#sync();
     this.#track.addEventListener("click", (e) => this.#handleClick(e));
@@ -129,6 +151,9 @@ export class GlSlider extends HTMLElement {
       e.preventDefault();
       this.setAttribute("dragging", "");
       this.#track.setPointerCapture(e.pointerId);
+      if (this.range) {
+        this.#determineActiveThumb(e);
+      }
       this.#updateFromEvent(e);
     };
     this.#onPointerMove = (e: PointerEvent) => {
@@ -137,6 +162,7 @@ export class GlSlider extends HTMLElement {
     };
     this.#onPointerUp = () => {
       this.removeAttribute("dragging");
+      this.#activeThumb = null;
     };
     this.#track.addEventListener("pointerdown", this.#onPointerDown);
     this.#track.addEventListener("pointermove", this.#onPointerMove);
@@ -163,13 +189,33 @@ export class GlSlider extends HTMLElement {
 
   #sync() {
     if (!this.#track || !this.#fill || !this.#thumb) return;
-    const val = this.value;
     const min = this.min;
     const max = this.max;
-    const percent = ((val - min) / (max - min)) * 100;
-    this.#fill.style.width = `${percent}%`;
-    this.#thumb.style.left = `${percent}%`;
-    this.#track.setAttribute("aria-valuenow", String(val));
+
+    if (this.range) {
+      const start = this.valueStart;
+      const end = this.valueEnd;
+      const startPercent = ((start - min) / (max - min)) * 100;
+      const endPercent = ((end - min) / (max - min)) * 100;
+      
+      this.#fill.style.left = `${startPercent}%`;
+      this.#fill.style.width = `${endPercent - startPercent}%`;
+      this.#thumb.style.left = `${startPercent}%`;
+      this.#thumbEnd.style.left = `${endPercent}%`;
+      this.#thumbEnd.style.display = "block";
+      
+      this.#track.setAttribute("aria-valuemin", String(start));
+      this.#track.setAttribute("aria-valuemax", String(end));
+    } else {
+      const val = this.value;
+      const percent = ((val - min) / (max - min)) * 100;
+      this.#fill.style.left = "0";
+      this.#fill.style.width = `${percent}%`;
+      this.#thumb.style.left = `${percent}%`;
+      this.#thumbEnd.style.display = "none";
+      this.#track.setAttribute("aria-valuenow", String(val));
+    }
+
     this.#track.setAttribute("aria-disabled", String(this.hasAttribute("disabled")));
     if (this.hasAttribute("disabled")) {
       this.#track.setAttribute("tabindex", "-1");
@@ -266,10 +312,48 @@ export class GlSlider extends HTMLElement {
     let newValue = min + (percent / 100) * (max - min);
     newValue = Math.round(newValue / step) * step;
     newValue = Math.max(min, Math.min(max, newValue));
-    if (newValue !== this.value) {
-      this.value = newValue;
-      emit(this, "gl-change", { value: newValue });
+
+    if (this.range) {
+      const start = this.valueStart;
+      const end = this.valueEnd;
+      const mid = (start + end) / 2;
+      
+      if (!this.#activeThumb) {
+        this.#activeThumb = newValue < mid ? "start" : "end";
+      }
+
+      if (this.#activeThumb === "start") {
+        const clamped = Math.min(newValue, end);
+        if (clamped !== start) {
+          this.valueStart = clamped;
+          emit(this, "gl-change", { start: clamped, end });
+        }
+      } else {
+        const clamped = Math.max(newValue, start);
+        if (clamped !== end) {
+          this.valueEnd = clamped;
+          emit(this, "gl-change", { start, end: clamped });
+        }
+      }
+    } else {
+      if (newValue !== this.value) {
+        this.value = newValue;
+        emit(this, "gl-change", { value: newValue });
+      }
     }
   }
-}
+
+  #determineActiveThumb(e: MouseEvent | PointerEvent) {
+    const rect = this.#track.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
+    const min = this.min;
+    const max = this.max;
+    const clickValue = min + (percent / 100) * (max - min);
+    const start = this.valueStart;
+    const end = this.valueEnd;
+    const startDist = Math.abs(clickValue - start);
+    const endDist = Math.abs(clickValue - end);
+    this.#activeThumb = startDist < endDist ? "start" : "end";
+  }
 
