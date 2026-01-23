@@ -283,6 +283,14 @@
             <a href="#data-grid" class="docs-nav-link">Data Grid</a>
             <a href="#empty-state" class="docs-nav-link">Empty State</a>
           </div>
+          <div class="docs-nav-group">
+            <div class="docs-nav-group-title">Advanced</div>
+            <a href="#resizable" class="docs-nav-link">Resizable</a>
+            <a href="#draggable" class="docs-nav-link">Draggable</a>
+            <a href="#sortable" class="docs-nav-link">Sortable</a>
+            <a href="#virtual-scroll" class="docs-nav-link">Virtual Scroll</a>
+            <a href="#infinite-scroll" class="docs-nav-link">Infinite Scroll</a>
+          </div>
         </nav>
       </aside>
 
@@ -4969,6 +4977,401 @@
 
             <div class="docs-code-wrapper">
               <gl-codeblock lang="html" copy data-code="&lt;gl-audio src=&quot;https://example.com/audio.mp3&quot; compact&gt;&lt;/gl-audio&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="resizable" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Resizable</h2>
+              <p>Resizable container component with multiple direction handles and constraints.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-resizable directions="right,bottom,bottom-right" min-width="200" min-height="150" style="width: 400px; height: 300px; border: 1px solid var(--gl-border); border-radius: var(--gl-radius); padding: var(--gl-space-4); background: var(--gl-panel);">
+                <div>Resize me by dragging the bottom-right corner or edges!</div>
+              </gl-resizable>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-resizable directions=&quot;right,bottom,bottom-right&quot; min-width=&quot;200&quot; min-height=&quot;150&quot;&gt;
+&#10;  &lt;div&gt;Resize me!&lt;/div&gt;
+&#10;&lt;/gl-resizable&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable resizing</td>
+                  </tr>
+                  <tr>
+                    <td><code>directions</code></td>
+                    <td><code>string</code></td>
+                    <td><code>"right,bottom,bottom-right"</code></td>
+                    <td>Comma-separated list of resize directions (right, left, top, bottom, top-left, top-right, bottom-left, bottom-right)</td>
+                  </tr>
+                  <tr>
+                    <td><code>min-width</code></td>
+                    <td><code>number</code></td>
+                    <td><code>100</code></td>
+                    <td>Minimum width in pixels</td>
+                  </tr>
+                  <tr>
+                    <td><code>min-height</code></td>
+                    <td><code>number</code></td>
+                    <td><code>100</code></td>
+                    <td>Minimum height in pixels</td>
+                  </tr>
+                  <tr>
+                    <td><code>max-width</code></td>
+                    <td><code>number</code></td>
+                    <td><code>-</code></td>
+                    <td>Maximum width in pixels</td>
+                  </tr>
+                  <tr>
+                    <td><code>max-height</code></td>
+                    <td><code>number</code></td>
+                    <td><code>-</code></td>
+                    <td>Maximum height in pixels</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="draggable" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Draggable</h2>
+              <p>Drag and drop functionality with handle support, axis constraints, and bounds.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="position: relative; width: 100%; height: 300px; border: 1px solid var(--gl-border); border-radius: var(--gl-radius); background: var(--gl-panel);">
+                <gl-draggable draggable style="width: 150px; height: 100px; background: var(--gl-primary); color: var(--gl-primary-fg); border-radius: var(--gl-radius); display: flex; align-items: center; justify-content: center; cursor: grab;">
+                  Drag me!
+                </gl-draggable>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-draggable draggable&gt;
+&#10;  &lt;div&gt;Drag me!&lt;/div&gt;
+&#10;&lt;/gl-draggable&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>draggable</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Enable dragging</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable dragging</td>
+                  </tr>
+                  <tr>
+                    <td><code>handle</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Require handle slot for dragging</td>
+                  </tr>
+                  <tr>
+                    <td><code>axis</code></td>
+                    <td><code>"x" | "y" | "both"</code></td>
+                    <td><code>"both"</code></td>
+                    <td>Constrain dragging to axis</td>
+                  </tr>
+                  <tr>
+                    <td><code>bounds</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>CSS selector for bounding element</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>With Handle</h2>
+              <p>Use a handle slot to restrict dragging to a specific area.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="position: relative; width: 100%; height: 200px; border: 1px solid var(--gl-border); border-radius: var(--gl-radius); background: var(--gl-panel);">
+                <gl-draggable draggable handle style="width: 200px; height: 120px; background: var(--gl-panel); border: 1px solid var(--gl-border); border-radius: var(--gl-radius); padding: var(--gl-space-4);">
+                  <div slot="handle" style="background: var(--gl-primary); color: var(--gl-primary-fg); padding: var(--gl-space-2); border-radius: var(--gl-radius-sm); cursor: grab; margin-bottom: var(--gl-space-2); text-align: center; font-size: var(--gl-text-sm);">Drag Handle</div>
+                  <div>Content that can't be dragged directly</div>
+                </gl-draggable>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-draggable draggable handle&gt;
+&#10;  &lt;div slot=&quot;handle&quot;&gt;Drag Handle&lt;/div&gt;
+&#10;  &lt;div&gt;Content&lt;/div&gt;
+&#10;&lt;/gl-draggable&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="sortable" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Sortable</h2>
+              <p>Sortable list component with drag-and-drop reordering and handle support.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-sortable style="display: flex; flex-direction: column; gap: var(--gl-space-2);">
+                <gl-card style="padding: var(--gl-space-3);">Item 1</gl-card>
+                <gl-card style="padding: var(--gl-space-3);">Item 2</gl-card>
+                <gl-card style="padding: var(--gl-space-3);">Item 3</gl-card>
+                <gl-card style="padding: var(--gl-space-3);">Item 4</gl-card>
+              </gl-sortable>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-sortable&gt;
+&#10;  &lt;div&gt;Item 1&lt;/div&gt;
+&#10;  &lt;div&gt;Item 2&lt;/div&gt;
+&#10;  &lt;div&gt;Item 3&lt;/div&gt;
+&#10;&lt;/gl-sortable&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable sorting</td>
+                  </tr>
+                  <tr>
+                    <td><code>handle</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>CSS selector for drag handle (e.g., "[data-sortable-handle]")</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>With Handle</h2>
+              <p>Use handles to restrict dragging to specific areas.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-sortable handle="[data-sortable-handle]" style="display: flex; flex-direction: column; gap: var(--gl-space-2);">
+                <gl-card style="padding: var(--gl-space-3); display: flex; align-items: center; gap: var(--gl-space-2);">
+                  <span data-sortable-handle style="cursor: grab; color: var(--gl-muted);">⋮⋮</span>
+                  <span>Item 1</span>
+                </gl-card>
+                <gl-card style="padding: var(--gl-space-3); display: flex; align-items: center; gap: var(--gl-space-2);">
+                  <span data-sortable-handle style="cursor: grab; color: var(--gl-muted);">⋮⋮</span>
+                  <span>Item 2</span>
+                </gl-card>
+                <gl-card style="padding: var(--gl-space-3); display: flex; align-items: center; gap: var(--gl-space-2);">
+                  <span data-sortable-handle style="cursor: grab; color: var(--gl-muted);">⋮⋮</span>
+                  <span>Item 3</span>
+                </gl-card>
+              </gl-sortable>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-sortable handle=&quot;[data-sortable-handle]&quot;&gt;
+&#10;  &lt;div&gt;
+&#10;    &lt;span data-sortable-handle&gt;⋮⋮&lt;/span&gt;
+&#10;    &lt;span&gt;Item 1&lt;/span&gt;
+&#10;  &lt;/div&gt;
+&#10;&lt;/gl-sortable&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="virtual-scroll" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Virtual Scroll</h2>
+              <p>Virtual scrolling for large lists with dynamic rendering and overscan support.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-virtual-scroll item-height="50" overscan="5" style="height: 300px; border: 1px solid var(--gl-border); border-radius: var(--gl-radius); background: var(--gl-panel);">
+                <div style="padding: var(--gl-space-3); border-bottom: 1px solid var(--gl-border);">Item 1</div>
+                <div style="padding: var(--gl-space-3); border-bottom: 1px solid var(--gl-border);">Item 2</div>
+                <div style="padding: var(--gl-space-3); border-bottom: 1px solid var(--gl-border);">Item 3</div>
+                <div style="padding: var(--gl-space-3); border-bottom: 1px solid var(--gl-border);">Item 4</div>
+                <div style="padding: var(--gl-space-3); border-bottom: 1px solid var(--gl-border);">Item 5</div>
+                <div style="padding: var(--gl-space-3); border-bottom: 1px solid var(--gl-border);">Item 6</div>
+                <div style="padding: var(--gl-space-3); border-bottom: 1px solid var(--gl-border);">Item 7</div>
+                <div style="padding: var(--gl-space-3); border-bottom: 1px solid var(--gl-border);">Item 8</div>
+                <div style="padding: var(--gl-space-3); border-bottom: 1px solid var(--gl-border);">Item 9</div>
+                <div style="padding: var(--gl-space-3); border-bottom: 1px solid var(--gl-border);">Item 10</div>
+              </gl-virtual-scroll>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-virtual-scroll item-height=&quot;50&quot; overscan=&quot;5&quot; style=&quot;height: 300px;&quot;&gt;
+&#10;  &lt;div&gt;Item 1&lt;/div&gt;
+&#10;  &lt;div&gt;Item 2&lt;/div&gt;
+&#10;  &lt;div&gt;Item 3&lt;/div&gt;
+&#10;&lt;/gl-virtual-scroll&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>item-height</code></td>
+                    <td><code>number</code></td>
+                    <td><code>50</code></td>
+                    <td>Height of each item in pixels</td>
+                  </tr>
+                  <tr>
+                    <td><code>overscan</code></td>
+                    <td><code>number</code></td>
+                    <td><code>5</code></td>
+                    <td>Number of items to render outside visible area</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="infinite-scroll" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Infinite Scroll</h2>
+              <p>Infinite scroll component with threshold-based loading and completion states.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-infinite-scroll has-more threshold="100" style="height: 300px; overflow-y: auto; border: 1px solid var(--gl-border); border-radius: var(--gl-radius); padding: var(--gl-space-4); background: var(--gl-panel);">
+                <div style="padding: var(--gl-space-2); border-bottom: 1px solid var(--gl-border);">Item 1</div>
+                <div style="padding: var(--gl-space-2); border-bottom: 1px solid var(--gl-border);">Item 2</div>
+                <div style="padding: var(--gl-space-2); border-bottom: 1px solid var(--gl-border);">Item 3</div>
+                <div style="padding: var(--gl-space-2); border-bottom: 1px solid var(--gl-border);">Item 4</div>
+                <div style="padding: var(--gl-space-2); border-bottom: 1px solid var(--gl-border);">Item 5</div>
+              </gl-infinite-scroll>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-infinite-scroll has-more threshold=&quot;100&quot;&gt;
+&#10;  &lt;div&gt;Item 1&lt;/div&gt;
+&#10;  &lt;div&gt;Item 2&lt;/div&gt;
+&#10;&lt;/gl-infinite-scroll&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>disabled</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Disable infinite scroll</td>
+                  </tr>
+                  <tr>
+                    <td><code>threshold</code></td>
+                    <td><code>number</code></td>
+                    <td><code>100</code></td>
+                    <td>Distance from bottom (in pixels) to trigger loading</td>
+                  </tr>
+                  <tr>
+                    <td><code>has-more</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Whether there are more items to load</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="margin-top: 16px; font-size: 14px; color: var(--gl-muted);"><strong>Methods:</strong> <code>complete()</code> - Mark as complete, <code>reset()</code> - Reset to initial state</p>
+              <p style="font-size: 14px; color: var(--gl-muted);"><strong>Events:</strong> <code>gl-infinite-scroll-load</code> - Fired when threshold is reached</p>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Usage Example</h2>
+              <p>Listen to the load event to fetch more data.</p>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-infinite-scroll id=&quot;scroll&quot; has-more threshold=&quot;100&quot;&gt;
+&#10;  &lt;div&gt;Item 1&lt;/div&gt;
+&#10;&lt;/gl-infinite-scroll&gt;
+&#10;&lt;script&gt;
+&#10;  document.getElementById('scroll').addEventListener('gl-infinite-scroll-load', async () => {
+&#10;    const items = await fetchMoreItems();
+&#10;    if (items.length === 0) {
+&#10;      document.getElementById('scroll').complete();
+&#10;    }
+&#10;  });
+&#10;&lt;/script&gt;"></gl-codeblock>
             </div>
           </div>
         </section>
