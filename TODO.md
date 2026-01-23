@@ -44,9 +44,9 @@ This file tracks potential additions, improvements, and enhancements for the Gli
 - [x] **Stat Card** - Statistics card component
 
 ### Media
-- [ ] **Image** - Image component with lazy loading and fallback
-- [ ] **Video** - Video player component
-- [ ] **Audio** - Audio player component
+- [x] **Image** - Image component with lazy loading and fallback
+- [x] **Video** - Video player component
+- [x] **Audio** - Audio player component
 
 ### Advanced
 - [ ] **Resizable** - Resizable container component

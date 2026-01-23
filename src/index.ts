@@ -68,6 +68,9 @@ import { defineBanner } from "./components/banner/define.js";
 import { defineStatusIndicator } from "./components/status-indicator/define.js";
 import { defineCountdown } from "./components/countdown/define.js";
 import { defineStatCard } from "./components/stat-card/define.js";
+import { defineImage } from "./components/image/define.js";
+import { defineVideo } from "./components/video/define.js";
+import { defineAudio } from "./components/audio/define.js";
 
 export { defineAccordion, GlAccordion, GlAccordionItem } from "./components/accordion/define.js";
 export { defineAlert, GlAlert } from "./components/alert/define.js";
@@ -129,6 +132,9 @@ export { defineBanner, GlBanner } from "./components/banner/define.js";
 export { defineStatusIndicator, GlStatusIndicator } from "./components/status-indicator/define.js";
 export { defineCountdown, GlCountdown } from "./components/countdown/define.js";
 export { defineStatCard, GlStatCard } from "./components/stat-card/define.js";
+export { defineImage, GlImage } from "./components/image/define.js";
+export { defineVideo, GlVideo } from "./components/video/define.js";
+export { defineAudio, GlAudio } from "./components/audio/define.js";
 
 export function defineGlint(): void {
   defineAccordion();
@@ -191,6 +197,9 @@ export function defineGlint(): void {
   defineStatusIndicator();
   defineCountdown();
   defineStatCard();
+  defineImage();
+  defineVideo();
+  defineAudio();
 }
 
 declare global {
