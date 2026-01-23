@@ -165,12 +165,27 @@ toasterTemplate.innerHTML = `
 export class GlToaster extends HTMLElement {
   static tagName = "gl-toaster";
   static get observedAttributes() {
-    return ["position"];
+    return ["position", "max"];
   }
 
   connectedCallback() {
     if (!this.shadowRoot) this.attachShadow({ mode: "open" });
     this.shadowRoot!.appendChild(toasterTemplate.content.cloneNode(true));
+    
+    // Listen for dismiss events to manage queue
+    this.addEventListener("gl-dismiss", () => this.#manageQueue());
+  }
+
+  #manageQueue() {
+    const max = Number(this.getAttribute("max")) || 0;
+    if (max <= 0) return;
+    
+    const toasts = Array.from(this.querySelectorAll<GlToast>(GlToast.tagName));
+    if (toasts.length <= max) return;
+    
+    // Remove oldest toasts beyond max
+    const toRemove = toasts.slice(0, toasts.length - max);
+    toRemove.forEach(toast => toast.dismiss("api"));
   }
 
   show(opts: { title?: string; description?: string; duration?: number; variant?: "default" | "success" | "warning" | "destructive" } = {}) {
@@ -189,7 +204,12 @@ export class GlToaster extends HTMLElement {
       n.textContent = opts.description;
       t.appendChild(n);
     }
+    
+    // Add dismiss listener
+    t.addEventListener("gl-dismiss", () => this.#manageQueue(), { once: true });
+    
     this.appendChild(t);
+    this.#manageQueue();
     return t;
   }
 }
