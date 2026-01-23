@@ -35,6 +35,31 @@ template.innerHTML = `
         -webkit-backdrop-filter:blur(var(--gl-glass-blur)) saturate(var(--gl-glass-saturation));
       }
     }
+    :host([surface="elevated"]) .card{
+      box-shadow:var(--gl-shadow-lg);
+      border-color:transparent;
+    }
+    :host([surface="outlined"]) .card{
+      box-shadow:none;
+      border-width:2px;
+    }
+    :host([surface="flat"]) .card{
+      box-shadow:none;
+      border:none;
+      background:transparent;
+    }
+    :host([clickable]) .card{
+      cursor:pointer;
+      transition:cursor var(--gl-dur-1) var(--gl-ease);
+    }
+    :host([clickable]:hover) .card{
+      box-shadow:var(--gl-shadow-md);
+      transform:translateY(-2px);
+    }
+    :host([clickable]:active) .card{
+      transform:translateY(0);
+      box-shadow:var(--gl-shadow-sm);
+    }
 
     :host([effect="tilt"]) .card{
       transform-style:preserve-3d;
