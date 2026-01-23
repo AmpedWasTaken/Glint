@@ -150,17 +150,34 @@ export class GlCalendar extends HTMLElement {
   attributeChangedCallback(name: string) {
     if (name === "value") {
       const value = this.getAttribute("value");
-      this.#selectedDate = value ? new Date(value) : undefined;
+      this.#selectedDate = value ? this.#parseDate(value) : undefined;
       this.update();
     } else if (name === "min") {
       const min = this.getAttribute("min");
-      this.#minDate = min ? new Date(min) : undefined;
+      this.#minDate = min ? this.#parseDate(min) : undefined;
       this.update();
     } else if (name === "max") {
       const max = this.getAttribute("max");
-      this.#maxDate = max ? new Date(max) : undefined;
+      this.#maxDate = max ? this.#parseDate(max) : undefined;
       this.update();
     }
+  }
+
+  #parseDate(dateString: string): Date {
+    // Parse ISO date string (YYYY-MM-DD) as local date, not UTC
+    const parts = dateString.split("-");
+    if (parts.length === 3 && parts[0] && parts[1] && parts[2]) {
+      const year = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+      const day = parseInt(parts[2], 10);
+      const date = new Date(year, month, day);
+      date.setHours(0, 0, 0, 0);
+      return date;
+    }
+    // Fallback to standard Date parsing
+    const date = new Date(dateString);
+    date.setHours(0, 0, 0, 0);
+    return date;
   }
 
   #initWeekdays() {
@@ -244,7 +261,11 @@ export class GlCalendar extends HTMLElement {
     const dateForSelection = new Date(date);
     dateForSelection.setHours(0, 0, 0, 0);
     this.#selectedDate = dateForSelection;
-    const dateStr = dateForSelection.toISOString().split("T")[0] as string;
+    // Format as local date string (YYYY-MM-DD) to avoid UTC conversion issues
+    const year = dateForSelection.getFullYear();
+    const month = String(dateForSelection.getMonth() + 1).padStart(2, "0");
+    const day = String(dateForSelection.getDate()).padStart(2, "0");
+    const dateStr = `${year}-${month}-${day}`;
     this.setAttribute("value", dateStr);
     this.update();
     emit(this, "gl-calendar-select", { date: dateStr });
