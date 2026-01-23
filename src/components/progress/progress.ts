@@ -36,6 +36,51 @@ template.innerHTML = `
       color:var(--gl-muted);
     }
     .value{font-weight:600;color:var(--gl-fg)}
+    :host([type="circular"]){display:inline-block}
+    :host([type="circular"]) .track{display:none}
+    .circular{
+      display:none;
+      width:64px;
+      height:64px;
+      position:relative;
+    }
+    :host([type="circular"]) .circular{display:block}
+    :host([type="circular"][size="sm"]) .circular{width:48px;height:48px}
+    :host([type="circular"][size="lg"]) .circular{width:80px;height:80px}
+    .circular svg{
+      width:100%;
+      height:100%;
+      transform:rotate(-90deg);
+    }
+    .circular circle{
+      fill:none;
+      stroke-width:4;
+      stroke-linecap:round;
+    }
+    .circular .bg{
+      stroke:var(--gl-border);
+    }
+    .circular .progress{
+      stroke:var(--gl-primary);
+      stroke-dasharray:var(--gl-circumference);
+      stroke-dashoffset:calc(var(--gl-circumference) - (var(--gl-progress) * var(--gl-circumference) / 100));
+      transition:stroke-dashoffset var(--gl-dur-3) var(--gl-ease-out);
+    }
+    :host([variant="destructive"]) .circular .progress{stroke:var(--gl-danger)}
+    :host([variant="success"]) .circular .progress{stroke:var(--gl-success)}
+    :host([variant="warning"]) .circular .progress{stroke:#f59e0b}
+    .circular-text{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:var(--gl-text-sm);
+      font-weight:600;
+      color:var(--gl-fg);
+    }
+    :host([type="circular"][size="sm"]) .circular-text{font-size:11px}
+    :host([type="circular"][size="lg"]) .circular-text{font-size:var(--gl-text-md)}
   </style>
   <div class="label" part="label" style="display:none">
     <span part="label-text"><slot name="label"></slot></span>
@@ -44,18 +89,28 @@ template.innerHTML = `
   <div part="track" class="track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
     <div part="bar" class="bar"></div>
   </div>
+  <div part="circular" class="circular" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <svg viewBox="0 0 36 36">
+      <circle class="bg" cx="18" cy="18" r="16"></circle>
+      <circle class="progress" cx="18" cy="18" r="16"></circle>
+    </svg>
+    <div class="circular-text" part="circular-text"></div>
+  </div>
 `;
 
 export class GlProgress extends HTMLElement {
   static tagName = "gl-progress";
   static get observedAttributes() {
-    return ["value", "size", "variant", "show-label"];
+    return ["value", "size", "variant", "show-label", "type"];
   }
 
   #track!: HTMLElement;
   #bar!: HTMLElement;
   #label!: HTMLElement;
   #value!: HTMLElement;
+  #circular!: HTMLElement;
+  #circularProgress!: SVGCircleElement;
+  #circularText!: HTMLElement;
 
   get value() {
     const v = Number(this.getAttribute("value") ?? "0");
@@ -72,6 +127,9 @@ export class GlProgress extends HTMLElement {
     this.#bar = this.shadowRoot!.querySelector(".bar") as HTMLElement;
     this.#label = this.shadowRoot!.querySelector(".label") as HTMLElement;
     this.#value = this.shadowRoot!.querySelector(".value") as HTMLElement;
+    this.#circular = this.shadowRoot!.querySelector(".circular") as HTMLElement;
+    this.#circularProgress = this.shadowRoot!.querySelector(".circular .progress") as SVGCircleElement;
+    this.#circularText = this.shadowRoot!.querySelector(".circular-text") as HTMLElement;
     this.#sync();
   }
 
@@ -80,15 +138,31 @@ export class GlProgress extends HTMLElement {
   }
 
   #sync() {
-    if (!this.#track || !this.#bar) return;
     const v = this.value;
-    this.#bar.style.width = `${v}%`;
-    this.#track.setAttribute("aria-valuenow", String(v));
-    if (this.#value) this.#value.textContent = `${Math.round(v)}%`;
-    if (this.#label && this.hasAttribute("show-label")) {
-      this.#label.style.display = "flex";
-    } else if (this.#label) {
-      this.#label.style.display = "none";
+    const type = this.getAttribute("type") || "linear";
+    
+    if (type === "circular") {
+      if (!this.#circular || !this.#circularProgress) return;
+      const radius = 16;
+      const circumference = 2 * Math.PI * radius;
+      this.style.setProperty("--gl-circumference", String(circumference));
+      this.style.setProperty("--gl-progress", String(v));
+      this.#circular.setAttribute("aria-valuenow", String(v));
+      if (this.#circularText && this.hasAttribute("show-label")) {
+        this.#circularText.textContent = `${Math.round(v)}%`;
+      } else if (this.#circularText) {
+        this.#circularText.textContent = "";
+      }
+    } else {
+      if (!this.#track || !this.#bar) return;
+      this.#bar.style.width = `${v}%`;
+      this.#track.setAttribute("aria-valuenow", String(v));
+      if (this.#value) this.#value.textContent = `${Math.round(v)}%`;
+      if (this.#label && this.hasAttribute("show-label")) {
+        this.#label.style.display = "flex";
+      } else if (this.#label) {
+        this.#label.style.display = "none";
+      }
     }
   }
 }
