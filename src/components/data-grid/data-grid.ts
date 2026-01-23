@@ -25,26 +25,18 @@ template.innerHTML = `
       font-weight: 600;
     }
     .data-grid-search {
-      flex: 1;
-      max-width: 300px;
+      margin-left: auto;
     }
     .data-grid-table {
       width: 100%;
       border-collapse: collapse;
-      table-layout: auto;
+      table-layout: fixed;
     }
     .data-grid-thead {
       background: var(--gl-hover);
     }
     .data-grid-header-row {
       display: table-row;
-    }
-    ::slotted(gl-data-grid-column) {
-      display: table-cell !important;
-      vertical-align: middle;
-    }
-    ::slotted(gl-data-grid-row) {
-      display: table-row !important;
     }
     .data-grid-th {
       padding: var(--gl-space-3) var(--gl-space-4);
@@ -138,47 +130,41 @@ columnTemplate.innerHTML = `
     :host {
       display: table-cell;
       vertical-align: middle;
-      padding: 0;
-      margin: 0;
-      border: none;
-    }
-    .data-grid-th {
       padding: var(--gl-space-3) var(--gl-space-4);
       text-align: left;
       font-size: var(--gl-text-sm);
       font-weight: 600;
       color: var(--gl-muted);
       border-bottom: 1px solid var(--gl-border);
-      cursor: pointer;
       user-select: none;
       transition: background var(--gl-dur-1) var(--gl-ease);
       white-space: nowrap;
       box-sizing: border-box;
-      margin: 0;
+      position: relative;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .data-grid-th:hover {
+    :host(:hover) {
       background: var(--gl-hover);
     }
-    .data-grid-th.sortable {
-      position: relative;
+    :host([sortable]) {
       padding-right: var(--gl-space-6);
+      cursor: pointer;
     }
-    .data-grid-th.sort-asc::after {
+    :host([sort="asc"])::after {
       content: "↑";
       position: absolute;
       right: var(--gl-space-2);
       color: var(--gl-primary);
     }
-    .data-grid-th.sort-desc::after {
+    :host([sort="desc"])::after {
       content: "↓";
       position: absolute;
       right: var(--gl-space-2);
       color: var(--gl-primary);
     }
   </style>
-  <th class="data-grid-th" part="th">
-    <slot></slot>
-  </th>
+  <slot></slot>
 `;
 
 const rowTemplate = document.createElement("template");
@@ -186,27 +172,18 @@ rowTemplate.innerHTML = `
   <style>
     :host {
       display: table-row;
-    }
-    .data-grid-tr {
       border-bottom: 1px solid var(--gl-border);
       transition: background var(--gl-dur-1) var(--gl-ease);
     }
-    .data-grid-tr:hover {
+    :host(:hover) {
       background: var(--gl-hover);
     }
-    .data-grid-tr.selected {
+    :host([selected]) {
       background: var(--gl-primary);
       color: var(--gl-primary-fg);
     }
-    .data-grid-td {
-      padding: var(--gl-space-3) var(--gl-space-4);
-      font-size: var(--gl-text-sm);
-      white-space: nowrap;
-    }
   </style>
-  <tr class="data-grid-tr" part="tr">
-    <slot></slot>
-  </tr>
+  <slot></slot>
 `;
 
 const cellTemplate = document.createElement("template");
@@ -215,21 +192,15 @@ cellTemplate.innerHTML = `
     :host {
       display: table-cell;
       vertical-align: middle;
-      padding: 0;
-      margin: 0;
-      border: none;
-    }
-    .data-grid-td {
       padding: var(--gl-space-3) var(--gl-space-4);
       font-size: var(--gl-text-sm);
       white-space: nowrap;
       box-sizing: border-box;
-      margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   </style>
-  <td class="data-grid-td" part="td">
-    <slot></slot>
-  </td>
+  <slot></slot>
 `;
 
 export class GlDataGrid extends HTMLElement {
@@ -238,9 +209,139 @@ export class GlDataGrid extends HTMLElement {
     return ["sortable", "selectable"];
   }
 
+  #columns: GlDataGridColumn[] = [];
+  #rows: GlDataGridRow[] = [];
+  #currentSortColumn?: GlDataGridColumn;
+  #currentSortDirection: "asc" | "desc" | null = null;
+
   connectedCallback() {
     if (!this.shadowRoot) this.attachShadow({ mode: "open" });
     this.shadowRoot!.appendChild(template.content.cloneNode(true));
+    
+    // Watch for slot changes
+    const columnsSlot = this.shadowRoot!.querySelector('slot[name="columns"]') as HTMLSlotElement;
+    const rowsSlot = this.shadowRoot!.querySelector('slot[name="rows"]') as HTMLSlotElement;
+    
+    if (columnsSlot) {
+      columnsSlot.addEventListener("slotchange", () => {
+        this.#updateColumnsAndRows();
+      });
+    }
+    
+    if (rowsSlot) {
+      rowsSlot.addEventListener("slotchange", () => {
+        this.#updateColumnsAndRows();
+      });
+    }
+    
+    // Initial update
+    requestAnimationFrame(() => {
+      this.#updateColumnsAndRows();
+    });
+
+    // Listen for sort events
+    this.addEventListener("gl-data-grid-sort", this.#handleSort as EventListener);
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener("gl-data-grid-sort", this.#handleSort as EventListener);
+  }
+
+  #updateColumnsAndRows() {
+    const columnsSlot = this.shadowRoot!.querySelector('slot[name="columns"]') as HTMLSlotElement;
+    const rowsSlot = this.shadowRoot!.querySelector('slot[name="rows"]') as HTMLSlotElement;
+    
+    if (columnsSlot) {
+      const assignedNodes = columnsSlot.assignedNodes();
+      this.#columns = assignedNodes.filter(
+        (node) => node instanceof GlDataGridColumn
+      ) as GlDataGridColumn[];
+      
+      // Distribute columns evenly across the full width
+      if (this.#columns.length > 0) {
+        const columnWidth = `${100 / this.#columns.length}%`;
+        this.#columns.forEach((col) => {
+          col.style.width = columnWidth;
+        });
+      }
+    }
+
+    if (rowsSlot) {
+      const assignedNodes = rowsSlot.assignedNodes();
+      this.#rows = assignedNodes.filter(
+        (node) => node instanceof GlDataGridRow
+      ) as GlDataGridRow[];
+    }
+  }
+
+  #handleSort = (e: CustomEvent) => {
+    const column = e.detail.column as GlDataGridColumn;
+    const direction = e.detail.direction as "asc" | "desc";
+    
+    if (!column || !direction) return;
+    
+    // Ensure columns are up to date
+    this.#updateColumnsAndRows();
+    
+    // Reset other columns
+    this.#columns.forEach((col) => {
+      if (col !== column) {
+        col.sort = null;
+      }
+    });
+    
+    this.#currentSortColumn = column;
+    this.#currentSortDirection = direction;
+    
+    // Sort rows
+    this.#sortRows(column, direction);
+  };
+
+  #sortRows(column: GlDataGridColumn, direction: "asc" | "desc") {
+    const columnIndex = this.#columns.indexOf(column);
+    if (columnIndex === -1) return;
+
+    const rows = Array.from(this.#rows);
+    
+    rows.sort((a, b) => {
+      const aCells = Array.from(a.querySelectorAll("gl-data-grid-cell"));
+      const bCells = Array.from(b.querySelectorAll("gl-data-grid-cell"));
+      
+      const aValue = aCells[columnIndex]?.textContent?.trim() || "";
+      const bValue = bCells[columnIndex]?.textContent?.trim() || "";
+      
+      // Try to parse as number for numeric sorting
+      const aNum = parseFloat(aValue);
+      const bNum = parseFloat(bValue);
+      
+      let comparison: number;
+      if (!isNaN(aNum) && !isNaN(bNum)) {
+        comparison = aNum - bNum;
+      } else {
+        comparison = aValue.localeCompare(bValue);
+      }
+      
+      return direction === "asc" ? comparison : -comparison;
+    });
+
+    // Reorder rows in DOM by moving them within their parent
+    const rowsSlot = this.shadowRoot!.querySelector('slot[name="rows"]') as HTMLSlotElement;
+    if (!rowsSlot) return;
+    
+    // Get the tbody element
+    const tbody = rowsSlot.closest('tbody');
+    if (tbody) {
+      rows.forEach((row) => {
+        tbody.appendChild(row);
+      });
+    } else {
+      // Fallback: append to component
+      rows.forEach((row) => {
+        if (row.parentNode) {
+          row.parentNode.appendChild(row);
+        }
+      });
+    }
   }
 }
 
@@ -250,18 +351,15 @@ export class GlDataGridColumn extends HTMLElement {
     return ["sortable", "sort"];
   }
 
-  #th!: HTMLElement;
   #sortDirection: "asc" | "desc" | null = null;
 
   connectedCallback() {
     if (!this.shadowRoot) this.attachShadow({ mode: "open" });
     this.shadowRoot!.appendChild(columnTemplate.content.cloneNode(true));
-    
-    this.#th = this.shadowRoot!.querySelector(".data-grid-th") as HTMLElement;
 
     if (this.sortable) {
-      this.#th.classList.add("sortable");
-      this.#th.addEventListener("click", () => this.toggleSort());
+      this.setAttribute("sortable", "");
+      this.addEventListener("click", () => this.toggleSort());
     }
 
     this.#sync();
@@ -272,13 +370,13 @@ export class GlDataGridColumn extends HTMLElement {
   }
 
   #sync() {
-    if (this.#th) {
-      this.#th.classList.remove("sort-asc", "sort-desc");
-      if (this.#sortDirection === "asc") {
-        this.#th.classList.add("sort-asc");
-      } else if (this.#sortDirection === "desc") {
-        this.#th.classList.add("sort-desc");
-      }
+    this.classList.remove("sort-asc", "sort-desc");
+    if (this.#sortDirection === "asc") {
+      this.setAttribute("sort", "asc");
+    } else if (this.#sortDirection === "desc") {
+      this.setAttribute("sort", "desc");
+    } else {
+      this.removeAttribute("sort");
     }
   }
 
@@ -308,7 +406,7 @@ export class GlDataGridColumn extends HTMLElement {
       this.sort = "desc";
     }
     emit(this, "gl-data-grid-sort", { 
-      column: this.textContent || "",
+      column: this,
       direction: this.#sortDirection 
     });
   }
@@ -320,15 +418,11 @@ export class GlDataGridRow extends HTMLElement {
     return ["selected"];
   }
 
-  #tr!: HTMLElement;
-
   connectedCallback() {
     if (!this.shadowRoot) this.attachShadow({ mode: "open" });
     this.shadowRoot!.appendChild(rowTemplate.content.cloneNode(true));
-    
-    this.#tr = this.shadowRoot!.querySelector(".data-grid-tr") as HTMLElement;
 
-    this.#tr.addEventListener("click", () => {
+    this.addEventListener("click", () => {
       const grid = this.closest("gl-data-grid") as GlDataGrid;
       if (grid && grid.hasAttribute("selectable")) {
         this.toggle();
@@ -343,13 +437,7 @@ export class GlDataGridRow extends HTMLElement {
   }
 
   #sync() {
-    if (this.#tr) {
-      if (this.selected) {
-        this.#tr.classList.add("selected");
-      } else {
-        this.#tr.classList.remove("selected");
-      }
-    }
+    // Selected state is handled via attribute selector in CSS
   }
 
   get selected() {
