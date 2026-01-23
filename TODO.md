@@ -60,36 +60,36 @@ This file tracks potential additions, improvements, and enhancements for the Gli
 ## 🔧 Component Improvements
 
 ### Existing Components
-- [ ] **Button** - Add loading state with spinner
-- [ ] **Input** - Add input groups (prefix/suffix icons)
-- [ ] **Select** - Add multi-select support
-- [ ] **Select** - Add search/filter functionality
-- [ ] **Modal** - Add size variants (sm, md, lg, xl, fullscreen)
-- [ ] **Modal** - Add nested modals support
-- [ ] **Table** - Add row selection (single/multiple)
-- [ ] **Table** - Add column sorting
-- [ ] **Table** - Add column filtering
-- [ ] **Table** - Add pagination integration
-- [ ] **Tabs** - Add vertical tabs variant
-- [ ] **Tabs** - Add scrollable tabs for many items
-- [ ] **Card** - Add more surface variants (elevated, outlined, flat)
-- [ ] **Card** - Add clickable card variant
-- [ ] **Toast** - Add toast queue management
-- [ ] **Toast** - Add toast positioning (top-left, top-right, etc.)
-- [ ] **Tooltip** - Add tooltip positioning options
-- [ ] **Popover** - Add arrow pointer
-- [ ] **Popover** - Add positioning system (auto, top, bottom, left, right)
-- [ ] **Progress** - Add circular progress variant
-- [ ] **Progress** - Add progress steps variant
-- [ ] **Slider** - Add range slider (dual handles)
-- [ ] **Slider** - Add marks/ticks display
-- [ ] **Codeblock** - Add line numbers
-- [ ] **Codeblock** - Add more language support
-- [ ] **Codeblock** - Add code folding
-- [ ] **Navbar** - Add mobile menu/hamburger variant
-- [ ] **Topbar** - Add mobile menu/hamburger variant
-- [ ] **Avatar** - Add avatar group component
-- [ ] **Badge** - Add badge variants (dot, pulse, etc.)
+- [x] **Button** - Add loading state with spinner
+- [x] **Input** - Add input groups (prefix/suffix icons)
+- [x] **Select** - Add multi-select support
+- [x] **Select** - Add search/filter functionality
+- [x] **Modal** - Add size variants (sm, md, lg, xl, fullscreen)
+- [x] **Modal** - Add nested modals support
+- [x] **Table** - Add row selection (single/multiple)
+- [x] **Table** - Add column sorting
+- [x] **Table** - Add column filtering
+- [x] **Table** - Add pagination integration
+- [x] **Tabs** - Add vertical tabs variant
+- [x] **Tabs** - Add scrollable tabs for many items
+- [x] **Card** - Add more surface variants (elevated, outlined, flat)
+- [x] **Card** - Add clickable card variant
+- [x] **Toast** - Add toast queue management
+- [x] **Toast** - Add toast positioning (top-left, top-right, etc.)
+- [x] **Tooltip** - Add tooltip positioning options
+- [x] **Popover** - Add arrow pointer
+- [x] **Popover** - Add positioning system (auto, top, bottom, left, right)
+- [x] **Progress** - Add circular progress variant
+- [x] **Progress** - Add progress steps variant
+- [x] **Slider** - Add range slider (dual handles)
+- [x] **Slider** - Add marks/ticks display
+- [x] **Codeblock** - Add line numbers
+- [x] **Codeblock** - Add more language support (Python, Bash, Markdown)
+- [x] **Codeblock** - Add code folding
+- [x] **Navbar** - Add mobile menu/hamburger variant
+- [x] **Topbar** - Add mobile menu/hamburger variant
+- [x] **Avatar** - Add avatar group component
+- [x] **Badge** - Add badge variants (dot, pulse, etc.)
 
 ---
 
