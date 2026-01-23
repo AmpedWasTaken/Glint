@@ -54,8 +54,12 @@ itemTemplate.innerHTML = `
       background: var(--gl-hover);
     }
     .list-item[aria-selected="true"] {
-      background: var(--gl-primary);
-      color: var(--gl-primary-fg);
+      background: var(--gl-hover);
+      border-left: 3px solid var(--gl-primary);
+      padding-left: calc(var(--gl-space-4) - 3px);
+    }
+    .list-item[aria-selected="true"] .list-title {
+      font-weight: 600;
     }
     .list-item[disabled] {
       opacity: 0.5;

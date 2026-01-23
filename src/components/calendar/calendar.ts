@@ -197,9 +197,20 @@ export class GlCalendar extends HTMLElement {
       date.setDate(startDate.getDate() + i);
       const day = date.getDate();
       const isOtherMonth = date.getMonth() !== month;
-      const isToday = date.getTime() === today.getTime();
-      const isSelected = this.#selectedDate && 
-        date.getTime() === new Date(this.#selectedDate).setHours(0, 0, 0, 0);
+      
+      const dateForComparison = new Date(date);
+      dateForComparison.setHours(0, 0, 0, 0);
+      const todayForComparison = new Date(today);
+      todayForComparison.setHours(0, 0, 0, 0);
+      const isToday = dateForComparison.getTime() === todayForComparison.getTime();
+      
+      let isSelected = false;
+      if (this.#selectedDate) {
+        const selectedForComparison = new Date(this.#selectedDate);
+        selectedForComparison.setHours(0, 0, 0, 0);
+        isSelected = dateForComparison.getTime() === selectedForComparison.getTime();
+      }
+      
       const isDisabled = this.#isDisabled(date);
 
       const dayEl = document.createElement("div");
@@ -212,7 +223,11 @@ export class GlCalendar extends HTMLElement {
       if (isDisabled) dayEl.classList.add("disabled");
 
       if (!isDisabled) {
-        dayEl.addEventListener("click", () => this.selectDate(date));
+        dayEl.addEventListener("click", () => {
+          const clickDate = new Date(date);
+          clickDate.setHours(0, 0, 0, 0);
+          this.selectDate(clickDate);
+        });
       }
 
       this.#days.appendChild(dayEl);
@@ -226,10 +241,13 @@ export class GlCalendar extends HTMLElement {
   }
 
   selectDate(date: Date) {
-    this.#selectedDate = date;
-    this.setAttribute("value", date.toISOString().split("T")[0]);
+    const dateForSelection = new Date(date);
+    dateForSelection.setHours(0, 0, 0, 0);
+    this.#selectedDate = dateForSelection;
+    const dateStr = dateForSelection.toISOString().split("T")[0] as string;
+    this.setAttribute("value", dateStr);
     this.update();
-    emit(this, "gl-calendar-select", { date: date.toISOString().split("T")[0] });
+    emit(this, "gl-calendar-select", { date: dateStr });
   }
 
   previousMonth() {

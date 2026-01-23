@@ -18,13 +18,15 @@ template.innerHTML = `
     .tree-node {
       display: flex;
       align-items: center;
-      gap: var(--gl-space-2);
-      padding: var(--gl-space-2) var(--gl-space-3);
-      border-radius: var(--gl-radius);
+      gap: var(--gl-space-1);
+      padding: 2px 4px;
+      border-radius: 3px;
       cursor: pointer;
       user-select: none;
       transition: background var(--gl-dur-1) var(--gl-ease);
-      min-height: 32px;
+      min-height: 22px;
+      font-size: var(--gl-text-sm);
+      color: var(--gl-fg);
     }
     .tree-node:hover {
       background: var(--gl-hover);
@@ -33,38 +35,40 @@ template.innerHTML = `
       background: var(--gl-primary);
       color: var(--gl-primary-fg);
     }
+    .tree-node:focus-visible {
+      outline: 1px solid var(--gl-ring);
+      outline-offset: -1px;
+    }
     .tree-toggle {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 4px;
-      transition: transform var(--gl-dur-2) var(--gl-ease-out), background var(--gl-dur-1) var(--gl-ease);
       flex-shrink: 0;
       cursor: pointer;
+      opacity: 0.7;
+      transition: opacity var(--gl-dur-1) var(--gl-ease), transform var(--gl-dur-2) var(--gl-ease-out);
     }
     .tree-toggle:hover {
-      background: var(--gl-hover);
+      opacity: 1;
     }
     .tree-toggle svg {
-      width: 14px;
-      height: 14px;
+      width: 10px;
+      height: 10px;
       transition: transform var(--gl-dur-2) var(--gl-ease-out);
     }
-    .tree-item[data-expanded="true"] .tree-toggle svg {
+    :host([expanded]) .tree-toggle svg {
       transform: rotate(90deg);
     }
-    .tree-item[data-expanded="false"] .tree-toggle {
-      opacity: 0.5;
-    }
     .tree-children {
-      margin-left: var(--gl-space-6);
+      margin-left: 16px;
       display: none;
       flex-direction: column;
-      gap: 2px;
-      padding-left: var(--gl-space-2);
-      border-left: 1px solid var(--gl-border);
+      gap: 0;
+    }
+    :host([expanded]) .tree-children {
+      display: flex;
     }
     .tree-item[data-expanded="true"] .tree-children {
       display: flex;
@@ -114,13 +118,15 @@ itemTemplate.innerHTML = `
     .tree-node {
       display: flex;
       align-items: center;
-      gap: var(--gl-space-2);
-      padding: var(--gl-space-2) var(--gl-space-3);
-      border-radius: var(--gl-radius);
+      gap: var(--gl-space-1);
+      padding: 2px 4px;
+      border-radius: 3px;
       cursor: pointer;
       user-select: none;
       transition: background var(--gl-dur-1) var(--gl-ease);
-      min-height: 32px;
+      min-height: 22px;
+      font-size: var(--gl-text-sm);
+      color: var(--gl-fg);
     }
     .tree-node:hover {
       background: var(--gl-hover);
@@ -129,35 +135,37 @@ itemTemplate.innerHTML = `
       background: var(--gl-primary);
       color: var(--gl-primary-fg);
     }
+    .tree-node:focus-visible {
+      outline: 1px solid var(--gl-ring);
+      outline-offset: -1px;
+    }
     .tree-toggle {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 4px;
-      transition: transform var(--gl-dur-2) var(--gl-ease-out), background var(--gl-dur-1) var(--gl-ease);
       flex-shrink: 0;
       cursor: pointer;
+      opacity: 0.7;
+      transition: opacity var(--gl-dur-1) var(--gl-ease), transform var(--gl-dur-2) var(--gl-ease-out);
     }
     .tree-toggle:hover {
-      background: var(--gl-hover);
+      opacity: 1;
     }
     .tree-toggle svg {
-      width: 14px;
-      height: 14px;
+      width: 10px;
+      height: 10px;
       transition: transform var(--gl-dur-2) var(--gl-ease-out);
     }
     :host([expanded]) .tree-toggle svg {
       transform: rotate(90deg);
     }
     .tree-children {
-      margin-left: var(--gl-space-6);
+      margin-left: 16px;
       display: none;
       flex-direction: column;
-      gap: 2px;
-      padding-left: var(--gl-space-2);
-      border-left: 1px solid var(--gl-border);
+      gap: 0;
     }
     :host([expanded]) .tree-children {
       display: flex;

@@ -6,11 +6,15 @@ template.innerHTML = `
     :host {
       display: block;
       position: relative;
+      width: 100%;
+      min-height: 300px;
     }
     .carousel {
       position: relative;
       overflow: hidden;
       border-radius: var(--gl-radius);
+      width: 100%;
+      height: 100%;
     }
     .carousel-track {
       display: flex;

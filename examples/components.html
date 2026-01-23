@@ -3688,15 +3688,15 @@
             </div>
 
             <div class="docs-preview">
-              <gl-carousel style="width: 500px; height: 300px;">
+              <gl-carousel style="max-width: 1000px; height: 300px; margin: 0 auto;">
                 <gl-carousel-item>
-                  <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">Slide 1</div>
+                  <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; border-radius: var(--gl-radius);">Slide 1</div>
                 </gl-carousel-item>
                 <gl-carousel-item>
-                  <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">Slide 2</div>
+                  <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; border-radius: var(--gl-radius);">Slide 2</div>
                 </gl-carousel-item>
                 <gl-carousel-item>
-                  <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">Slide 3</div>
+                  <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; border-radius: var(--gl-radius);">Slide 3</div>
                 </gl-carousel-item>
               </gl-carousel>
             </div>
@@ -3759,7 +3759,20 @@
             </div>
 
             <div class="docs-preview">
-              <gl-chart type="bar" width="400" height="300" data='[{"label":"Jan","value":20,"color":"#3b82f6"},{"label":"Feb","value":35,"color":"#3b82f6"},{"label":"Mar","value":15,"color":"#3b82f6"}]'></gl-chart>
+              <div style="display: grid; gap: 24px;">
+                <div>
+                  <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Bar Chart</div>
+                  <gl-chart type="bar" width="800" height="250" data='[{"label":"Jan","value":20,"color":"#3b82f6"},{"label":"Feb","value":35,"color":"#3b82f6"},{"label":"Mar","value":15,"color":"#3b82f6"},{"label":"Apr","value":40,"color":"#3b82f6"}]'></gl-chart>
+                </div>
+                <div>
+                  <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Line Chart</div>
+                  <gl-chart type="line" width="800" height="250" data='[{"label":"Jan","value":20,"color":"#10b981"},{"label":"Feb","value":35,"color":"#10b981"},{"label":"Mar","value":15,"color":"#10b981"},{"label":"Apr","value":40,"color":"#10b981"}]'></gl-chart>
+                </div>
+                <div>
+                  <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Pie Chart</div>
+                  <gl-chart type="pie" width="600" height="300" data='[{"label":"Red","value":30,"color":"#ef4444"},{"label":"Blue","value":25,"color":"#3b82f6"},{"label":"Green","value":20,"color":"#10b981"},{"label":"Yellow","value":25,"color":"#f59e0b"}]'></gl-chart>
+                </div>
+              </div>
             </div>
 
             <div class="docs-code-wrapper">
@@ -3867,14 +3880,16 @@
             </div>
 
             <div class="docs-preview">
-              <gl-data-grid selectable>
-                <div slot="title">Users</div>
-                <table>
+              <gl-data-grid selectable style="width: 100%;">
+                <div slot="title" style="font-weight: 600; font-size: 18px;">Users</div>
+                <gl-input slot="search" placeholder="Search users..." style="max-width: 300px;"></gl-input>
+                <table style="width: 100%;">
                   <thead>
                     <tr>
                       <gl-data-grid-column sortable>Name</gl-data-grid-column>
                       <gl-data-grid-column sortable>Email</gl-data-grid-column>
-                      <gl-data-grid-column>Role</gl-data-grid-column>
+                      <gl-data-grid-column sortable>Role</gl-data-grid-column>
+                      <gl-data-grid-column>Status</gl-data-grid-column>
                     </tr>
                   </thead>
                   <tbody>
@@ -3882,14 +3897,38 @@
                       <gl-data-grid-cell>John Doe</gl-data-grid-cell>
                       <gl-data-grid-cell>john@example.com</gl-data-grid-cell>
                       <gl-data-grid-cell>Admin</gl-data-grid-cell>
+                      <gl-data-grid-cell><gl-badge variant="success">Active</gl-badge></gl-data-grid-cell>
                     </gl-data-grid-row>
                     <gl-data-grid-row>
                       <gl-data-grid-cell>Jane Smith</gl-data-grid-cell>
                       <gl-data-grid-cell>jane@example.com</gl-data-grid-cell>
                       <gl-data-grid-cell>User</gl-data-grid-cell>
+                      <gl-data-grid-cell><gl-badge variant="success">Active</gl-badge></gl-data-grid-cell>
+                    </gl-data-grid-row>
+                    <gl-data-grid-row>
+                      <gl-data-grid-cell>Bob Johnson</gl-data-grid-cell>
+                      <gl-data-grid-cell>bob@example.com</gl-data-grid-cell>
+                      <gl-data-grid-cell>Editor</gl-data-grid-cell>
+                      <gl-data-grid-cell><gl-badge variant="secondary">Pending</gl-badge></gl-data-grid-cell>
+                    </gl-data-grid-row>
+                    <gl-data-grid-row>
+                      <gl-data-grid-cell>Alice Williams</gl-data-grid-cell>
+                      <gl-data-grid-cell>alice@example.com</gl-data-grid-cell>
+                      <gl-data-grid-cell>User</gl-data-grid-cell>
+                      <gl-data-grid-cell><gl-badge variant="success">Active</gl-badge></gl-data-grid-cell>
+                    </gl-data-grid-row>
+                    <gl-data-grid-row>
+                      <gl-data-grid-cell>Charlie Brown</gl-data-grid-cell>
+                      <gl-data-grid-cell>charlie@example.com</gl-data-grid-cell>
+                      <gl-data-grid-cell>Viewer</gl-data-grid-cell>
+                      <gl-data-grid-cell><gl-badge variant="outline">Inactive</gl-badge></gl-data-grid-cell>
                     </gl-data-grid-row>
                   </tbody>
                 </table>
+                <div slot="footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                  <div style="font-size: 14px; color: var(--gl-muted);">Showing 5 of 5 users</div>
+                  <gl-pagination page="1" pages="1"></gl-pagination>
+                </div>
               </gl-data-grid>
             </div>
 
