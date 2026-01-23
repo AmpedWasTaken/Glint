@@ -81,6 +81,40 @@ template.innerHTML = `
     }
     :host([type="circular"][size="sm"]) .circular-text{font-size:11px}
     :host([type="circular"][size="lg"]) .circular-text{font-size:var(--gl-text-md)}
+    :host([type="steps"]){display:block}
+    :host([type="steps"]) .track{display:none}
+    .steps{
+      display:none;
+      display:flex;
+      gap:var(--gl-space-2);
+      align-items:center;
+    }
+    :host([type="steps"]) .steps{display:flex}
+    .step{
+      flex:1;
+      height:4px;
+      background:var(--gl-border);
+      border-radius:2px;
+      position:relative;
+      overflow:hidden;
+    }
+    :host([type="steps"][size="sm"]) .step{height:3px}
+    :host([type="steps"][size="lg"]) .step{height:6px}
+    .step-fill{
+      position:absolute;
+      left:0;
+      top:0;
+      height:100%;
+      width:0%;
+      background:var(--gl-primary);
+      border-radius:2px;
+      transition:width var(--gl-dur-2) var(--gl-ease-out);
+    }
+    .step.complete .step-fill{width:100%}
+    .step.active .step-fill{width:100%}
+    :host([variant="destructive"]) .step-fill{background:var(--gl-danger)}
+    :host([variant="success"]) .step-fill{background:var(--gl-success)}
+    :host([variant="warning"]) .step-fill{background:#f59e0b}
   </style>
   <div class="label" part="label" style="display:none">
     <span part="label-text"><slot name="label"></slot></span>
@@ -96,12 +130,13 @@ template.innerHTML = `
     </svg>
     <div class="circular-text" part="circular-text"></div>
   </div>
+  <div part="steps" class="steps" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
 `;
 
 export class GlProgress extends HTMLElement {
   static tagName = "gl-progress";
   static get observedAttributes() {
-    return ["value", "size", "variant", "show-label", "type"];
+    return ["value", "size", "variant", "show-label", "type", "steps"];
   }
 
   #track!: HTMLElement;
@@ -111,6 +146,7 @@ export class GlProgress extends HTMLElement {
   #circular!: HTMLElement;
   #circularProgress!: SVGCircleElement;
   #circularText!: HTMLElement;
+  #steps!: HTMLElement;
 
   get value() {
     const v = Number(this.getAttribute("value") ?? "0");
@@ -130,6 +166,7 @@ export class GlProgress extends HTMLElement {
     this.#circular = this.shadowRoot!.querySelector(".circular") as HTMLElement;
     this.#circularProgress = this.shadowRoot!.querySelector(".circular .progress") as SVGCircleElement;
     this.#circularText = this.shadowRoot!.querySelector(".circular-text") as HTMLElement;
+    this.#steps = this.shadowRoot!.querySelector(".steps") as HTMLElement;
     this.#sync();
   }
 
@@ -153,6 +190,25 @@ export class GlProgress extends HTMLElement {
       } else if (this.#circularText) {
         this.#circularText.textContent = "";
       }
+    } else if (type === "steps") {
+      if (!this.#steps) return;
+      const stepsAttr = this.getAttribute("steps") || "5";
+      const stepCount = Number(stepsAttr) || 5;
+      const currentStep = Math.round((v / 100) * stepCount);
+      
+      // Clear and rebuild steps
+      this.#steps.innerHTML = "";
+      for (let i = 0; i < stepCount; i++) {
+        const step = document.createElement("div");
+        step.className = "step";
+        if (i < currentStep) step.classList.add("complete");
+        else if (i === currentStep - 1 && v > 0) step.classList.add("active");
+        const fill = document.createElement("div");
+        fill.className = "step-fill";
+        step.appendChild(fill);
+        this.#steps.appendChild(step);
+      }
+      this.#steps.setAttribute("aria-valuenow", String(v));
     } else {
       if (!this.#track || !this.#bar) return;
       this.#bar.style.width = `${v}%`;
