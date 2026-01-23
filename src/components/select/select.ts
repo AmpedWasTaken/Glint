@@ -65,6 +65,29 @@ template.innerHTML = `
       backdrop-filter:blur(12px);
       -webkit-backdrop-filter:blur(12px);
       min-width:200px;
+      display:flex;
+      flex-direction:column;
+    }
+    .search{
+      display:none;
+      padding:8px;
+      border-bottom:1px solid var(--gl-border);
+    }
+    :host([searchable]) .search{display:block}
+    .search-input{
+      all:unset;
+      width:100%;
+      padding:6px 8px;
+      background:var(--gl-panel);
+      border:1px solid var(--gl-border);
+      border-radius:6px;
+      font-size:13px;
+      color:var(--gl-fg);
+    }
+    .search-input::placeholder{color:var(--gl-muted)}
+    .options-container{
+      overflow-y:auto;
+      flex:1;
     }
     .dropdown.open{
       display:block;
@@ -118,22 +141,31 @@ template.innerHTML = `
       </svg>
       <select part="select"></select>
     </span>
-    <div class="dropdown" part="dropdown" role="listbox"></div>
+    <div class="dropdown" part="dropdown" role="listbox">
+      <div class="search" part="search">
+        <input class="search-input" part="search-input" type="text" placeholder="Search..." />
+      </div>
+      <div class="options-container" part="options-container"></div>
+    </div>
   </label>
 `;
 
 export class GlSelect extends HTMLElement {
   static tagName = "gl-select";
   static get observedAttributes() {
-    return ["value", "disabled", "name", "open", "options"];
+    return ["value", "disabled", "name", "open", "options", "searchable"];
   }
 
   #select!: HTMLSelectElement;
   #field!: HTMLSpanElement;
   #valueDisplay!: HTMLSpanElement;
   #dropdown!: HTMLDivElement;
+  #optionsContainer!: HTMLDivElement;
+  #searchInput!: HTMLInputElement;
   #options: HTMLDivElement[] = [];
+  #allOptions: HTMLDivElement[] = [];
   #selectedIndex = -1;
+  #searchTerm = "";
 
   get value() {
     return this.#select?.value ?? this.getAttribute("value") ?? "";
@@ -157,8 +189,17 @@ export class GlSelect extends HTMLElement {
     this.#field = this.shadowRoot!.querySelector(".field") as HTMLSpanElement;
     this.#valueDisplay = this.shadowRoot!.querySelector(".value") as HTMLSpanElement;
     this.#dropdown = this.shadowRoot!.querySelector(".dropdown") as HTMLDivElement;
+    this.#optionsContainer = this.shadowRoot!.querySelector(".options-container") as HTMLDivElement;
+    this.#searchInput = this.shadowRoot!.querySelector(".search-input") as HTMLInputElement;
 
     this.#parseOptions();
+    
+    if (this.hasAttribute("searchable")) {
+      this.#searchInput.addEventListener("input", () => {
+        this.#searchTerm = this.#searchInput.value.toLowerCase();
+        this.#filterOptions();
+      });
+    }
     
     this.#field.addEventListener("click", (e) => {
       e.preventDefault();
@@ -244,6 +285,12 @@ export class GlSelect extends HTMLElement {
     const isOpen = this.open;
     this.#dropdown.classList.toggle("open", isOpen);
     if (isOpen) {
+      if (this.hasAttribute("searchable")) {
+        this.#searchInput.value = "";
+        this.#searchTerm = "";
+        this.#filterOptions();
+        queueMicrotask(() => this.#searchInput.focus());
+      }
       if (this.#options.length > 0) {
         const currentIndex = this.#options.findIndex(opt => opt.dataset.value === this.value);
         this.#selectedIndex = currentIndex >= 0 ? currentIndex : 0;
@@ -256,6 +303,11 @@ export class GlSelect extends HTMLElement {
       this.#dropdown.style.left = "";
       this.#dropdown.style.top = "";
       this.#dropdown.style.width = "";
+      if (this.hasAttribute("searchable")) {
+        this.#searchInput.value = "";
+        this.#searchTerm = "";
+        this.#filterOptions();
+      }
     }
   }
 
@@ -311,6 +363,12 @@ export class GlSelect extends HTMLElement {
     this.value = value;
     this.#select.value = value;
     this.#updateDisplay();
+    // Clear search
+    if (this.hasAttribute("searchable")) {
+      this.#searchInput.value = "";
+      this.#searchTerm = "";
+      this.#filterOptions();
+    }
     // Close dropdown immediately
     this.open = false;
     // Prevent any delayed reopening
@@ -342,12 +400,13 @@ export class GlSelect extends HTMLElement {
   }
 
   #parseOptions() {
-    if (!this.#select || !this.#dropdown) return;
+    if (!this.#select || !this.#optionsContainer) return;
     
     // Clear existing options
     this.#select.innerHTML = "";
-    this.#dropdown.innerHTML = "";
+    this.#optionsContainer.innerHTML = "";
     this.#options = [];
+    this.#allOptions = [];
 
     const optionsAttr = this.getAttribute("options");
     if (optionsAttr) {
@@ -371,6 +430,7 @@ export class GlSelect extends HTMLElement {
           div.setAttribute("tabindex", "-1");
           div.textContent = opt.label;
           div.dataset.value = opt.value;
+          div.dataset.label = opt.label.toLowerCase();
           if (opt.disabled) {
             div.setAttribute("disabled", "");
           }
@@ -388,12 +448,35 @@ export class GlSelect extends HTMLElement {
             this.#updateSelection();
           });
           
-          this.#dropdown.appendChild(div);
+          this.#optionsContainer.appendChild(div);
+          this.#allOptions.push(div);
           this.#options.push(div);
         }
       } catch {
         // ignore
       }
+    }
+  }
+
+  #filterOptions() {
+    if (!this.hasAttribute("searchable")) return;
+    
+    this.#optionsContainer.innerHTML = "";
+    this.#options = [];
+    
+    const term = this.#searchTerm;
+    const filtered = term
+      ? this.#allOptions.filter(opt => opt.dataset.label?.includes(term))
+      : this.#allOptions;
+    
+    filtered.forEach(opt => {
+      this.#optionsContainer.appendChild(opt);
+      this.#options.push(opt);
+    });
+    
+    if (this.#options.length > 0) {
+      this.#selectedIndex = 0;
+      this.#updateSelection();
     }
   }
 }
