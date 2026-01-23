@@ -1,0 +1,2 @@
+// Infinite Scroll component - placeholder
+

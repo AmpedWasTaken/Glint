@@ -1,0 +1,2 @@
+// Resizable define - placeholder
+
