@@ -31,7 +31,10 @@ template.innerHTML = `
       letter-spacing: 0.05em;
     }
     .countdown-separator {
-      display: none;
+      font-size: var(--gl-text-xl);
+      font-weight: 600;
+      color: var(--gl-muted);
+      padding: 0 var(--gl-space-1);
     }
     :host([size="sm"]) .countdown-value {
       font-size: var(--gl-text-lg);
@@ -68,17 +71,17 @@ template.innerHTML = `
       <span class="countdown-value" part="days-value">00</span>
       <span class="countdown-label" part="days-label">Days</span>
     </div>
-    <span class="countdown-separator" part="separator">:</span>
+    <span class="countdown-separator" part="separator"></span>
     <div class="countdown-item" part="hours">
       <span class="countdown-value" part="hours-value">00</span>
       <span class="countdown-label" part="hours-label">Hours</span>
     </div>
-    <span class="countdown-separator" part="separator">:</span>
+    <span class="countdown-separator" part="separator"></span>
     <div class="countdown-item" part="minutes">
       <span class="countdown-value" part="minutes-value">00</span>
       <span class="countdown-label" part="minutes-label">Minutes</span>
     </div>
-    <span class="countdown-separator" part="separator">:</span>
+    <span class="countdown-separator" part="separator"></span>
     <div class="countdown-item" part="seconds">
       <span class="countdown-value" part="seconds-value">00</span>
       <span class="countdown-label" part="seconds-label">Seconds</span>
