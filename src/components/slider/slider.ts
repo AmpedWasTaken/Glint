@@ -24,7 +24,7 @@ template.innerHTML = `
       height:100%;
       background:var(--gl-primary);
       border-radius:3px;
-      transition:width var(--gl-slider-dur) var(--gl-slider-ease), background var(--gl-dur-1) var(--gl-ease);
+      transition:width var(--gl-slider-dur) var(--gl-slider-ease), left var(--gl-slider-dur) var(--gl-slider-ease), background var(--gl-dur-1) var(--gl-ease);
     }
     :host([motion="snappy"]) .fill{transition:width var(--gl-slider-dur) var(--gl-slider-ease), background var(--gl-dur-1) var(--gl-ease), transform var(--gl-slider-dur) var(--gl-slider-ease)}
     :host([motion="snappy"][dragging]) .fill{transform:scaleY(1.3)}
