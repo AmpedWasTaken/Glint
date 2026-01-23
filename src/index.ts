@@ -55,6 +55,13 @@ import { defineSplitPane } from "./components/split-pane/define.js";
 import { defineStack } from "./components/stack/define.js";
 import { defineStepper } from "./components/stepper/define.js";
 import { defineTimeline } from "./components/timeline/define.js";
+import { defineTree } from "./components/tree/define.js";
+import { defineList } from "./components/list/define.js";
+import { defineCarousel } from "./components/carousel/define.js";
+import { defineChart } from "./components/chart/define.js";
+import { defineCalendar } from "./components/calendar/define.js";
+import { defineDataGrid } from "./components/data-grid/define.js";
+import { defineEmptyState } from "./components/empty-state/define.js";
 
 export { defineAccordion, GlAccordion, GlAccordionItem } from "./components/accordion/define.js";
 export { defineAlert, GlAlert } from "./components/alert/define.js";
@@ -103,6 +110,13 @@ export { defineSplitPane, GlSplitPane } from "./components/split-pane/define.js"
 export { defineStack, GlStack } from "./components/stack/define.js";
 export { defineStepper, GlStepper, GlStepperStep } from "./components/stepper/define.js";
 export { defineTimeline, GlTimeline, GlTimelineItem } from "./components/timeline/define.js";
+export { defineTree, GlTree, GlTreeItem } from "./components/tree/define.js";
+export { defineList, GlList, GlListItem } from "./components/list/define.js";
+export { defineCarousel, GlCarousel, GlCarouselItem } from "./components/carousel/define.js";
+export { defineChart, GlChart } from "./components/chart/define.js";
+export { defineCalendar, GlCalendar } from "./components/calendar/define.js";
+export { defineDataGrid, GlDataGrid, GlDataGridColumn, GlDataGridRow, GlDataGridCell } from "./components/data-grid/define.js";
+export { defineEmptyState, GlEmptyState } from "./components/empty-state/define.js";
 
 export function defineGlint(): void {
   defineAccordion();
@@ -152,6 +166,13 @@ export function defineGlint(): void {
   defineStack();
   defineStepper();
   defineTimeline();
+  defineTree();
+  defineList();
+  defineCarousel();
+  defineChart();
+  defineCalendar();
+  defineDataGrid();
+  defineEmptyState();
 }
 
 declare global {

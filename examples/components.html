@@ -266,6 +266,13 @@
             <a href="#split-pane" class="docs-nav-link">Split Pane</a>
             <a href="#stack" class="docs-nav-link">Stack</a>
             <a href="#container" class="docs-nav-link">Container</a>
+            <a href="#tree" class="docs-nav-link">Tree</a>
+            <a href="#list" class="docs-nav-link">List</a>
+            <a href="#carousel" class="docs-nav-link">Carousel</a>
+            <a href="#chart" class="docs-nav-link">Chart</a>
+            <a href="#calendar" class="docs-nav-link">Calendar</a>
+            <a href="#data-grid" class="docs-nav-link">Data Grid</a>
+            <a href="#empty-state" class="docs-nav-link">Empty State</a>
           </div>
         </nav>
       </aside>
@@ -3086,7 +3093,7 @@
     </div>
 
             <div class="docs-preview">
-              <gl-stepper current="1" variant="horizontal">
+              <gl-stepper current="0" variant="horizontal" style="width: 500px;">
                 <gl-stepper-step slot="steps">
                   <span slot="label">Step 1</span>
                   <span slot="description">Account</span>
@@ -3102,12 +3109,12 @@
                 <div slot="navigation" style="display: flex; justify-content: space-between; width: 100%;">
                   <gl-button variant="secondary">Previous</gl-button>
                   <gl-button>Next</gl-button>
-      </div>
+                </div>
               </gl-stepper>
-      </div>
+            </div>
 
             <div class="docs-code-wrapper">
-              <gl-codeblock lang="html" copy data-code="&lt;gl-stepper current=&quot;1&quot; variant=&quot;horizontal&quot;&gt;
+              <gl-codeblock lang="html" copy data-code="&lt;gl-stepper current=&quot;0&quot; variant=&quot;horizontal&quot;&gt;
 &#10;  &lt;gl-stepper-step slot=&quot;steps&quot;&gt;
 &#10;    &lt;span slot=&quot;label&quot;&gt;Step 1&lt;/span&gt;
 &#10;    &lt;span slot=&quot;description&quot;&gt;Account&lt;/span&gt;
@@ -3538,6 +3545,452 @@
                     <td><code>"none" | "sm" | "md" | "lg" | "xl"</code></td>
                     <td><code>"md"</code></td>
                     <td>Horizontal padding size</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="tree" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Tree</h2>
+              <p>Hierarchical tree view component with expand/collapse functionality.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-tree>
+                <gl-tree-item>
+                  <span slot="icon">📁</span>
+                  Documents
+                  <gl-tree-item slot="children">
+                    <span slot="icon">📄</span>
+                    File 1.pdf
+                  </gl-tree-item>
+                  <gl-tree-item slot="children">
+                    <span slot="icon">📄</span>
+                    File 2.docx
+                  </gl-tree-item>
+                </gl-tree-item>
+                <gl-tree-item expanded>
+                  <span slot="icon">📁</span>
+                  Images
+                  <gl-tree-item slot="children">
+                    <span slot="icon">🖼️</span>
+                    Photo 1.jpg
+                  </gl-tree-item>
+                </gl-tree-item>
+              </gl-tree>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-tree&gt;
+&#10;  &lt;gl-tree-item&gt;
+&#10;    &lt;span slot=&quot;icon&quot;&gt;📁&lt;/span&gt;
+&#10;    Documents
+&#10;    &lt;gl-tree-item slot=&quot;children&quot;&gt;
+&#10;      &lt;span slot=&quot;icon&quot;&gt;📄&lt;/span&gt;
+&#10;      File 1.pdf
+&#10;    &lt;/gl-tree-item&gt;
+&#10;  &lt;/gl-tree-item&gt;
+&#10;&lt;/gl-tree&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "compact" | "spacious"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Tree variant</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="margin-top: 16px; font-size: 14px; color: var(--gl-muted);"><strong>gl-tree-item:</strong> <code>expanded</code> (boolean), <code>selected</code> (boolean)</p>
+            </div>
+          </div>
+        </section>
+
+<section id="list" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>List</h2>
+              <p>Enhanced list component with selection and multiple variants.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-list>
+                <gl-list-item>
+                  <span slot="title">Item 1</span>
+                  <span slot="description">Description for item 1</span>
+                </gl-list-item>
+                <gl-list-item selected>
+                  <span slot="title">Item 2</span>
+                  <span slot="description">Description for item 2</span>
+                </gl-list-item>
+                <gl-list-item>
+                  <span slot="title">Item 3</span>
+                  <span slot="description">Description for item 3</span>
+                </gl-list-item>
+              </gl-list>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-list&gt;
+&#10;  &lt;gl-list-item&gt;
+&#10;    &lt;span slot=&quot;title&quot;&gt;Item 1&lt;/span&gt;
+&#10;    &lt;span slot=&quot;description&quot;&gt;Description&lt;/span&gt;
+&#10;  &lt;/gl-list-item&gt;
+&#10;&lt;/gl-list&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "bordered" | "none" | "card"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>List variant</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="margin-top: 16px; font-size: 14px; color: var(--gl-muted);"><strong>gl-list-item:</strong> <code>selected</code> (boolean), <code>disabled</code> (boolean), <code>variant</code> ("compact" | "spacious")</p>
+            </div>
+          </div>
+        </section>
+
+<section id="carousel" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Carousel</h2>
+              <p>Image/content carousel with navigation and indicators.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-carousel style="width: 500px; height: 300px;">
+                <gl-carousel-item>
+                  <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">Slide 1</div>
+                </gl-carousel-item>
+                <gl-carousel-item>
+                  <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">Slide 2</div>
+                </gl-carousel-item>
+                <gl-carousel-item>
+                  <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">Slide 3</div>
+                </gl-carousel-item>
+              </gl-carousel>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-carousel&gt;
+&#10;  &lt;gl-carousel-item&gt;Slide 1&lt;/gl-carousel-item&gt;
+&#10;  &lt;gl-carousel-item&gt;Slide 2&lt;/gl-carousel-item&gt;
+&#10;  &lt;gl-carousel-item&gt;Slide 3&lt;/gl-carousel-item&gt;
+&#10;&lt;/gl-carousel&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>current</code></td>
+                    <td><code>number</code></td>
+                    <td><code>0</code></td>
+                    <td>Current slide index</td>
+                  </tr>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"slide" | "fade"</code></td>
+                    <td><code>"slide"</code></td>
+                    <td>Transition variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>autoplay</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Enable autoplay</td>
+                  </tr>
+                  <tr>
+                    <td><code>interval</code></td>
+                    <td><code>number</code></td>
+                    <td><code>3000</code></td>
+                    <td>Autoplay interval in milliseconds</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="chart" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Chart</h2>
+              <p>Basic chart component with bar, line, and pie chart types.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-chart type="bar" width="400" height="300" data='[{"label":"Jan","value":20,"color":"#3b82f6"},{"label":"Feb","value":35,"color":"#3b82f6"},{"label":"Mar","value":15,"color":"#3b82f6"}]'></gl-chart>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-chart type=&quot;bar&quot; width=&quot;400&quot; height=&quot;300&quot; data=\&#39;[{&quot;label&quot;:&quot;Jan&quot;,&quot;value&quot;:20},{&quot;label&quot;:&quot;Feb&quot;,&quot;value&quot;:35}]\&#39;&gt;&lt;/gl-chart&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>type</code></td>
+                    <td><code>"bar" | "line" | "pie"</code></td>
+                    <td><code>"bar"</code></td>
+                    <td>Chart type</td>
+                  </tr>
+                  <tr>
+                    <td><code>data</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>JSON array of data points with label, value, and optional color</td>
+                  </tr>
+                  <tr>
+                    <td><code>width</code></td>
+                    <td><code>number</code></td>
+                    <td><code>400</code></td>
+                    <td>Chart width</td>
+                  </tr>
+                  <tr>
+                    <td><code>height</code></td>
+                    <td><code>number</code></td>
+                    <td><code>300</code></td>
+                    <td>Chart height</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="calendar" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Calendar</h2>
+              <p>Calendar view component with date selection.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-calendar value="2024-01-15"></gl-calendar>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-calendar value=&quot;2024-01-15&quot;&gt;&lt;/gl-calendar&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>value</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Selected date (YYYY-MM-DD format)</td>
+                  </tr>
+                  <tr>
+                    <td><code>min</code></td>
+                    <td><code>string</code></td>
+                    <td><code>-</code></td>
+                    <td>Minimum selectable date</td>
+                  </tr>
+                  <tr>
+                    <td><code>max</code></td>
+                    <td><code>string</code></td>
+                    <td><code>-</code></td>
+                    <td>Maximum selectable date</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="data-grid" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Data Grid</h2>
+              <p>Advanced data grid with sorting and filtering capabilities.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-data-grid selectable>
+                <div slot="title">Users</div>
+                <table>
+                  <thead>
+                    <tr>
+                      <gl-data-grid-column sortable>Name</gl-data-grid-column>
+                      <gl-data-grid-column sortable>Email</gl-data-grid-column>
+                      <gl-data-grid-column>Role</gl-data-grid-column>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <gl-data-grid-row>
+                      <gl-data-grid-cell>John Doe</gl-data-grid-cell>
+                      <gl-data-grid-cell>john@example.com</gl-data-grid-cell>
+                      <gl-data-grid-cell>Admin</gl-data-grid-cell>
+                    </gl-data-grid-row>
+                    <gl-data-grid-row>
+                      <gl-data-grid-cell>Jane Smith</gl-data-grid-cell>
+                      <gl-data-grid-cell>jane@example.com</gl-data-grid-cell>
+                      <gl-data-grid-cell>User</gl-data-grid-cell>
+                    </gl-data-grid-row>
+                  </tbody>
+                </table>
+              </gl-data-grid>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-data-grid selectable&gt;
+&#10;  &lt;div slot=&quot;title&quot;&gt;Users&lt;/div&gt;
+&#10;  &lt;table&gt;
+&#10;    &lt;thead&gt;
+&#10;      &lt;tr&gt;
+&#10;        &lt;gl-data-grid-column sortable&gt;Name&lt;/gl-data-grid-column&gt;
+&#10;        &lt;gl-data-grid-column sortable&gt;Email&lt;/gl-data-grid-column&gt;
+&#10;      &lt;/tr&gt;
+&#10;    &lt;/thead&gt;
+&#10;    &lt;tbody&gt;
+&#10;      &lt;gl-data-grid-row&gt;
+&#10;        &lt;gl-data-grid-cell&gt;John Doe&lt;/gl-data-grid-cell&gt;
+&#10;        &lt;gl-data-grid-cell&gt;john@example.com&lt;/gl-data-grid-cell&gt;
+&#10;      &lt;/gl-data-grid-row&gt;
+&#10;    &lt;/tbody&gt;
+&#10;  &lt;/table&gt;
+&#10;&lt;/gl-data-grid&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>sortable</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Enable column sorting</td>
+                  </tr>
+                  <tr>
+                    <td><code>selectable</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Enable row selection</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="margin-top: 16px; font-size: 14px; color: var(--gl-muted);"><strong>gl-data-grid-column:</strong> <code>sortable</code> (boolean), <code>sort</code> ("asc" | "desc")</p>
+              <p style="font-size: 14px; color: var(--gl-muted);"><strong>gl-data-grid-row:</strong> <code>selected</code> (boolean)</p>
+            </div>
+          </div>
+        </section>
+
+<section id="empty-state" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Empty State</h2>
+              <p>Empty state placeholder component with variants.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-empty-state>
+                <span slot="icon">📭</span>
+                <span slot="title">No items found</span>
+                <span slot="description">Get started by creating a new item.</span>
+                <div slot="actions">
+                  <gl-button>Create Item</gl-button>
+                </div>
+              </gl-empty-state>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-empty-state&gt;
+&#10;  &lt;span slot=&quot;icon&quot;&gt;📭&lt;/span&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;No items found&lt;/span&gt;
+&#10;  &lt;span slot=&quot;description&quot;&gt;Get started by creating a new item.&lt;/span&gt;
+&#10;  &lt;div slot=&quot;actions&quot;&gt;
+&#10;    &lt;gl-button&gt;Create Item&lt;/gl-button&gt;
+&#10;  &lt;/div&gt;
+&#10;&lt;/gl-empty-state&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "minimal" | "large"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Empty state variant</td>
                   </tr>
                 </tbody>
               </table>

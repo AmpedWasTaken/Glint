@@ -240,6 +240,7 @@ export class GlStepper extends HTMLElement {
   }
 
   #steps: GlStepperStep[] = [];
+  #navigationButtons: Set<HTMLElement> = new Set();
 
   get current() {
     return Number(this.getAttribute("current")) || 0;
@@ -257,6 +258,7 @@ export class GlStepper extends HTMLElement {
     // Wait for DOM to be ready
     requestAnimationFrame(() => {
       this.#updateSteps();
+      this.#wireNavigationButtons();
     });
 
     // Watch for step changes
@@ -267,12 +269,22 @@ export class GlStepper extends HTMLElement {
     });
     this.#observer.observe(this, { childList: true, subtree: false });
     
-    // Also watch for slot changes
+    // Watch for slot changes
     const stepsSlot = this.shadowRoot!.querySelector('slot[name="steps"]') as HTMLSlotElement;
     if (stepsSlot) {
       stepsSlot.addEventListener("slotchange", () => {
         requestAnimationFrame(() => {
           this.#updateSteps();
+        });
+      });
+    }
+
+    // Watch for navigation slot changes
+    const navigationSlot = this.shadowRoot!.querySelector('slot[name="navigation"]') as HTMLSlotElement;
+    if (navigationSlot) {
+      navigationSlot.addEventListener("slotchange", () => {
+        requestAnimationFrame(() => {
+          this.#wireNavigationButtons();
         });
       });
     }
@@ -282,6 +294,11 @@ export class GlStepper extends HTMLElement {
     if (this.#observer) {
       this.#observer.disconnect();
     }
+    // Clean up navigation button listeners
+    this.#navigationButtons.forEach(button => {
+      button.removeEventListener("click", this.#handleNavigationClick);
+    });
+    this.#navigationButtons.clear();
   }
 
   attributeChangedCallback() {
@@ -310,7 +327,83 @@ export class GlStepper extends HTMLElement {
     });
   }
 
+  #wireNavigationButtons() {
+    // Clear existing listeners
+    this.#navigationButtons.forEach(button => {
+      button.removeEventListener("click", this.#handleNavigationClick);
+    });
+    this.#navigationButtons.clear();
+
+    const navigationSlot = this.shadowRoot!.querySelector('slot[name="navigation"]') as HTMLSlotElement;
+    if (!navigationSlot) return;
+
+    const assignedNodes = navigationSlot.assignedNodes();
+    
+    // Find all buttons in the navigation slot
+    const findButtons = (nodes: Node[]): HTMLElement[] => {
+      const buttons: HTMLElement[] = [];
+      nodes.forEach(node => {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          const element = node as HTMLElement;
+          // Check if it's a button or gl-button
+          if (element.tagName === "BUTTON" || element.tagName === "GL-BUTTON" || 
+              element.getAttribute("role") === "button" ||
+              element.hasAttribute("data-stepper-action")) {
+            buttons.push(element);
+          }
+          // Also search children
+          if (element.children) {
+            buttons.push(...findButtons(Array.from(element.children)));
+          }
+        }
+      });
+      return buttons;
+    };
+
+    const buttons = findButtons(Array.from(assignedNodes));
+    
+    buttons.forEach(button => {
+      // Check for data attribute first
+      const action = button.getAttribute("data-stepper-action");
+      if (action === "next" || action === "previous") {
+        button.addEventListener("click", this.#handleNavigationClick);
+        this.#navigationButtons.add(button);
+        return;
+      }
+
+      // Check button text content
+      const text = button.textContent?.trim().toLowerCase() || "";
+      if (text === "next" || text.includes("next")) {
+        button.addEventListener("click", this.#handleNavigationClick);
+        this.#navigationButtons.add(button);
+      } else if (text === "previous" || text === "prev" || text.includes("previous") || text.includes("back")) {
+        button.addEventListener("click", this.#handleNavigationClick);
+        this.#navigationButtons.add(button);
+      }
+    });
+  }
+
+  #handleNavigationClick = (e: Event) => {
+    const button = e.target as HTMLElement;
+    const action = button.getAttribute("data-stepper-action");
+    const text = button.textContent?.trim().toLowerCase() || "";
+
+    if (action === "next" || (!action && (text === "next" || text.includes("next")))) {
+      e.preventDefault();
+      e.stopPropagation();
+      this.next();
+    } else if (action === "previous" || (!action && (text === "previous" || text === "prev" || text.includes("previous") || text.includes("back")))) {
+      e.preventDefault();
+      e.stopPropagation();
+      this.previous();
+    }
+  };
+
   next() {
+    // Ensure steps are updated
+    this.#updateSteps();
+    if (this.#steps.length === 0) return;
+    
     if (this.current < this.#steps.length - 1) {
       this.current++;
       emit(this, "gl-step-change", { step: this.current });
@@ -318,6 +411,10 @@ export class GlStepper extends HTMLElement {
   }
 
   previous() {
+    // Ensure steps are updated
+    this.#updateSteps();
+    if (this.#steps.length === 0) return;
+    
     if (this.current > 0) {
       this.current--;
       emit(this, "gl-step-change", { step: this.current });

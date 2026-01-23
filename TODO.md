@@ -26,14 +26,14 @@ This file tracks potential additions, improvements, and enhancements for the Gli
 - [x] **Container** - Responsive container component
 
 ### Data Display
-- [ ] **Timeline** - Timeline/activity feed component
-- [ ] **Tree** - Tree view component with expand/collapse
-- [ ] **List** - Enhanced list component with selection
-- [ ] **Carousel** - Image/content carousel with navigation
-- [ ] **Chart** - Basic chart component (bar, line, pie)
-- [ ] **Calendar** - Calendar view component
-- [ ] **Data Grid** - Advanced data grid with sorting/filtering
-- [ ] **Empty State** - Empty state placeholder component
+- [x] **Timeline** - Timeline/activity feed component
+- [x] **Tree** - Tree view component with expand/collapse
+- [x] **List** - Enhanced list component with selection
+- [x] **Carousel** - Image/content carousel with navigation
+- [x] **Chart** - Basic chart component (bar, line, pie)
+- [x] **Calendar** - Calendar view component
+- [x] **Data Grid** - Advanced data grid with sorting/filtering
+- [x] **Empty State** - Empty state placeholder component
 
 ### Feedback & Display
 - [ ] **Notification** - Enhanced notification system
