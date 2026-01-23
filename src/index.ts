@@ -62,6 +62,12 @@ import { defineChart } from "./components/chart/define.js";
 import { defineCalendar } from "./components/calendar/define.js";
 import { defineDataGrid } from "./components/data-grid/define.js";
 import { defineEmptyState } from "./components/empty-state/define.js";
+import { defineNotification } from "./components/notification/define.js";
+import { defineSnackbar } from "./components/snackbar/define.js";
+import { defineBanner } from "./components/banner/define.js";
+import { defineStatusIndicator } from "./components/status-indicator/define.js";
+import { defineCountdown } from "./components/countdown/define.js";
+import { defineStatCard } from "./components/stat-card/define.js";
 
 export { defineAccordion, GlAccordion, GlAccordionItem } from "./components/accordion/define.js";
 export { defineAlert, GlAlert } from "./components/alert/define.js";
@@ -117,6 +123,12 @@ export { defineChart, GlChart } from "./components/chart/define.js";
 export { defineCalendar, GlCalendar } from "./components/calendar/define.js";
 export { defineDataGrid, GlDataGrid, GlDataGridColumn, GlDataGridRow, GlDataGridCell } from "./components/data-grid/define.js";
 export { defineEmptyState, GlEmptyState } from "./components/empty-state/define.js";
+export { defineNotification, GlNotification } from "./components/notification/define.js";
+export { defineSnackbar, GlSnackbar } from "./components/snackbar/define.js";
+export { defineBanner, GlBanner } from "./components/banner/define.js";
+export { defineStatusIndicator, GlStatusIndicator } from "./components/status-indicator/define.js";
+export { defineCountdown, GlCountdown } from "./components/countdown/define.js";
+export { defineStatCard, GlStatCard } from "./components/stat-card/define.js";
 
 export function defineGlint(): void {
   defineAccordion();
@@ -173,6 +185,12 @@ export function defineGlint(): void {
   defineCalendar();
   defineDataGrid();
   defineEmptyState();
+  defineNotification();
+  defineSnackbar();
+  defineBanner();
+  defineStatusIndicator();
+  defineCountdown();
+  defineStatCard();
 }
 
 declare global {
