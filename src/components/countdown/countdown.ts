@@ -31,10 +31,7 @@ template.innerHTML = `
       letter-spacing: 0.05em;
     }
     .countdown-separator {
-      font-size: var(--gl-text-xl);
-      font-weight: 600;
-      color: var(--gl-muted);
-      padding: 0 var(--gl-space-1);
+      display: none;
     }
     :host([size="sm"]) .countdown-value {
       font-size: var(--gl-text-lg);
