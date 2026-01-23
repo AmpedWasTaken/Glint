@@ -187,7 +187,7 @@ export class GlSnackbar extends HTMLElement {
   }
 
   #sync() {
-    if (this.open) {
+    if (this.isOpen) {
       const duration = Number(this.getAttribute("duration")) || 0;
       if (duration > 0) {
         this.#autoDismissTimer = window.setTimeout(() => {
@@ -202,7 +202,7 @@ export class GlSnackbar extends HTMLElement {
     }
   }
 
-  open() {
+  show() {
     this.setAttribute("open", "");
     emit(this, "gl-snackbar-open");
   }
@@ -215,11 +215,11 @@ export class GlSnackbar extends HTMLElement {
     }
   }
 
-  get open() {
+  get isOpen() {
     return this.hasAttribute("open");
   }
 
-  set open(v: boolean) {
+  set isOpen(v: boolean) {
     if (v) this.setAttribute("open", "");
     else this.removeAttribute("open");
   }
