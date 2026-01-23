@@ -28,12 +28,19 @@ template.innerHTML = `
       font-size: var(--gl-text-sm);
       color: var(--gl-fg);
     }
-    .tree-node:hover {
+    .tree-node:hover:not([aria-disabled="true"]) {
       background: var(--gl-hover);
     }
     .tree-node[aria-selected="true"] {
-      background: var(--gl-primary);
-      color: var(--gl-primary-fg);
+      background: var(--gl-hover);
+      font-weight: 500;
+    }
+    .tree-node[aria-disabled="true"] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .tree-node[aria-disabled="true"]:hover {
+      background: transparent;
     }
     .tree-node:focus-visible {
       outline: 1px solid var(--gl-ring);
@@ -128,12 +135,19 @@ itemTemplate.innerHTML = `
       font-size: var(--gl-text-sm);
       color: var(--gl-fg);
     }
-    .tree-node:hover {
+    .tree-node:hover:not([aria-disabled="true"]) {
       background: var(--gl-hover);
     }
     .tree-node[aria-selected="true"] {
-      background: var(--gl-primary);
-      color: var(--gl-primary-fg);
+      background: var(--gl-hover);
+      font-weight: 500;
+    }
+    .tree-node[aria-disabled="true"] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .tree-node[aria-disabled="true"]:hover {
+      background: transparent;
     }
     .tree-node:focus-visible {
       outline: 1px solid var(--gl-ring);
@@ -228,7 +242,7 @@ export class GlTree extends HTMLElement {
 export class GlTreeItem extends HTMLElement {
   static tagName = "gl-tree-item";
   static get observedAttributes() {
-    return ["expanded", "selected"];
+    return ["expanded", "selected", "selectable", "disabled"];
   }
 
   #node!: HTMLElement;
@@ -254,13 +268,31 @@ export class GlTreeItem extends HTMLElement {
     });
 
     this.#node.addEventListener("click", () => {
-      this.select();
+      if (this.disabled) return;
+      
+      // Check if selectable (default: files are selectable, folders are not)
+      const isSelectable = this.selectable !== null 
+        ? this.selectable 
+        : !hasChildren; // Default: files are selectable, folders are not
+      
+      if (isSelectable) {
+        this.select();
+      }
     });
 
     this.#node.addEventListener("keydown", (e) => {
+      if (this.disabled) return;
+      
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
-        this.select();
+        // Check if selectable (default: files are selectable, folders are not)
+        const isSelectable = this.selectable !== null 
+          ? this.selectable 
+          : !hasChildren; // Default: files are selectable, folders are not
+        
+        if (isSelectable) {
+          this.select();
+        }
       } else if (e.key === "ArrowRight" && hasChildren && !this.expanded) {
         e.preventDefault();
         this.expanded = true;
@@ -281,6 +313,7 @@ export class GlTreeItem extends HTMLElement {
     if (this.#node) {
       this.#node.setAttribute("aria-selected", this.selected ? "true" : "false");
       this.#node.setAttribute("aria-expanded", this.expanded ? "true" : "false");
+      this.#node.setAttribute("aria-disabled", this.disabled ? "true" : "false");
     }
   }
 
@@ -308,6 +341,25 @@ export class GlTreeItem extends HTMLElement {
   }
 
   select() {
+    if (this.disabled) return;
+    
+    // Check if selectable (default: files are selectable, folders are not)
+    const hasChildren = this.querySelector("gl-tree-item") !== null;
+    const isSelectable = this.selectable !== null 
+      ? this.selectable 
+      : !hasChildren; // Default: files are selectable, folders are not
+    
+    if (!isSelectable) {
+      return;
+    }
+
+    // If already selected, toggle off
+    if (this.selected) {
+      this.selected = false;
+      emit(this, "gl-tree-select", { selected: false });
+      return;
+    }
+
     // Deselect siblings
     const parent = this.parentElement;
     if (parent) {
@@ -320,6 +372,31 @@ export class GlTreeItem extends HTMLElement {
     }
     this.selected = true;
     emit(this, "gl-tree-select", { selected: true });
+  }
+
+  get selectable() {
+    const attr = this.getAttribute("selectable");
+    if (attr === null) return null; // Not specified, use default behavior
+    return attr !== "false"; // "true" or empty string means selectable
+  }
+
+  set selectable(v: boolean | null) {
+    if (v === null) {
+      this.removeAttribute("selectable");
+    } else if (v) {
+      this.setAttribute("selectable", "");
+    } else {
+      this.setAttribute("selectable", "false");
+    }
+  }
+
+  get disabled() {
+    return this.hasAttribute("disabled");
+  }
+
+  set disabled(v: boolean) {
+    if (v) this.setAttribute("disabled", "");
+    else this.removeAttribute("disabled");
   }
 }
 

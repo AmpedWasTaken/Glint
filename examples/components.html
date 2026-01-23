@@ -3573,12 +3573,24 @@
                     File 2.docx
                   </gl-tree-item>
                 </gl-tree-item>
-                <gl-tree-item expanded>
+                <gl-tree-item>
                   <span slot="icon">📁</span>
                   Images
                   <gl-tree-item slot="children">
                     <span slot="icon">🖼️</span>
                     Photo 1.jpg
+                  </gl-tree-item>
+                </gl-tree-item>
+                <gl-tree-item expanded>
+                  <span slot="icon">📁</span>
+                  Projects
+                  <gl-tree-item slot="children" selectable>
+                    <span slot="icon">📄</span>
+                    project.txt
+                  </gl-tree-item>
+                  <gl-tree-item slot="children" disabled>
+                    <span slot="icon">🔑</span>
+                    password.txt
                   </gl-tree-item>
                 </gl-tree-item>
               </gl-tree>
@@ -3617,7 +3629,72 @@
                   </tr>
                 </tbody>
               </table>
-              <p style="margin-top: 16px; font-size: 14px; color: var(--gl-muted);"><strong>gl-tree-item:</strong> <code>expanded</code> (boolean), <code>selected</code> (boolean)</p>
+              <p style="margin-top: 16px; font-size: 14px; color: var(--gl-muted);"><strong>gl-tree-item:</strong> <code>expanded</code> (boolean), <code>selected</code> (boolean), <code>selectable</code> (boolean | null - default: files selectable, folders not), <code>disabled</code> (boolean)</p>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Selection & States</h2>
+              <p>Control which items can be selected with <code>selectable</code> and <code>disabled</code> attributes.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-tree>
+                <gl-tree-item expanded>
+                  <span slot="icon">📁</span>
+                  Files
+                  <gl-tree-item slot="children">
+                    <span slot="icon">📄</span>
+                    normal-file.txt
+                  </gl-tree-item>
+                  <gl-tree-item slot="children" selectable>
+                    <span slot="icon">📄</span>
+                    selectable-file.txt
+                  </gl-tree-item>
+                  <gl-tree-item slot="children" selectable="false">
+                    <span slot="icon">📄</span>
+                    not-selectable.txt
+                  </gl-tree-item>
+                  <gl-tree-item slot="children" disabled>
+                    <span slot="icon">🔒</span>
+                    locked-file.txt
+                  </gl-tree-item>
+                </gl-tree-item>
+                <gl-tree-item selectable>
+                  <span slot="icon">📁</span>
+                  Selectable Folder
+                </gl-tree-item>
+              </gl-tree>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-tree&gt;
+&#10;  &lt;gl-tree-item expanded&gt;
+&#10;    &lt;span slot=&quot;icon&quot;&gt;📁&lt;/span&gt;
+&#10;    Files
+&#10;    &lt;gl-tree-item slot=&quot;children&quot;&gt;
+&#10;      &lt;span slot=&quot;icon&quot;&gt;📄&lt;/span&gt;
+&#10;      normal-file.txt
+&#10;    &lt;/gl-tree-item&gt;
+&#10;    &lt;gl-tree-item slot=&quot;children&quot; selectable&gt;
+&#10;      &lt;span slot=&quot;icon&quot;&gt;📄&lt;/span&gt;
+&#10;      selectable-file.txt
+&#10;    &lt;/gl-tree-item&gt;
+&#10;    &lt;gl-tree-item slot=&quot;children&quot; selectable=&quot;false&quot;&gt;
+&#10;      &lt;span slot=&quot;icon&quot;&gt;📄&lt;/span&gt;
+&#10;      not-selectable.txt
+&#10;    &lt;/gl-tree-item&gt;
+&#10;    &lt;gl-tree-item slot=&quot;children&quot; disabled&gt;
+&#10;      &lt;span slot=&quot;icon&quot;&gt;🔒&lt;/span&gt;
+&#10;      locked-file.txt
+&#10;    &lt;/gl-tree-item&gt;
+&#10;  &lt;/gl-tree-item&gt;
+&#10;  &lt;gl-tree-item selectable&gt;
+&#10;    &lt;span slot=&quot;icon&quot;&gt;📁&lt;/span&gt;
+&#10;    Selectable Folder
+&#10;  &lt;/gl-tree-item&gt;
+&#10;&lt;/gl-tree&gt;"></gl-codeblock>
             </div>
           </div>
         </section>

@@ -1,0 +1,2 @@
+// Status Indicator define - placeholder
+

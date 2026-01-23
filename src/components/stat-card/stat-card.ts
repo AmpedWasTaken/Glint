@@ -1,0 +1,2 @@
+// Stat Card component - placeholder
+

@@ -1,0 +1,2 @@
+// Countdown component - placeholder
+
