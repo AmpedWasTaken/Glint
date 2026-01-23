@@ -47,10 +47,53 @@ template.innerHTML = `
         -webkit-backdrop-filter:blur(var(--gl-glass-blur)) saturate(var(--gl-glass-saturation));
       }
     }
+    .arrow{
+      position:absolute;
+      width:10px;
+      height:10px;
+      background:var(--gl-panel);
+      border:1px solid var(--gl-border);
+      rotate:45deg;
+      pointer-events:none;
+      z-index:-1;
+    }
+    :host([surface="glass"]) .arrow{
+      background:var(--gl-glass-bg);
+      border-color:var(--gl-glass-border);
+    }
+    :host([side="top"]) .arrow{
+      bottom:-6px;
+      left:50%;
+      transform:translateX(-50%) rotate(45deg);
+      border-right:none;
+      border-bottom:none;
+    }
+    :host([side="bottom"]) .arrow{
+      top:-6px;
+      left:50%;
+      transform:translateX(-50%) rotate(45deg);
+      border-left:none;
+      border-top:none;
+    }
+    :host([side="left"]) .arrow{
+      right:-6px;
+      top:50%;
+      transform:translateY(-50%) rotate(45deg);
+      border-right:none;
+      border-top:none;
+    }
+    :host([side="right"]) .arrow{
+      left:-6px;
+      top:50%;
+      transform:translateY(-50%) rotate(45deg);
+      border-left:none;
+      border-bottom:none;
+    }
   </style>
   <span part="trigger" class="trigger"><slot name="trigger"></slot></span>
   <div part="panel" class="panel" role="dialog" aria-modal="false" tabindex="-1">
     <slot name="content"></slot>
+    <span class="arrow" part="arrow" aria-hidden="true"></span>
   </div>
 `;
 
@@ -248,6 +291,32 @@ export class GlPopover extends HTMLElement {
 
     this.#panel.style.left = `${left}px`;
     this.#panel.style.top = `${top}px`;
+
+    // Position arrow
+    const arrow = this.shadowRoot?.querySelector(".arrow") as HTMLElement;
+    if (arrow) {
+      if (side === "top") {
+        arrow.style.left = `${alignX() - left + t.width / 2}px`;
+        arrow.style.top = "";
+        arrow.style.bottom = "";
+        arrow.style.right = "";
+      } else if (side === "bottom") {
+        arrow.style.left = `${alignX() - left + t.width / 2}px`;
+        arrow.style.top = "";
+        arrow.style.bottom = "";
+        arrow.style.right = "";
+      } else if (side === "left") {
+        arrow.style.top = `${alignY() - top + t.height / 2}px`;
+        arrow.style.left = "";
+        arrow.style.right = "";
+        arrow.style.bottom = "";
+      } else {
+        arrow.style.top = `${alignY() - top + t.height / 2}px`;
+        arrow.style.left = "";
+        arrow.style.right = "";
+        arrow.style.bottom = "";
+      }
+    }
   }
 }
 
