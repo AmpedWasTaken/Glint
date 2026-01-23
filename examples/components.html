@@ -244,6 +244,9 @@
             <div class="docs-nav-group-title">Feedback</div>
             <a href="#alert" class="docs-nav-link">Alert</a>
             <a href="#toast" class="docs-nav-link">Toast</a>
+            <a href="#notification" class="docs-nav-link">Notification</a>
+            <a href="#snackbar" class="docs-nav-link">Snackbar</a>
+            <a href="#banner" class="docs-nav-link">Banner</a>
             <a href="#progress" class="docs-nav-link">Progress</a>
             <a href="#spinner" class="docs-nav-link">Spinner</a>
             <a href="#badge" class="docs-nav-link">Badge</a>
@@ -256,6 +259,9 @@
             <a href="#table" class="docs-nav-link">Table</a>
             <a href="#link" class="docs-nav-link">Link</a>
             <a href="#timeline" class="docs-nav-link">Timeline</a>
+            <a href="#status-indicator" class="docs-nav-link">Status Indicator</a>
+            <a href="#countdown" class="docs-nav-link">Countdown</a>
+            <a href="#stat-card" class="docs-nav-link">Stat Card</a>
               </div>
           <div class="docs-nav-group">
             <div class="docs-nav-group-title">Layout</div>
@@ -4102,6 +4108,578 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+        </section>
+
+<section id="notification" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Notification</h2>
+              <p>Enhanced notification system with variants, actions, and dismissible option.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-notification variant="default" dismissible>
+                <span slot="title">New update available</span>
+                A new version of the app is available. Update now to get the latest features.
+                <div slot="actions">
+                  <gl-button size="sm" variant="secondary">Later</gl-button>
+                  <gl-button size="sm">Update</gl-button>
+                </div>
+              </gl-notification>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-notification variant=&quot;default&quot; dismissible&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;New update available&lt;/span&gt;
+&#10;  A new version of the app is available.
+&#10;  &lt;div slot=&quot;actions&quot;&gt;
+&#10;    &lt;gl-button size=&quot;sm&quot;&gt;Update&lt;/gl-button&gt;
+&#10;  &lt;/div&gt;
+&#10;&lt;/gl-notification&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "success" | "warning" | "destructive" | "info"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Notification variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>dismissible</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Show close button</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Variants</h2>
+              <p>Different notification variants for different message types.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: grid; gap: 12px;">
+                <gl-notification variant="default" dismissible>
+                  <span slot="title">Info</span>
+                  This is a default notification.
+                </gl-notification>
+                <gl-notification variant="success" dismissible>
+                  <span slot="title">Success</span>
+                  Operation completed successfully.
+                </gl-notification>
+                <gl-notification variant="warning" dismissible>
+                  <span slot="title">Warning</span>
+                  Please review your settings.
+                </gl-notification>
+                <gl-notification variant="destructive" dismissible>
+                  <span slot="title">Error</span>
+                  Something went wrong. Please try again.
+                </gl-notification>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-notification variant=&quot;success&quot; dismissible&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;Success&lt;/span&gt;
+&#10;  Operation completed successfully.
+&#10;&lt;/gl-notification&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="snackbar" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Snackbar</h2>
+              <p>Snackbar notification component with auto-dismiss, positioning, and action support.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-button onclick="document.querySelector('gl-snackbar').show()">Show Snackbar</gl-button>
+              <gl-snackbar position="bottom" duration="5000" auto-remove>
+                Message saved successfully
+                <span slot="action-label">Undo</span>
+              </gl-snackbar>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-snackbar position=&quot;bottom&quot; duration=&quot;5000&quot; auto-remove&gt;
+&#10;  Message saved successfully
+&#10;  &lt;span slot=&quot;action-label&quot;&gt;Undo&lt;/span&gt;
+&#10;&lt;/gl-snackbar&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>open</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Whether the snackbar is open</td>
+                  </tr>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "success" | "warning" | "destructive" | "info"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Snackbar variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>position</code></td>
+                    <td><code>"bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right"</code></td>
+                    <td><code>"bottom"</code></td>
+                    <td>Snackbar position</td>
+                  </tr>
+                  <tr>
+                    <td><code>duration</code></td>
+                    <td><code>number</code></td>
+                    <td><code>0</code></td>
+                    <td>Auto-dismiss duration in milliseconds (0 = no auto-dismiss)</td>
+                  </tr>
+                  <tr>
+                    <td><code>auto-remove</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Remove element from DOM after closing</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+<section id="banner" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Banner</h2>
+              <p>Banner/announcement component with variants, actions, and full-width option.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-banner variant="info" dismissible>
+                <span slot="title">Maintenance scheduled</span>
+                We'll be performing maintenance on March 15th from 2:00 AM to 4:00 AM EST.
+                <div slot="actions">
+                  <gl-button size="sm" variant="secondary">Learn more</gl-button>
+                </div>
+              </gl-banner>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-banner variant=&quot;info&quot; dismissible&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;Maintenance scheduled&lt;/span&gt;
+&#10;  We'll be performing maintenance on March 15th.
+&#10;  &lt;div slot=&quot;actions&quot;&gt;
+&#10;    &lt;gl-button size=&quot;sm&quot;&gt;Learn more&lt;/gl-button&gt;
+&#10;  &lt;/div&gt;
+&#10;&lt;/gl-banner&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "success" | "warning" | "destructive" | "info"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Banner variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>dismissible</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Show close button</td>
+                  </tr>
+                  <tr>
+                    <td><code>full-width</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Full width banner with no border radius</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Variants</h2>
+              <p>Different banner variants for different announcement types.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: grid; gap: 12px;">
+                <gl-banner variant="success" dismissible>
+                  <span slot="title">Success</span>
+                  Your changes have been saved successfully.
+                </gl-banner>
+                <gl-banner variant="warning" dismissible>
+                  <span slot="title">Warning</span>
+                  Your subscription will expire in 7 days.
+                </gl-banner>
+                <gl-banner variant="destructive" dismissible>
+                  <span slot="title">Error</span>
+                  Unable to process your request. Please try again.
+                </gl-banner>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-banner variant=&quot;success&quot; dismissible&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;Success&lt;/span&gt;
+&#10;  Your changes have been saved.
+&#10;&lt;/gl-banner&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="status-indicator" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Status Indicator</h2>
+              <p>Status indicator with colors, sizes, and pulse animation.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <gl-status-indicator status="online">Online</gl-status-indicator>
+                  <gl-status-indicator status="away">Away</gl-status-indicator>
+                  <gl-status-indicator status="busy">Busy</gl-status-indicator>
+                  <gl-status-indicator status="offline">Offline</gl-status-indicator>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <gl-status-indicator status="online" pulse>Online (pulsing)</gl-status-indicator>
+                  <gl-status-indicator status="success">Success</gl-status-indicator>
+                  <gl-status-indicator status="warning">Warning</gl-status-indicator>
+                  <gl-status-indicator status="error">Error</gl-status-indicator>
+                </div>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-status-indicator status=&quot;online&quot;&gt;Online&lt;/gl-status-indicator&gt;
+&#10;&lt;gl-status-indicator status=&quot;away&quot;&gt;Away&lt;/gl-status-indicator&gt;
+&#10;&lt;gl-status-indicator status=&quot;busy&quot;&gt;Busy&lt;/gl-status-indicator&gt;
+&#10;&lt;gl-status-indicator status=&quot;offline&quot;&gt;Offline&lt;/gl-status-indicator&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>status</code></td>
+                    <td><code>"online" | "offline" | "away" | "busy" | "pending" | "warning" | "error" | "success" | "info"</code></td>
+                    <td><code>"online"</code></td>
+                    <td>Status type</td>
+                  </tr>
+                  <tr>
+                    <td><code>size</code></td>
+                    <td><code>"sm" | "md" | "lg"</code></td>
+                    <td><code>"md"</code></td>
+                    <td>Indicator size</td>
+                  </tr>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "square" | "badge"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Indicator variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>pulse</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Enable pulse animation</td>
+                  </tr>
+                  <tr>
+                    <td><code>label</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Label text (or use slot content)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Sizes</h2>
+              <p>Control indicator size with the size attribute.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: flex; align-items: center; gap: 16px;">
+                <gl-status-indicator status="online" size="sm">Small</gl-status-indicator>
+                <gl-status-indicator status="online" size="md">Medium</gl-status-indicator>
+                <gl-status-indicator status="online" size="lg">Large</gl-status-indicator>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-status-indicator status=&quot;online&quot; size=&quot;sm&quot;&gt;Small&lt;/gl-status-indicator&gt;
+&#10;&lt;gl-status-indicator status=&quot;online&quot; size=&quot;md&quot;&gt;Medium&lt;/gl-status-indicator&gt;
+&#10;&lt;gl-status-indicator status=&quot;online&quot; size=&quot;lg&quot;&gt;Large&lt;/gl-status-indicator&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="countdown" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Countdown</h2>
+              <p>Countdown timer component with customizable display options and end event.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-countdown target="2025-12-31T23:59:59" show-days show-hours show-minutes show-seconds></gl-countdown>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-countdown target=&quot;2025-12-31T23:59:59&quot; show-days show-hours show-minutes show-seconds&gt;&lt;/gl-countdown&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>target</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Target date/time (ISO 8601 format)</td>
+                  </tr>
+                  <tr>
+                    <td><code>size</code></td>
+                    <td><code>"sm" | "md" | "lg"</code></td>
+                    <td><code>"md"</code></td>
+                    <td>Countdown size</td>
+                  </tr>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "compact" | "inline"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Countdown variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>show-days</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Show days</td>
+                  </tr>
+                  <tr>
+                    <td><code>show-hours</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Show hours</td>
+                  </tr>
+                  <tr>
+                    <td><code>show-minutes</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Show minutes</td>
+                  </tr>
+                  <tr>
+                    <td><code>show-seconds</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Show seconds</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Variants</h2>
+              <p>Different countdown display variants.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: grid; gap: 24px;">
+                <div>
+                  <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Default</div>
+                  <gl-countdown target="2025-12-31T23:59:59" show-days show-hours show-minutes show-seconds></gl-countdown>
+                </div>
+                <div>
+                  <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Compact</div>
+                  <gl-countdown target="2025-12-31T23:59:59" variant="compact" show-hours show-minutes show-seconds></gl-countdown>
+                </div>
+                <div>
+                  <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Inline</div>
+                  <gl-countdown target="2025-12-31T23:59:59" variant="inline" show-hours show-minutes show-seconds></gl-countdown>
+                </div>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-countdown target=&quot;2025-12-31T23:59:59&quot; variant=&quot;compact&quot; show-hours show-minutes show-seconds&gt;&lt;/gl-countdown&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="stat-card" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Stat Card</h2>
+              <p>Statistics card component with variants, sizes, trends, and change indicators.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                <gl-stat-card variant="default" trend="up" change="12.5">
+                  <span slot="label">Total Revenue</span>
+                  <span slot="value">$45,231</span>
+                  <span slot="change">+12.5% from last month</span>
+                  <span slot="icon">💰</span>
+                </gl-stat-card>
+                <gl-stat-card variant="success" trend="up" change="8.2">
+                  <span slot="label">Active Users</span>
+                  <span slot="value">2,350</span>
+                  <span slot="change">+8.2% from last week</span>
+                  <span slot="icon">👥</span>
+                </gl-stat-card>
+                <gl-stat-card variant="warning" trend="down" change="-3.1">
+                  <span slot="label">Conversion Rate</span>
+                  <span slot="value">3.2%</span>
+                  <span slot="change">-3.1% from last month</span>
+                  <span slot="icon">📊</span>
+                </gl-stat-card>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-stat-card variant=&quot;default&quot; trend=&quot;up&quot; change=&quot;12.5&quot;&gt;
+&#10;  &lt;span slot=&quot;label&quot;&gt;Total Revenue&lt;/span&gt;
+&#10;  &lt;span slot=&quot;value&quot;&gt;$45,231&lt;/span&gt;
+&#10;  &lt;span slot=&quot;change&quot;&gt;+12.5% from last month&lt;/span&gt;
+&#10;  &lt;span slot=&quot;icon&quot;&gt;💰&lt;/span&gt;
+&#10;&lt;/gl-stat-card&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>variant</code></td>
+                    <td><code>"default" | "success" | "warning" | "destructive" | "info"</code></td>
+                    <td><code>"default"</code></td>
+                    <td>Stat card variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>size</code></td>
+                    <td><code>"sm" | "md" | "lg"</code></td>
+                    <td><code>"md"</code></td>
+                    <td>Stat card size</td>
+                  </tr>
+                  <tr>
+                    <td><code>trend</code></td>
+                    <td><code>"up" | "down" | "neutral"</code></td>
+                    <td><code>""</code></td>
+                    <td>Trend indicator</td>
+                  </tr>
+                  <tr>
+                    <td><code>change</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Change value (positive/negative number for automatic styling)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Sizes</h2>
+              <p>Control stat card size with the size attribute.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                <gl-stat-card size="sm" variant="info">
+                  <span slot="label">Small</span>
+                  <span slot="value">1,234</span>
+                </gl-stat-card>
+                <gl-stat-card size="md" variant="info">
+                  <span slot="label">Medium</span>
+                  <span slot="value">1,234</span>
+                </gl-stat-card>
+                <gl-stat-card size="lg" variant="info">
+                  <span slot="label">Large</span>
+                  <span slot="value">1,234</span>
+                </gl-stat-card>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-stat-card size=&quot;sm&quot;&gt;
+&#10;  &lt;span slot=&quot;label&quot;&gt;Small&lt;/span&gt;
+&#10;  &lt;span slot=&quot;value&quot;&gt;1,234&lt;/span&gt;
+&#10;&lt;/gl-stat-card&gt;"></gl-codeblock>
             </div>
           </div>
         </section>
