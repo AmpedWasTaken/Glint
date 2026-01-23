@@ -116,7 +116,7 @@ export class GlTable extends HTMLElement {
     // Wrap content immediately and synchronously - this MUST happen before rendering
     this.#ensureTable();
     
-    this.#table = this.querySelector("table");
+    this.#table = this.querySelector("table") || undefined;
     if (this.#table) {
       this.#setupFeatures();
     }
@@ -127,7 +127,7 @@ export class GlTable extends HTMLElement {
         if (!this.#isWrapping) {
           this.#ensureTable();
           if (!this.#table) {
-            this.#table = this.querySelector("table");
+            this.#table = this.querySelector("table") || undefined;
             if (this.#table) this.#setupFeatures();
           }
         }
@@ -293,7 +293,7 @@ export class GlTable extends HTMLElement {
     const rows = this.#table.querySelectorAll("tbody tr");
     rows.forEach(row => {
       const text = row.textContent?.toLowerCase() || "";
-      row.style.display = text.includes(this.#filterText) ? "" : "none";
+      (row as HTMLElement).style.display = text.includes(this.#filterText) ? "" : "none";
     });
   }
 
@@ -346,7 +346,7 @@ export class GlTable extends HTMLElement {
     const end = start + this.#pageSize;
     
     rows.forEach((row, index) => {
-      row.style.display = index >= start && index < end ? "" : "none";
+      (row as HTMLElement).style.display = index >= start && index < end ? "" : "none";
     });
     
     const info = this.querySelector(".table-pagination-info");

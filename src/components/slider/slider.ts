@@ -356,4 +356,5 @@ export class GlSlider extends HTMLElement {
     const endDist = Math.abs(clickValue - end);
     this.#activeThumb = startDist < endDist ? "start" : "end";
   }
+}
 
