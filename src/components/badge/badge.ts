@@ -56,6 +56,27 @@ template.innerHTML = `
     }
     :host([variant="dot"][size="sm"]) .badge{width:6px;height:6px;min-width:6px}
     :host([variant="dot"][size="lg"]) .badge{width:10px;height:10px;min-width:10px}
+    :host([variant="pulse"]) .badge{
+      position:relative;
+      animation:gl-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    :host([variant="pulse"]) .badge::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius:inherit;
+      background:inherit;
+      opacity:0.4;
+      animation:gl-pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes gl-pulse{
+      0%,100%{opacity:1}
+      50%{opacity:0.7}
+    }
+    @keyframes gl-pulse-ring{
+      0%{transform:scale(1);opacity:0.4}
+      100%{transform:scale(1.5);opacity:0}
+    }
     :host([size="sm"]) .badge{padding:2px 8px;font-size:11px;line-height:14px}
     :host([size="lg"]) .badge{padding:6px 12px;font-size:var(--gl-text-md);line-height:var(--gl-line-md)}
   </style>
