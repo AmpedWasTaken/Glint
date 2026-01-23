@@ -71,6 +71,11 @@ import { defineStatCard } from "./components/stat-card/define.js";
 import { defineImage } from "./components/image/define.js";
 import { defineVideo } from "./components/video/define.js";
 import { defineAudio } from "./components/audio/define.js";
+import { defineResizable } from "./components/resizable/define.js";
+import { defineDraggable } from "./components/draggable/define.js";
+import { defineSortable } from "./components/sortable/define.js";
+import { defineVirtualScroll } from "./components/virtual-scroll/define.js";
+import { defineInfiniteScroll } from "./components/infinite-scroll/define.js";
 
 export { defineAccordion, GlAccordion, GlAccordionItem } from "./components/accordion/define.js";
 export { defineAlert, GlAlert } from "./components/alert/define.js";
@@ -135,6 +140,11 @@ export { defineStatCard, GlStatCard } from "./components/stat-card/define.js";
 export { defineImage, GlImage } from "./components/image/define.js";
 export { defineVideo, GlVideo } from "./components/video/define.js";
 export { defineAudio, GlAudio } from "./components/audio/define.js";
+export { defineResizable, GlResizable } from "./components/resizable/define.js";
+export { defineDraggable, GlDraggable } from "./components/draggable/define.js";
+export { defineSortable, GlSortable } from "./components/sortable/define.js";
+export { defineVirtualScroll, GlVirtualScroll } from "./components/virtual-scroll/define.js";
+export { defineInfiniteScroll, GlInfiniteScroll } from "./components/infinite-scroll/define.js";
 
 export function defineGlint(): void {
   defineAccordion();
@@ -200,6 +210,11 @@ export function defineGlint(): void {
   defineImage();
   defineVideo();
   defineAudio();
+  defineResizable();
+  defineDraggable();
+  defineSortable();
+  defineVirtualScroll();
+  defineInfiniteScroll();
 }
 
 declare global {

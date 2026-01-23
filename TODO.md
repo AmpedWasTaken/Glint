@@ -49,11 +49,11 @@ This file tracks potential additions, improvements, and enhancements for the Gli
 - [x] **Audio** - Audio player component
 
 ### Advanced
-- [ ] **Resizable** - Resizable container component
-- [ ] **Draggable** - Drag and drop functionality
-- [ ] **Sortable** - Sortable list component
-- [ ] **Virtual Scroll** - Virtual scrolling for large lists
-- [ ] **Infinite Scroll** - Infinite scroll component
+- [x] **Resizable** - Resizable container component
+- [x] **Draggable** - Drag and drop functionality
+- [x] **Sortable** - Sortable list component
+- [x] **Virtual Scroll** - Virtual scrolling for large lists
+- [x] **Infinite Scroll** - Infinite scroll component
 
 ---
 
