@@ -44,11 +44,11 @@
 <!DOCTYPE html>
 <html lang="en" class="glint">
 <head>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@amped17/glint-ui@0.2.0/dist/glint.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@amped17/glint-ui@1.0.0/dist/glint.css" />
 </head>
 <body>
   <gl-button>Click me</gl-button>
-  <script src="https://cdn.jsdelivr.net/npm/@amped17/glint-ui@0.2.0/dist/glint.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@amped17/glint-ui@1.0.0/dist/glint.js"></script>
 </body>
 </html>
 ```
@@ -69,8 +69,8 @@ npm install @amped17/glint-ui
 
 ```html
 <!-- Recommended: Pin to specific version for stability -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@amped17/glint-ui@0.2.0/dist/glint.css" />
-<script src="https://cdn.jsdelivr.net/npm/@amped17/glint-ui@0.2.0/dist/glint.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@amped17/glint-ui@1.0.0/dist/glint.css" />
+<script src="https://cdn.jsdelivr.net/npm/@amped17/glint-ui@1.0.0/dist/glint.js"></script>
 ```
 
 **Note:** Always pin to a specific version in production. The CDN script automatically calls `defineGlint()` (idempotent).
