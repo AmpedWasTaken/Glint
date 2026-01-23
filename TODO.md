@@ -36,12 +36,12 @@ This file tracks potential additions, improvements, and enhancements for the Gli
 - [x] **Empty State** - Empty state placeholder component
 
 ### Feedback & Display
-- [ ] **Notification** - Enhanced notification system
-- [ ] **Snackbar** - Snackbar notification component
-- [ ] **Banner** - Banner/announcement component
-- [ ] **Status Indicator** - Status indicator with colors
-- [ ] **Countdown** - Countdown timer component
-- [ ] **Stat Card** - Statistics card component
+- [x] **Notification** - Enhanced notification system
+- [x] **Snackbar** - Snackbar notification component
+- [x] **Banner** - Banner/announcement component
+- [x] **Status Indicator** - Status indicator with colors
+- [x] **Countdown** - Countdown timer component
+- [x] **Stat Card** - Statistics card component
 
 ### Media
 - [ ] **Image** - Image component with lazy loading and fallback
