@@ -138,11 +138,14 @@ export class GlSortable extends HTMLElement {
   #reorderItems(oldIndex: number, newIndex: number) {
     const items = Array.from(this.children);
     const item = items[oldIndex];
+    const targetItem = items[newIndex];
+    
+    if (!item || !targetItem) return;
     
     if (oldIndex < newIndex) {
-      items[newIndex].after(item);
+      targetItem.after(item);
     } else {
-      items[newIndex].before(item);
+      targetItem.before(item);
     }
     
     this.#updateItems();

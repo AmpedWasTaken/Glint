@@ -156,11 +156,11 @@ export class GlDraggable extends HTMLElement {
     emit(this, "gl-drag-end", { x: rect.left, y: rect.top });
   }
 
-  get draggable() {
+  override get draggable() {
     return this.hasAttribute("draggable");
   }
 
-  set draggable(v: boolean) {
+  override set draggable(v: boolean) {
     if (v) this.setAttribute("draggable", "");
     else this.removeAttribute("draggable");
   }
