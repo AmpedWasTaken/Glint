@@ -262,6 +262,9 @@
             <a href="#status-indicator" class="docs-nav-link">Status Indicator</a>
             <a href="#countdown" class="docs-nav-link">Countdown</a>
             <a href="#stat-card" class="docs-nav-link">Stat Card</a>
+            <a href="#image" class="docs-nav-link">Image</a>
+            <a href="#video" class="docs-nav-link">Video</a>
+            <a href="#audio" class="docs-nav-link">Audio</a>
               </div>
           <div class="docs-nav-group">
             <div class="docs-nav-group-title">Layout</div>
@@ -4680,6 +4683,292 @@
 &#10;  &lt;span slot=&quot;label&quot;&gt;Small&lt;/span&gt;
 &#10;  &lt;span slot=&quot;value&quot;&gt;1,234&lt;/span&gt;
 &#10;&lt;/gl-stat-card&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="image" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Image</h2>
+              <p>Image component with lazy loading, fallback support, and loading states.</p>
+            </div>
+
+            <div class="docs-preview">
+              <div style="display: grid; gap: 16px;">
+                <gl-image src="https://picsum.photos/400/300" alt="Random image" width="400" height="300" rounded></gl-image>
+                <gl-image src="https://picsum.photos/400/300" alt="Lazy loaded" width="400" height="300" lazy rounded></gl-image>
+              </div>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-image src=&quot;https://example.com/image.jpg&quot; alt=&quot;Description&quot; width=&quot;400&quot; height=&quot;300&quot; rounded&gt;&lt;/gl-image&gt;
+&#10;&lt;gl-image src=&quot;https://example.com/image.jpg&quot; alt=&quot;Lazy loaded&quot; lazy fallback=&quot;https://example.com/fallback.jpg&quot;&gt;&lt;/gl-image&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>src</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Image source URL</td>
+                  </tr>
+                  <tr>
+                    <td><code>alt</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Alternative text for the image</td>
+                  </tr>
+                  <tr>
+                    <td><code>lazy</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Enable lazy loading with IntersectionObserver</td>
+                  </tr>
+                  <tr>
+                    <td><code>fallback</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Fallback image URL if main image fails to load</td>
+                  </tr>
+                  <tr>
+                    <td><code>fit</code></td>
+                    <td><code>"contain" | "cover" | "fill" | "none" | "scale-down"</code></td>
+                    <td><code>"cover"</code></td>
+                    <td>Object fit property</td>
+                  </tr>
+                  <tr>
+                    <td><code>rounded</code></td>
+                    <td><code>boolean | "sm" | "lg" | "full"</code></td>
+                    <td><code>false</code></td>
+                    <td>Border radius variant</td>
+                  </tr>
+                  <tr>
+                    <td><code>width</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Image width (px or %)</td>
+                  </tr>
+                  <tr>
+                    <td><code>height</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Image height (px or %)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Lazy Loading</h2>
+              <p>Enable lazy loading to improve page performance.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-image src="https://picsum.photos/600/400?random=1" alt="Lazy loaded image" width="600" height="400" lazy rounded></gl-image>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-image src=&quot;https://example.com/image.jpg&quot; alt=&quot;Lazy loaded&quot; lazy&gt;&lt;/gl-image&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="video" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Video</h2>
+              <p>Video player component with custom controls, progress bar, and fullscreen support.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" show-controls width="800" height="450" rounded></gl-video>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-video src=&quot;https://example.com/video.mp4&quot; show-controls width=&quot;800&quot; height=&quot;450&quot;&gt;&lt;/gl-video&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>src</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Video source URL</td>
+                  </tr>
+                  <tr>
+                    <td><code>autoplay</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Autoplay video</td>
+                  </tr>
+                  <tr>
+                    <td><code>loop</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Loop video</td>
+                  </tr>
+                  <tr>
+                    <td><code>muted</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Mute video</td>
+                  </tr>
+                  <tr>
+                    <td><code>controls</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Show native browser controls</td>
+                  </tr>
+                  <tr>
+                    <td><code>show-controls</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Show custom controls (hover to reveal)</td>
+                  </tr>
+                  <tr>
+                    <td><code>poster</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Poster image URL</td>
+                  </tr>
+                  <tr>
+                    <td><code>rounded</code></td>
+                    <td><code>boolean | "sm" | "lg"</code></td>
+                    <td><code>false</code></td>
+                    <td>Border radius variant</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Custom Controls</h2>
+              <p>Custom video controls with play/pause, progress bar, and fullscreen.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" show-controls width="600" height="338" rounded></gl-video>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-video src=&quot;https://example.com/video.mp4&quot; show-controls&gt;&lt;/gl-video&gt;"></gl-codeblock>
+            </div>
+          </div>
+        </section>
+
+<section id="audio" class="docs-section">
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Audio</h2>
+              <p>Audio player component with custom controls, progress bar, and volume control.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-audio src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+                <span slot="title">Sample Audio</span>
+                <span slot="artist">SoundHelix</span>
+              </gl-audio>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-audio src=&quot;https://example.com/audio.mp3&quot;&gt;
+&#10;  &lt;span slot=&quot;title&quot;&gt;Song Title&lt;/span&gt;
+&#10;  &lt;span slot=&quot;artist&quot;&gt;Artist Name&lt;/span&gt;
+&#10;&lt;/gl-audio&gt;"></gl-codeblock>
+            </div>
+
+            <div class="docs-api">
+              <h3>API</h3>
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>src</code></td>
+                    <td><code>string</code></td>
+                    <td><code>""</code></td>
+                    <td>Audio source URL</td>
+                  </tr>
+                  <tr>
+                    <td><code>autoplay</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Autoplay audio</td>
+                  </tr>
+                  <tr>
+                    <td><code>loop</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Loop audio</td>
+                  </tr>
+                  <tr>
+                    <td><code>muted</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Mute audio</td>
+                  </tr>
+                  <tr>
+                    <td><code>volume</code></td>
+                    <td><code>number</code></td>
+                    <td><code>1</code></td>
+                    <td>Volume level (0-1)</td>
+                  </tr>
+                  <tr>
+                    <td><code>compact</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Compact mode (hide title/artist)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="docs-component">
+            <div class="docs-component-header">
+              <h2>Compact Mode</h2>
+              <p>Compact audio player without title and artist display.</p>
+            </div>
+
+            <div class="docs-preview">
+              <gl-audio src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" compact></gl-audio>
+            </div>
+
+            <div class="docs-code-wrapper">
+              <gl-codeblock lang="html" copy data-code="&lt;gl-audio src=&quot;https://example.com/audio.mp3&quot; compact&gt;&lt;/gl-audio&gt;"></gl-codeblock>
             </div>
           </div>
         </section>
