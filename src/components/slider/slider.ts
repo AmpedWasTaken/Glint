@@ -49,9 +49,37 @@ template.innerHTML = `
     :host([size="sm"]) .thumb{width:14px;height:14px}
     :host([size="lg"]) .track{height:8px}
     :host([size="lg"]) .thumb{width:22px;height:22px}
+    .marks{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+    }
+    .mark{
+      position:absolute;
+      top:50%;
+      transform:translate(-50%, -50%);
+      width:2px;
+      height:8px;
+      background:var(--gl-border);
+      border-radius:1px;
+    }
+    :host([size="sm"]) .mark{height:6px;width:1.5px}
+    :host([size="lg"]) .mark{height:10px;width:2.5px}
+    .mark-label{
+      position:absolute;
+      top:calc(100% + 4px);
+      left:50%;
+      transform:translateX(-50%);
+      font-size:11px;
+      color:var(--gl-muted);
+      white-space:nowrap;
+    }
+    :host([size="sm"]) .mark-label{font-size:10px}
+    :host([size="lg"]) .mark-label{font-size:12px}
   </style>
   <div part="track" class="track" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
     <div part="fill" class="fill"></div>
+    <div part="marks" class="marks"></div>
     <div part="thumb" class="thumb"></div>
   </div>
 `;
@@ -59,12 +87,13 @@ template.innerHTML = `
 export class GlSlider extends HTMLElement {
   static tagName = "gl-slider";
   static get observedAttributes() {
-    return ["value", "min", "max", "step", "disabled", "size"];
+    return ["value", "min", "max", "step", "disabled", "size", "marks"];
   }
 
   #track!: HTMLDivElement;
   #fill!: HTMLDivElement;
   #thumb!: HTMLDivElement;
+  #marks!: HTMLDivElement;
   #onPointerDown?: (e: PointerEvent) => void;
   #onPointerMove?: (e: PointerEvent) => void;
   #onPointerUp?: () => void;
@@ -92,6 +121,7 @@ export class GlSlider extends HTMLElement {
     this.#track = this.shadowRoot!.querySelector(".track") as HTMLDivElement;
     this.#fill = this.shadowRoot!.querySelector(".fill") as HTMLDivElement;
     this.#thumb = this.shadowRoot!.querySelector(".thumb") as HTMLDivElement;
+    this.#marks = this.shadowRoot!.querySelector(".marks") as HTMLDivElement;
     this.#sync();
     this.#track.addEventListener("click", (e) => this.#handleClick(e));
     this.#track.addEventListener("keydown", (e) => this.#handleKeydown(e));
@@ -145,6 +175,55 @@ export class GlSlider extends HTMLElement {
       this.#track.setAttribute("tabindex", "-1");
     } else {
       this.#track.setAttribute("tabindex", "0");
+    }
+
+    // Update marks
+    if (this.hasAttribute("marks") && this.#marks) {
+      this.#updateMarks();
+    }
+  }
+
+  #updateMarks() {
+    if (!this.#marks) return;
+    const marksAttr = this.getAttribute("marks");
+    if (!marksAttr) {
+      this.#marks.innerHTML = "";
+      return;
+    }
+
+    try {
+      const marks = JSON.parse(marksAttr) as Array<{ value: number; label?: string }> | number;
+      const min = this.min;
+      const max = this.max;
+      
+      let markValues: Array<{ value: number; label?: string }> = [];
+      
+      if (typeof marks === "number") {
+        // Generate evenly spaced marks
+        const step = (max - min) / (marks + 1);
+        for (let i = 1; i <= marks; i++) {
+          markValues.push({ value: min + step * i });
+        }
+      } else if (Array.isArray(marks)) {
+        markValues = marks;
+      }
+
+      this.#marks.innerHTML = "";
+      markValues.forEach((mark) => {
+        const percent = ((mark.value - min) / (max - min)) * 100;
+        const markEl = document.createElement("div");
+        markEl.className = "mark";
+        markEl.style.left = `${percent}%`;
+        if (mark.label) {
+          const label = document.createElement("div");
+          label.className = "mark-label";
+          label.textContent = mark.label;
+          markEl.appendChild(label);
+        }
+        this.#marks.appendChild(markEl);
+      });
+    } catch {
+      // Invalid marks format, ignore
     }
   }
 
