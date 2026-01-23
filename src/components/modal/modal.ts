@@ -85,6 +85,9 @@ export class GlModal extends HTMLElement {
     return ["open", "label", "describedby", "size"];
   }
 
+  static #modalStack: GlModal[] = [];
+  static #baseZIndex = 1000;
+
   #overlay!: HTMLDivElement;
   #dialog!: HTMLDivElement;
   #trap = createFocusTrap(document.createElement("div"));
@@ -140,10 +143,30 @@ export class GlModal extends HTMLElement {
     if (describedby) this.#dialog.setAttribute("aria-describedby", describedby);
 
     if (this.open) {
+      // Add to stack
+      const index = GlModal.#modalStack.indexOf(this);
+      if (index === -1) {
+        GlModal.#modalStack.push(this);
+      }
+      this.#updateZIndex();
       this.#trap.activate();
       emit(this, "gl-open");
     } else {
+      // Remove from stack
+      const index = GlModal.#modalStack.indexOf(this);
+      if (index !== -1) {
+        GlModal.#modalStack.splice(index, 1);
+      }
+      this.#updateZIndex();
       this.#trap.deactivate();
+    }
+  }
+
+  #updateZIndex() {
+    const index = GlModal.#modalStack.indexOf(this);
+    if (index !== -1 && this.#overlay) {
+      const zIndex = GlModal.#baseZIndex + index * 10;
+      this.#overlay.style.zIndex = String(zIndex);
     }
   }
 }
