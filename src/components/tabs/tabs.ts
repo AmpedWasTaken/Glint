@@ -18,6 +18,20 @@ tabsTemplate.innerHTML = `
       max-width:100%;
       overflow:auto;
     }
+    :host([orientation="vertical"]) .wrap{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:var(--gl-space-4);
+      align-items:start;
+    }
+    :host([orientation="vertical"]) .list{
+      flex-direction:column;
+      width:auto;
+      min-width:200px;
+    }
+    :host([orientation="vertical"]) .panels{
+      min-width:0;
+    }
     ::slotted(gl-tab){flex:0 0 auto}
     .panels{min-width:0}
   </style>
@@ -117,11 +131,12 @@ export class GlTab extends HTMLElement {
       const root = this.closest(GlTabs.tagName) as GlTabs | null;
       if (!root) return;
       const tabs = root.tabs;
+      const orientation = root.getAttribute("orientation") || "horizontal";
       rovingKeydown(
         e,
         tabs.map((t) => t.#btn),
         this.#btn,
-        { vertical: false }
+        { vertical: orientation === "vertical" }
       );
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
@@ -189,7 +204,7 @@ export class GlTabPanel extends HTMLElement {
 export class GlTabs extends HTMLElement {
   static tagName = "gl-tabs";
   static get observedAttributes() {
-    return ["value"];
+    return ["value", "orientation"];
   }
 
   get value() {
