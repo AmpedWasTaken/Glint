@@ -31,9 +31,20 @@ template.innerHTML = `
     .data-grid-table {
       width: 100%;
       border-collapse: collapse;
+      table-layout: auto;
     }
     .data-grid-thead {
       background: var(--gl-hover);
+    }
+    .data-grid-header-row {
+      display: table-row;
+    }
+    ::slotted(gl-data-grid-column) {
+      display: table-cell !important;
+      vertical-align: middle;
+    }
+    ::slotted(gl-data-grid-row) {
+      display: table-row !important;
     }
     .data-grid-th {
       padding: var(--gl-space-3) var(--gl-space-4);
@@ -107,7 +118,9 @@ template.innerHTML = `
     </div>
     <table class="data-grid-table" part="table">
       <thead class="data-grid-thead" part="thead">
-        <slot name="columns"></slot>
+        <tr class="data-grid-header-row">
+          <slot name="columns"></slot>
+        </tr>
       </thead>
       <tbody class="data-grid-tbody" part="tbody">
         <slot name="rows"></slot>
@@ -124,6 +137,10 @@ columnTemplate.innerHTML = `
   <style>
     :host {
       display: table-cell;
+      vertical-align: middle;
+      padding: 0;
+      margin: 0;
+      border: none;
     }
     .data-grid-th {
       padding: var(--gl-space-3) var(--gl-space-4);
@@ -135,6 +152,9 @@ columnTemplate.innerHTML = `
       cursor: pointer;
       user-select: none;
       transition: background var(--gl-dur-1) var(--gl-ease);
+      white-space: nowrap;
+      box-sizing: border-box;
+      margin: 0;
     }
     .data-grid-th:hover {
       background: var(--gl-hover);
@@ -181,6 +201,7 @@ rowTemplate.innerHTML = `
     .data-grid-td {
       padding: var(--gl-space-3) var(--gl-space-4);
       font-size: var(--gl-text-sm);
+      white-space: nowrap;
     }
   </style>
   <tr class="data-grid-tr" part="tr">
@@ -193,10 +214,17 @@ cellTemplate.innerHTML = `
   <style>
     :host {
       display: table-cell;
+      vertical-align: middle;
+      padding: 0;
+      margin: 0;
+      border: none;
     }
     .data-grid-td {
       padding: var(--gl-space-3) var(--gl-space-4);
       font-size: var(--gl-text-sm);
+      white-space: nowrap;
+      box-sizing: border-box;
+      margin: 0;
     }
   </style>
   <td class="data-grid-td" part="td">
