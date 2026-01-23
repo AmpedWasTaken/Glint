@@ -36,6 +36,33 @@ template.innerHTML = `
     .value.placeholder{
       color:var(--gl-muted);
     }
+    .value-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+      flex:1;
+      min-width:0;
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:4px 8px;
+      background:var(--gl-primary);
+      color:var(--gl-primary-fg);
+      border-radius:4px;
+      font-size:12px;
+    }
+    .tag-remove{
+      all:unset;
+      cursor:pointer;
+      padding:2px;
+      border-radius:2px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .tag-remove:hover{background:rgba(0,0,0,0.1)}
     .chev{
       width:18px;
       height:18px;
@@ -113,9 +140,18 @@ template.innerHTML = `
       margin:2px 0;
       color:var(--gl-fg);
     }
-    .option:hover,.option[aria-selected="true"]{
+    .option:hover,    .option[aria-selected="true"]{
       background:var(--gl-hover);
       color:var(--gl-fg);
+    }
+    .option[data-checked="true"]{
+      background:color-mix(in srgb, var(--gl-primary) 15%, transparent);
+      color:var(--gl-primary);
+    }
+    .option[data-checked="true"]::before{
+      content:"✓";
+      margin-right:8px;
+      font-weight:bold;
     }
     .option:focus-visible{
       outline:2px solid var(--gl-ring);
@@ -153,7 +189,7 @@ template.innerHTML = `
 export class GlSelect extends HTMLElement {
   static tagName = "gl-select";
   static get observedAttributes() {
-    return ["value", "disabled", "name", "open", "options", "searchable"];
+    return ["value", "disabled", "name", "open", "options", "searchable", "multiple"];
   }
 
   #select!: HTMLSelectElement;
@@ -168,10 +204,18 @@ export class GlSelect extends HTMLElement {
   #searchTerm = "";
 
   get value() {
+    if (this.hasAttribute("multiple")) {
+      const attr = this.getAttribute("value");
+      return attr ? JSON.parse(attr) : [];
+    }
     return this.#select?.value ?? this.getAttribute("value") ?? "";
   }
-  set value(v: string) {
-    this.setAttribute("value", v);
+  set value(v: string | string[]) {
+    if (this.hasAttribute("multiple")) {
+      this.setAttribute("value", JSON.stringify(Array.isArray(v) ? v : [v]));
+    } else {
+      this.setAttribute("value", Array.isArray(v) ? v[0] || "" : v);
+    }
   }
 
   get open() {
@@ -278,8 +322,27 @@ export class GlSelect extends HTMLElement {
     this.#select.name = this.getAttribute("name") ?? "";
     const v = this.getAttribute("value");
     if (v !== null) {
-      this.#select.value = v;
+      if (this.hasAttribute("multiple")) {
+        try {
+          const values = JSON.parse(v);
+          if (Array.isArray(values)) {
+            Array.from(this.#select.options).forEach(opt => {
+              opt.selected = values.includes(opt.value);
+            });
+          }
+        } catch {
+          // ignore
+        }
+      } else {
+        this.#select.value = v;
+      }
       this.#updateDisplay();
+    }
+    
+    if (this.hasAttribute("multiple")) {
+      this.#select.setAttribute("multiple", "");
+    } else {
+      this.#select.removeAttribute("multiple");
     }
     
     const isOpen = this.open;
@@ -349,35 +412,105 @@ export class GlSelect extends HTMLElement {
 
   #updateDisplay() {
     if (!this.#valueDisplay) return;
-    const selectedOption = this.#select.options[this.#select.selectedIndex];
-    if (selectedOption) {
-      this.#valueDisplay.textContent = selectedOption.textContent;
-      this.#valueDisplay.classList.remove("placeholder");
+    
+    if (this.hasAttribute("multiple")) {
+      const values = Array.isArray(this.value) ? this.value : [];
+      this.#valueDisplay.innerHTML = "";
+      
+      if (values.length === 0) {
+        this.#valueDisplay.textContent = "Select options...";
+        this.#valueDisplay.classList.add("placeholder");
+      } else {
+        this.#valueDisplay.classList.remove("placeholder");
+        const tagsContainer = document.createElement("div");
+        tagsContainer.className = "value-tags";
+        
+        values.forEach(val => {
+          const option = Array.from(this.#select.options).find(opt => opt.value === val);
+          if (option) {
+            const tag = document.createElement("span");
+            tag.className = "tag";
+            tag.textContent = option.textContent;
+            const remove = document.createElement("button");
+            remove.className = "tag-remove";
+            remove.innerHTML = "×";
+            remove.addEventListener("click", (e) => {
+              e.stopPropagation();
+              this.#removeValue(val);
+            });
+            tag.appendChild(remove);
+            tagsContainer.appendChild(tag);
+          }
+        });
+        
+        this.#valueDisplay.appendChild(tagsContainer);
+      }
     } else {
-      this.#valueDisplay.textContent = "Select an option...";
-      this.#valueDisplay.classList.add("placeholder");
+      const selectedOption = this.#select.options[this.#select.selectedIndex];
+      if (selectedOption) {
+        this.#valueDisplay.textContent = selectedOption.textContent;
+        this.#valueDisplay.classList.remove("placeholder");
+      } else {
+        this.#valueDisplay.textContent = "Select an option...";
+        this.#valueDisplay.classList.add("placeholder");
+      }
     }
   }
 
   #selectOption(value: string) {
-    this.value = value;
-    this.#select.value = value;
-    this.#updateDisplay();
-    // Clear search
-    if (this.hasAttribute("searchable")) {
-      this.#searchInput.value = "";
-      this.#searchTerm = "";
-      this.#filterOptions();
-    }
-    // Close dropdown immediately
-    this.open = false;
-    // Prevent any delayed reopening
-    setTimeout(() => {
-      if (this.open) {
-        this.open = false;
+    if (this.hasAttribute("multiple")) {
+      const current = Array.isArray(this.value) ? this.value : [];
+      const index = current.indexOf(value);
+      if (index >= 0) {
+        // Deselect
+        current.splice(index, 1);
+        const option = this.#select.options[this.#select.options.namedItem(value)?.index ?? -1];
+        if (option) option.selected = false;
+      } else {
+        // Select
+        current.push(value);
+        const option = this.#select.options[this.#select.options.namedItem(value)?.index ?? -1];
+        if (option) option.selected = true;
       }
-    }, 0);
-    emit(this, "gl-change", { value });
+      this.value = current;
+      this.#updateDisplay();
+      this.#updateSelection();
+      emit(this, "gl-change", { value: current });
+    } else {
+      this.value = value;
+      this.#select.value = value;
+      this.#updateDisplay();
+      // Clear search
+      if (this.hasAttribute("searchable")) {
+        this.#searchInput.value = "";
+        this.#searchTerm = "";
+        this.#filterOptions();
+      }
+      // Close dropdown immediately
+      this.open = false;
+      // Prevent any delayed reopening
+      setTimeout(() => {
+        if (this.open) {
+          this.open = false;
+        }
+      }, 0);
+      emit(this, "gl-change", { value });
+    }
+  }
+
+  #removeValue(value: string) {
+    if (!this.hasAttribute("multiple")) return;
+    const current = Array.isArray(this.value) ? this.value : [];
+    const index = current.indexOf(value);
+    if (index >= 0) {
+      current.splice(index, 1);
+      this.value = current;
+      const option = this.#select.options[this.#select.options.namedItem(value)?.index ?? -1];
+      if (option) option.selected = false;
+      this.#updateDisplay();
+      this.#updateSelection();
+      emit(this, "gl-change", { value: current });
+    }
   }
 
   #navigateOptions(direction: number) {
@@ -393,9 +526,13 @@ export class GlSelect extends HTMLElement {
   }
 
   #updateSelection() {
+    const values = this.hasAttribute("multiple") && Array.isArray(this.value) ? this.value : [this.value];
     this.#options.forEach((opt, index) => {
-      opt.setAttribute("aria-selected", String(index === this.#selectedIndex));
-      opt.setAttribute("tabindex", index === this.#selectedIndex ? "0" : "-1");
+      const isSelected = index === this.#selectedIndex;
+      const isChecked = values.includes(opt.dataset.value || "");
+      opt.setAttribute("aria-selected", String(isSelected));
+      opt.setAttribute("tabindex", isSelected ? "0" : "-1");
+      opt.setAttribute("data-checked", String(isChecked));
     });
   }
 
